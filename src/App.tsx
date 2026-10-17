@@ -123,11 +123,14 @@ function App() {
             >
               {session.address}
             </a>
-            {session.balance?.error ? (
-              <p role="alert">{session.balance.error}</p>
-            ) : (
-              <p>{session.balance ? `Balance: ${session.balance.value} ꜩ` : 'Loading balance…'}</p>
-            )}
+            <output aria-live="polite" aria-atomic="true">
+              {session.balance?.error
+                ? ''
+                : session.balance
+                  ? `Balance: ${session.balance.value} ꜩ`
+                  : 'Loading balance…'}
+            </output>
+            {session.balance?.error && <p role="alert">{session.balance.error}</p>}
             <button disabled={busy} onClick={session.retryReads}>
               Refresh balance and counter
             </button>
@@ -154,13 +157,14 @@ function App() {
             >
               {network.counterAddress}
             </a>
-            {session.counter?.error ? (
-              <p role="alert">{session.counter.error}</p>
-            ) : (
-              <p>
-                {session.counter ? `Current counter: ${session.counter.value}` : 'Loading counter…'}
-              </p>
-            )}
+            <output aria-live="polite" aria-atomic="true">
+              {session.counter?.error
+                ? ''
+                : session.counter
+                  ? `Current counter: ${session.counter.value}`
+                  : 'Loading counter…'}
+            </output>
+            {session.counter?.error && <p role="alert">{session.counter.error}</p>}
             <div className="wallet-controls">
               <button
                 disabled={busy || !session.counter || session.counter.error !== null}
