@@ -76,8 +76,6 @@ export function useWalletSession() {
       if (receipt) {
         setBalance(null);
         setCounter(null);
-        setBalance(null);
-        setCounter(null);
         setOperation(receipt);
         setRefresh((value) => value + 1);
       }
