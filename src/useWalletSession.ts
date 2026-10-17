@@ -70,23 +70,28 @@ export function useWalletSession() {
     setPending(true);
     setError(null);
     setOperation(null);
-    try {
-      const receipt = await action();
-      if (!mounted.current || revision.current !== started) return false;
-      if (receipt) {
-        setBalance(null);
-        setCounter(null);
-        setOperation(receipt);
-        setRefresh((value) => value + 1);
-      }
-      return true;
-    } catch (cause) {
-      if (mounted.current && revision.current === started) setError(message(cause));
-      return false;
-    } finally {
-      locked.current = false;
-      if (mounted.current) setPending(false);
-    }
+    return Promise.resolve()
+      .then(action)
+      .then(
+        (receipt) => {
+          if (!mounted.current || revision.current !== started) return false;
+          if (receipt) {
+            setBalance(null);
+            setCounter(null);
+            setOperation(receipt);
+            setRefresh((value) => value + 1);
+          }
+          return true;
+        },
+        (cause: unknown) => {
+          if (mounted.current && revision.current === started) setError(message(cause));
+          return false;
+        },
+      )
+      .finally(() => {
+        locked.current = false;
+        if (mounted.current) setPending(false);
+      });
   }
 
   return {

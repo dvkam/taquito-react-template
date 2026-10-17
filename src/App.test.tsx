@@ -143,7 +143,7 @@ it('submits only once when the form receives two immediate submit events', async
   act(() => {
     fireEvent.submit(form);
   });
-  expect(sdk.sendTezos).toHaveBeenCalledExactlyOnceWith(alice, '0.5', alice);
+  await waitFor(() => expect(sdk.sendTezos).toHaveBeenCalledExactlyOnceWith(alice, '0.5', alice));
   await act(async () => request.resolve('single-operation'));
   expect(await screen.findByText('single-operation')).toBeTruthy();
 });
