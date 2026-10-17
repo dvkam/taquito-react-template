@@ -10,13 +10,10 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@airgap/beacon-dapp": "^4.6.1",
-    "@airgap/beacon-sdk": "^4.6.1",
     "@taquito/beacon-wallet": "25.0.0",
     "@taquito/taquito": "25.0.0",
     "buffer": "^6.0.3",
     "events": "^3.3.0",
-    "qrcode-generator": "^2.0.4",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "stream-browserify": "^3.0.0",
