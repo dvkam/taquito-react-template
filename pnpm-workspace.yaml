@@ -1,0 +1,4 @@
+autoDedupe: true
+
+lockfile:
+  includeResolutionSettings: true

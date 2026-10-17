@@ -1,93 +1,49 @@
 # Taquito React template
 
-![Built with Taquito][logo]
+A React starter for connecting a Tezos wallet, sending test XTZ, and calling a counter contract on Shadownet.
 
-A minimal React setup for starting developing Tezos DApps quickly with Taquito.
+## Run locally
 
-## Getting Started
+Use Node 24 and pnpm 12.14.0. The repository pins both versions.
 
-1. Make sure you have https://nodejs.org/ installed on your computer
-2. Create a new repository from taquito-boilerplate by clicking "Use this template".
-3. Clone your new repository:
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
+```
 
-   `git clone <YOUR_REPOSITORY_URL>`
+Open the URL printed by Vite. Connect a Shadownet wallet. Test tokens have no monetary value. The counter is shared with other users. See [the counter configuration and deployment guide](docs/counter.md).
 
-4. Change your current working directory to the newly cloned repository directory.
-5. Install dependencies:
+## Build and checks
 
-   `npm install`
+```sh
+pnpm build
+pnpm preview
+```
 
-6. Start development server:
+The build runs type-aware Oxlint, Oxfmt, strict TypeScript checks for the app and tools, Vitest tests, and Vite's production build. GitHub Actions runs the same command on pushes and pull requests. Tests use controlled wallet responses and need no account or private key.
 
-   `npm run dev`
+Use `pnpm test`, `pnpm check`, or `pnpm format` for individual tasks. `pnpm-workspace.yaml` enables automatic deduplication. Keep `pnpm-lock.yaml` committed.
 
-7. Open http://localhost:5173/ in your browser to see a sample application.
+## Code structure
 
-## Building the App
+- `src/Wallet.ts` owns the SDK instances, account subscription, network validation, and confirmed writes.
+- `src/useWalletSession.ts` manages display state and rejects stale results after account changes.
+- `src/transfer.ts` validates addresses and converts decimal XTZ to exact mutez.
+- `src/network.ts` configures Shadownet and the verified counter address.
+- `src/App.tsx` contains accessible wallet, transfer, and counter controls.
 
-1. Run the command:
+Balances and counter values remain decimal strings. Conflicting writes share a pending guard. A failed read after a confirmed write does not erase the operation receipt or trigger another write.
 
-   `npm run build`
+The app uses Taquito's supported wallet exports and default pairing UI. It does not contain private signing keys. Never put keys into a Vite environment variable, since those values can enter the browser bundle.
 
-2. After you have build the app you can run it locally:
+## React Compiler and browser support
 
-   `npm run preview`
+The Vite React plugin uses the experimental native Oxc React Compiler. `oxc-transform-react` is pinned to the plugin's compatible version. Oxlint handles static checks; the compiler generates memoization. Compiler diagnostics are enabled during development and builds.
 
-3. Open http://localhost:4173/ in your browser to see the production build. 
+Vite targets ES2023-capable browsers. Buffer, stream, and util compatibility support remains for the wallet dependency graph. The app uses `globalThis` rather than a synthetic global object.
 
-   For more information read the [Vite Guide](https://vitejs.dev/guide/static-deploy.html)
+## Dependency maintenance
 
-[logo]: https://raw.githubusercontent.com/ecadlabs/taquito-boilerplate/master/assets/built-with-taquito.png "Built with Taquito"
+Refresh compatible dependencies with `pnpm update`, then run `pnpm build` and `pnpm audit`. Do not force a major transitive override solely to clear the audit count. The current wallet dependency tree still includes advisories for `decode-uri-component` and `elliptic`. The decoder's patched release changes module format, and elliptic has no patched release. Track upstream fixes and assess affected APIs before adding an override.
 
-> ## Polyfill
->
-> Before we start we need to add the following dependencies in order to not get polyfill issues. The reason for this step is that certain required dependencies are Node APIs, thus not included in Browsers. But still needed for communication and interaction with Wallets and Smart Contracts.
-> For a better understanding here are the steps described. 
->
-> You do not need to do the steps as it is already configured.
->
-> Run `npm install buffer stream-browserify util events process`
->
-> Then create a new file `nodeSpecific.ts` in the src folder of the project and add:
-> ```js
-> import { Buffer } from 'buffer'
->
-> globalThis.Buffer = Buffer
-> ```
->
-> Then open the `index.html` file and add the following script in the body. 
-> It should look like this:
->
-> ```js
-> <body>
->   <div id="root"></div>
->    <script type="module" src="/src/nodeSpecific.ts"></script> //add this line
->    <script type="module" src="/src/main.tsx"></script>
-> </body>
-> ```
->
-> Finally open the `vite.config.ts` file and add the `resolve` part:
->
-> ```js
-> import { defineConfig } from 'vite'
-> import react from '@vitejs/plugin-react-swc'
-> 
-> // https://vitejs.dev/config/
-> export default defineConfig({
->   define: {
->     global: {},
->   },
->   plugins: [react()],
->   resolve: {
->     alias: {
->       stream: 'stream-browserify',
->       os: 'os-browserify/browser',
->       util: 'util',
->       process: 'process/browser',
->       buffer: 'buffer',
->     },
->   },
-> })
-> ```
->
-> Now we can run the app. 
+The wallet libraries still account for most of the production bundle. Splitting them into a chunk does not remove their download cost when restoring a wallet on startup.
