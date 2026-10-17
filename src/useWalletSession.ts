@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import * as wallet from './Wallet';
+import { isWalletCancellation, walletErrorMessage as message } from './wallet-errors';
 
 type ReadResult = { value: string; error: null } | { value: null; error: string };
-const message = (error: unknown) =>
-  error instanceof Error ? error.message : 'The request failed. Please try again.';
 
 export function useWalletSession() {
   const revision = useRef(0);
@@ -14,7 +13,9 @@ export function useWalletSession() {
     revision: 0,
   });
   const [restoring, setRestoring] = useState(true);
-  const [pending, setPending] = useState(false);
+  const [pendingAction, setPendingAction] = useState<'connect' | 'disconnect' | 'write' | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
   const [operation, setOperation] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(0);
@@ -39,17 +40,18 @@ export function useWalletSession() {
   }, []);
 
   useEffect(() => {
-    if (!session.address) return;
+    if (restoring) return;
     let active = true;
     const current = () => active && revision.current === session.revision;
-    void wallet.getBalance(session.address).then(
-      (value) => {
-        if (current()) setBalance({ value, error: null });
-      },
-      (cause: unknown) => {
-        if (current()) setBalance({ value: null, error: message(cause) });
-      },
-    );
+    if (session.address)
+      void wallet.getBalance(session.address).then(
+        (value) => {
+          if (current()) setBalance({ value, error: null });
+        },
+        (cause: unknown) => {
+          if (current()) setBalance({ value: null, error: message(cause) });
+        },
+      );
     void wallet.getCounter().then(
       (value) => {
         if (current()) setCounter({ value, error: null });
@@ -61,13 +63,16 @@ export function useWalletSession() {
     return () => {
       active = false;
     };
-  }, [session, refresh]);
+  }, [session, refresh, restoring]);
 
-  async function run(action: () => Promise<string | void>) {
+  async function run(
+    action: () => Promise<string | void>,
+    kind: 'connect' | 'disconnect' | 'write' = 'write',
+  ) {
     if (locked.current) return false;
     locked.current = true;
     const started = revision.current;
-    setPending(true);
+    setPendingAction(kind);
     setError(null);
     setOperation(null);
     return Promise.resolve()
@@ -84,26 +89,28 @@ export function useWalletSession() {
           return true;
         },
         (cause: unknown) => {
-          if (mounted.current && revision.current === started) setError(message(cause));
+          if (mounted.current && revision.current === started && !isWalletCancellation(cause))
+            setError(message(cause));
           return false;
         },
       )
       .finally(() => {
         locked.current = false;
-        if (mounted.current) setPending(false);
+        if (mounted.current) setPendingAction(null);
       });
   }
 
   return {
     ...session,
     restoring,
-    pending,
+    pending: pendingAction !== null,
+    pendingAction,
     error,
     operation,
     balance,
     counter,
-    connect: () => run(wallet.connectWallet),
-    disconnect: () => run(wallet.disconnectWallet),
+    connect: () => run(wallet.connectWallet, 'connect'),
+    disconnect: () => run(wallet.disconnectWallet, 'disconnect'),
     retryReads: () => {
       setBalance(null);
       setCounter(null);

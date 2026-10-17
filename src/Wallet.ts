@@ -8,6 +8,8 @@ const tezos = new TezosToolkit(network.rpcUrl);
 const wallet = new BeaconWallet({
   name: 'Taquito React template',
   preferredNetwork: NetworkType.SHADOWNET,
+  // The application reports permission errors and treats cancellation as a normal exit.
+  eventHandlers: { [BeaconEvent.PERMISSION_REQUEST_ERROR]: { handler: async () => {} } },
 });
 tezos.setWalletProvider(wallet);
 type Account = Awaited<ReturnType<typeof wallet.client.getActiveAccount>>;

@@ -95,7 +95,13 @@ function App() {
       {session.error && <p role="alert">{session.error}</p>}
       <output aria-live="polite" aria-atomic="true" className="operation">
         {session.pending ? (
-          'Waiting for wallet approval and network confirmation…'
+          session.pendingAction === 'connect' ? (
+            'Waiting for wallet connection…'
+          ) : session.pendingAction === 'disconnect' ? (
+            'Disconnecting wallet…'
+          ) : (
+            'Waiting for wallet approval and network confirmation…'
+          )
         ) : session.operation ? (
           <>
             Confirmed operation:{' '}
@@ -146,46 +152,59 @@ function App() {
           <div hidden={view !== 'transfer'}>
             <TransferForm key={session.revision} pending={busy} send={session.transfer} />
           </div>
-          <section hidden={view !== 'counter'} aria-labelledby="counter-heading">
-            <h2 id="counter-heading">Counter contract</h2>
-            <p>This is a shared demo. Other users can change its value.</p>
-            <a
-              className="address"
-              href={`${network.explorerUrl}/${network.counterAddress}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {network.counterAddress}
-            </a>
-            <output aria-live="polite" aria-atomic="true">
-              {session.counter?.error
-                ? ''
-                : session.counter
-                  ? `Current counter: ${session.counter.value}`
-                  : 'Loading counter…'}
-            </output>
-            {session.counter?.error && <p role="alert">{session.counter.error}</p>}
-            <div className="wallet-controls">
-              <button
-                disabled={busy || !session.counter || session.counter.error !== null}
-                onClick={() => {
-                  void session.changeCounter('decrement');
-                }}
-              >
-                Decrease by 1
-              </button>
-              <button
-                disabled={busy || !session.counter || session.counter.error !== null}
-                onClick={() => {
-                  void session.changeCounter('increment');
-                }}
-              >
-                Increase by 1
-              </button>
-            </div>
-          </section>
         </>
       )}
+      <section
+        hidden={Boolean(session.address) && view !== 'counter'}
+        aria-labelledby="counter-heading"
+      >
+        <h2 id="counter-heading">Counter contract</h2>
+        <p>This is a shared demo. Other users can change its value.</p>
+        <a
+          className="address"
+          href={`${network.explorerUrl}/${network.counterAddress}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {network.counterAddress}
+        </a>
+        <output aria-live="polite" aria-atomic="true">
+          {session.counter?.error
+            ? ''
+            : session.counter
+              ? `Current counter: ${session.counter.value}`
+              : 'Loading counter…'}
+        </output>
+        {session.counter?.error && <p role="alert">{session.counter.error}</p>}
+        {!session.address && <p>Connect a wallet to change the counter.</p>}
+        {!session.address && (
+          <button disabled={busy} onClick={session.retryReads}>
+            Refresh counter
+          </button>
+        )}
+        <div className="wallet-controls">
+          <button
+            disabled={
+              busy || !session.address || !session.counter || session.counter.error !== null
+            }
+            onClick={() => {
+              void session.changeCounter('decrement');
+            }}
+          >
+            Decrease by 1
+          </button>
+          <button
+            disabled={
+              busy || !session.address || !session.counter || session.counter.error !== null
+            }
+            onClick={() => {
+              void session.changeCounter('increment');
+            }}
+          >
+            Increase by 1
+          </button>
+        </div>
+      </section>
       <footer>
         <a href="https://taquito.io/">Built with Taquito</a>
       </footer>
