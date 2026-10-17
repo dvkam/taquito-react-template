@@ -95,7 +95,13 @@ function App() {
       {session.error && <p role="alert">{session.error}</p>}
       <output aria-live="polite" aria-atomic="true" className="operation">
         {session.pending ? (
-          'Waiting for wallet approval and network confirmation…'
+          session.pendingAction === 'connect' ? (
+            'Waiting for wallet connection…'
+          ) : session.pendingAction === 'disconnect' ? (
+            'Disconnecting wallet…'
+          ) : (
+            'Waiting for wallet approval and network confirmation…'
+          )
         ) : session.operation ? (
           <>
             Confirmed operation:{' '}

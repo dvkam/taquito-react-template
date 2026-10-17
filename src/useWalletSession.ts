@@ -13,7 +13,9 @@ export function useWalletSession() {
     revision: 0,
   });
   const [restoring, setRestoring] = useState(true);
-  const [pending, setPending] = useState(false);
+  const [pendingAction, setPendingAction] = useState<'connect' | 'disconnect' | 'write' | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
   const [operation, setOperation] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(0);
@@ -62,11 +64,14 @@ export function useWalletSession() {
     };
   }, [session, refresh]);
 
-  async function run(action: () => Promise<string | void>) {
+  async function run(
+    action: () => Promise<string | void>,
+    kind: 'connect' | 'disconnect' | 'write' = 'write',
+  ) {
     if (locked.current) return false;
     locked.current = true;
     const started = revision.current;
-    setPending(true);
+    setPendingAction(kind);
     setError(null);
     setOperation(null);
     return Promise.resolve()
@@ -90,20 +95,21 @@ export function useWalletSession() {
       )
       .finally(() => {
         locked.current = false;
-        if (mounted.current) setPending(false);
+        if (mounted.current) setPendingAction(null);
       });
   }
 
   return {
     ...session,
     restoring,
-    pending,
+    pending: pendingAction !== null,
+    pendingAction,
     error,
     operation,
     balance,
     counter,
-    connect: () => run(wallet.connectWallet),
-    disconnect: () => run(wallet.disconnectWallet),
+    connect: () => run(wallet.connectWallet, 'connect'),
+    disconnect: () => run(wallet.disconnectWallet, 'disconnect'),
     retryReads: () => {
       setBalance(null);
       setCounter(null);

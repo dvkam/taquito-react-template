@@ -272,3 +272,19 @@ it('shows genuine non-Error wallet failures', async () => {
   await user.click(await screen.findByRole('button', { name: 'Switch account' }));
   expect(await screen.findByRole('alert')).toHaveProperty('textContent', 'Transport failed');
 });
+
+it('describes wallet connection without claiming network confirmation', async () => {
+  const request = deferred<void>();
+  sdk.subscribeAccount.mockImplementation((listener: typeof emit) => {
+    emit = listener;
+    listener(undefined, undefined);
+    return vi.fn();
+  });
+  sdk.connectWallet.mockReturnValue(request.promise);
+  render(<App />);
+  const user = userEvent.setup();
+  await user.click(await screen.findByRole('button', { name: 'Connect wallet' }));
+  expect(await screen.findByText('Waiting for wallet connection…')).toBeTruthy();
+  expect(screen.queryByText('Waiting for wallet approval and network confirmation…')).toBeNull();
+  await act(async () => request.resolve());
+});
