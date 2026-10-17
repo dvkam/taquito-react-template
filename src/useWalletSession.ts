@@ -40,17 +40,18 @@ export function useWalletSession() {
   }, []);
 
   useEffect(() => {
-    if (!session.address) return;
+    if (restoring) return;
     let active = true;
     const current = () => active && revision.current === session.revision;
-    void wallet.getBalance(session.address).then(
-      (value) => {
-        if (current()) setBalance({ value, error: null });
-      },
-      (cause: unknown) => {
-        if (current()) setBalance({ value: null, error: message(cause) });
-      },
-    );
+    if (session.address)
+      void wallet.getBalance(session.address).then(
+        (value) => {
+          if (current()) setBalance({ value, error: null });
+        },
+        (cause: unknown) => {
+          if (current()) setBalance({ value: null, error: message(cause) });
+        },
+      );
     void wallet.getCounter().then(
       (value) => {
         if (current()) setCounter({ value, error: null });
@@ -62,7 +63,7 @@ export function useWalletSession() {
     return () => {
       active = false;
     };
-  }, [session, refresh]);
+  }, [session, refresh, restoring]);
 
   async function run(
     action: () => Promise<string | void>,

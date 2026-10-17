@@ -288,3 +288,34 @@ it('describes wallet connection without claiming network confirmation', async ()
   expect(screen.queryByText('Waiting for wallet approval and network confirmation…')).toBeNull();
   await act(async () => request.resolve());
 });
+
+it('shows the public counter without a wallet and keeps writes disabled', async () => {
+  sdk.subscribeAccount.mockImplementation((listener: typeof emit) => {
+    emit = listener;
+    listener(undefined, undefined);
+    return vi.fn();
+  });
+  render(<App />);
+  expect(await screen.findByText('Current counter: 42')).toBeTruthy();
+  expect(screen.getByText('Connect a wallet to change the counter.')).toBeTruthy();
+  expect(screen.getByRole('button', { name: 'Increase by 1' }).hasAttribute('disabled')).toBe(true);
+  expect(screen.getByRole('button', { name: 'Decrease by 1' }).hasAttribute('disabled')).toBe(true);
+  expect(sdk.getBalance).not.toHaveBeenCalled();
+  expect(sdk.connectWallet).not.toHaveBeenCalled();
+  expect(sdk.changeCounter).not.toHaveBeenCalled();
+});
+
+it('retries public counter reads without requesting wallet access', async () => {
+  sdk.subscribeAccount.mockImplementation((listener: typeof emit) => {
+    emit = listener;
+    listener(undefined, undefined);
+    return vi.fn();
+  });
+  sdk.getCounter.mockRejectedValue(new Error('Counter temporarily unavailable'));
+  render(<App />);
+  await screen.findByText('Counter temporarily unavailable');
+  sdk.getCounter.mockResolvedValue('43');
+  await userEvent.setup().click(screen.getByRole('button', { name: 'Refresh counter' }));
+  expect(await screen.findByText('Current counter: 43')).toBeTruthy();
+  expect(sdk.connectWallet).not.toHaveBeenCalled();
+});
