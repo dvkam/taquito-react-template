@@ -1,4 +1,5 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { parseTransfer } from "../transfer";
+import { useRef, useState, Dispatch, SetStateAction } from "react";
 import { TezosToolkit } from "@taquito/taquito";
 
 const Transfers = ({
@@ -14,21 +15,28 @@ const Transfers = ({
   const [amount, setAmount] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
+  const pending = useRef(false);
+  const [error, setError] = useState<string | null>(null);
+
   const sendTransfer = async (): Promise<void> => {
-    if (recipient && amount) {
+    if (recipient && amount && !pending.current) {
+      pending.current = true;
+      setError(null);
       setLoading(true);
       try {
         const op = await Tezos.wallet
-          .transfer({ to: recipient, amount: parseInt(amount) })
+          .transfer(parseTransfer(recipient, amount))
           .send();
         await op.confirmation();
+        if (await op.status() !== "applied") throw new Error("The transaction did not execute successfully.");
         setRecipient("");
         setAmount("");
         const balance = await Tezos.tz.getBalance(userAddress);
         setUserBalance(balance.toNumber());
       } catch (error) {
-        console.log(error);
+        setError(error instanceof Error ? error.message : "Transfer failed. Please try again.");
       } finally {
+        pending.current = false;
         setLoading(false);
       }
     }
@@ -36,6 +44,7 @@ const Transfers = ({
 
   return (
     <div id="transfer-inputs">
+      {error && <p role="alert">{error}</p>}
       <input
         type="text"
         placeholder="Recipient"
@@ -50,7 +59,7 @@ const Transfers = ({
       />
       <button
         className="button"
-        disabled={!recipient && !amount}
+        disabled={loading || !recipient || !amount}
         onClick={sendTransfer}
       >
         {loading ? (
