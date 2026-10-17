@@ -20,7 +20,7 @@ const DisconnectButton = ({
   setWallet,
   setTezos,
   setBeaconConnection
-}: ButtonProps): JSX.Element => {
+}: ButtonProps): React.JSX.Element => {
   const disconnectWallet = async (): Promise<void> => {
     if (wallet) {
       await wallet.clearActiveAccount();
