@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import * as wallet from './Wallet';
+import { isWalletCancellation, walletErrorMessage as message } from './wallet-errors';
 
 type ReadResult = { value: string; error: null } | { value: null; error: string };
-const message = (error: unknown) =>
-  error instanceof Error ? error.message : 'The request failed. Please try again.';
 
 export function useWalletSession() {
   const revision = useRef(0);
@@ -84,7 +83,8 @@ export function useWalletSession() {
           return true;
         },
         (cause: unknown) => {
-          if (mounted.current && revision.current === started) setError(message(cause));
+          if (mounted.current && revision.current === started && !isWalletCancellation(cause))
+            setError(message(cause));
           return false;
         },
       )

@@ -237,3 +237,38 @@ it('does not show a late connection failure after a newer account event', async 
   expect(screen.queryByText('Old connection failed')).toBeNull();
   expect(screen.getByRole('button', { name: 'Disconnect' })).toHaveProperty('disabled', false);
 });
+
+it('closes a cancelled connection without an error and permits retry', async () => {
+  sdk.subscribeAccount.mockImplementation((listener: typeof emit) => {
+    emit = listener;
+    listener(undefined, undefined);
+    return vi.fn();
+  });
+  sdk.connectWallet.mockRejectedValueOnce({
+    message: '[ABORTED_ERROR]:The action was aborted by the user.',
+  });
+  render(<App />);
+  const user = userEvent.setup();
+  await user.click(await screen.findByRole('button', { name: 'Connect wallet' }));
+  await waitFor(() =>
+    expect(screen.getByRole('button', { name: 'Connect wallet' })).toHaveProperty(
+      'disabled',
+      false,
+    ),
+  );
+  expect(screen.queryByRole('alert')).toBeNull();
+  sdk.connectWallet.mockImplementationOnce(async () => {
+    emit(alice, undefined);
+  });
+  await user.click(screen.getByRole('button', { name: 'Connect wallet' }));
+  await screen.findByText('Balance: 0 ꜩ');
+  expect(sdk.connectWallet).toHaveBeenCalledTimes(2);
+});
+
+it('shows genuine non-Error wallet failures', async () => {
+  sdk.connectWallet.mockRejectedValueOnce({ message: 'Transport failed' });
+  render(<App />);
+  const user = userEvent.setup();
+  await user.click(await screen.findByRole('button', { name: 'Switch account' }));
+  expect(await screen.findByRole('alert')).toHaveProperty('textContent', 'Transport failed');
+});
