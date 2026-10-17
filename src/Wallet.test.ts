@@ -1,9 +1,20 @@
 import { beforeEach, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
-  account: vi.fn(), subscribe: vi.fn(), permissions: vi.fn(), disconnect: vi.fn(),
-  chain: vi.fn(), balance: vi.fn(), storage: vi.fn(), at: vi.fn(), transfer: vi.fn(),
-  send: vi.fn(), confirm: vi.fn(), status: vi.fn(), increment: vi.fn(), decrement: vi.fn(),
+  account: vi.fn(),
+  subscribe: vi.fn(),
+  permissions: vi.fn(),
+  disconnect: vi.fn(),
+  chain: vi.fn(),
+  balance: vi.fn(),
+  storage: vi.fn(),
+  at: vi.fn(),
+  transfer: vi.fn(),
+  send: vi.fn(),
+  confirm: vi.fn(),
+  status: vi.fn(),
+  increment: vi.fn(),
+  decrement: vi.fn(),
 }));
 vi.mock('@taquito/beacon-wallet', () => ({
   BeaconEvent: { ACTIVE_ACCOUNT_SET: 'active' },
@@ -41,7 +52,11 @@ beforeEach(() => {
   mocks.transfer.mockReturnValue({ send: mocks.send });
   mocks.increment.mockReturnValue({ send: mocks.send });
   mocks.decrement.mockReturnValue({ send: mocks.send });
-  mocks.send.mockResolvedValue({ opHash: 'op-applied', confirmation: mocks.confirm, status: mocks.status });
+  mocks.send.mockResolvedValue({
+    opHash: 'op-applied',
+    confirmation: mocks.confirm,
+    status: mocks.status,
+  });
   mocks.confirm.mockResolvedValue(undefined);
   mocks.status.mockResolvedValue('applied');
 });
@@ -80,7 +95,10 @@ it('rejects invalid counter deployment or storage', async () => {
   const wallet = await import('./Wallet');
   mocks.at.mockResolvedValue({ ...contract(), entrypoints: { entrypoints: {} } });
   await expect(wallet.getCounter()).rejects.toThrow(/counter/i);
-  mocks.at.mockResolvedValue({ ...contract(), script: { code: [{ prim: 'storage', args: [{ prim: 'nat' }] }] } });
+  mocks.at.mockResolvedValue({
+    ...contract(),
+    script: { code: [{ prim: 'storage', args: [{ prim: 'nat' }] }] },
+  });
   await expect(wallet.getCounter()).rejects.toThrow(/counter/i);
   mocks.at.mockResolvedValue(contract());
   mocks.storage.mockResolvedValue({ int: '1.5' });
@@ -102,7 +120,11 @@ it('checks the sender after contract loading and rejects wrong wallet networks',
 it('blocks concurrent writes until confirmation completes', async () => {
   const wallet = await import('./Wallet');
   let finish!: () => void;
-  mocks.confirm.mockReturnValue(new Promise<void>((resolve) => { finish = resolve; }));
+  mocks.confirm.mockReturnValue(
+    new Promise<void>((resolve) => {
+      finish = resolve;
+    }),
+  );
   const first = wallet.sendTezos(address, '1', address);
   await vi.waitFor(() => expect(mocks.confirm).toHaveBeenCalledOnce());
   await expect(wallet.changeCounter('increment', address)).rejects.toThrow(/pending/);
@@ -113,7 +135,11 @@ it('blocks concurrent writes until confirmation completes', async () => {
 it('ignores stale restore and permission reads after newer account events', async () => {
   const wallet = await import('./Wallet');
   let restore!: (value: typeof account) => void;
-  mocks.account.mockReturnValueOnce(new Promise((resolve) => { restore = resolve; }));
+  mocks.account.mockReturnValueOnce(
+    new Promise((resolve) => {
+      restore = resolve;
+    }),
+  );
   const observer = vi.fn();
   const stop = wallet.subscribeAccount(observer);
   await vi.waitFor(() => expect(mocks.account).toHaveBeenCalled());
@@ -124,7 +150,11 @@ it('ignores stale restore and permission reads after newer account events', asyn
   await Promise.resolve();
   expect(observer).toHaveBeenLastCalledWith('next-address', undefined);
   let permissionRead!: (value: typeof account) => void;
-  mocks.account.mockReturnValueOnce(new Promise((resolve) => { permissionRead = resolve; }));
+  mocks.account.mockReturnValueOnce(
+    new Promise((resolve) => {
+      permissionRead = resolve;
+    }),
+  );
   const connecting = wallet.connectWallet();
   await vi.waitFor(() => expect(mocks.account).toHaveBeenCalledTimes(2));
   emit(next);

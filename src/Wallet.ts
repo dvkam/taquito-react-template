@@ -5,7 +5,10 @@ import { network } from './network';
 import { parseTransfer } from './transfer';
 
 const tezos = new TezosToolkit(network.rpcUrl);
-const wallet = new BeaconWallet({ name: 'Taquito React template', preferredNetwork: NetworkType.SHADOWNET });
+const wallet = new BeaconWallet({
+  name: 'Taquito React template',
+  preferredNetwork: NetworkType.SHADOWNET,
+});
 tezos.setWalletProvider(wallet);
 type Account = Awaited<ReturnType<typeof wallet.client.getActiveAccount>>;
 type Observer = (address: string | undefined, error: unknown) => void;
@@ -24,7 +27,11 @@ function publish(account: Account) {
   revision += 1;
   let address: string | undefined;
   let error: unknown;
-  try { address = addressOf(account); } catch (cause) { error = cause; }
+  try {
+    address = addressOf(account);
+  } catch (cause) {
+    error = cause;
+  }
   for (const observer of observers) observer(address, error);
 }
 
@@ -32,22 +39,28 @@ export function subscribeAccount(observer: Observer) {
   observers.add(observer);
   subscription ??= wallet.client.subscribeToEvent(BeaconEvent.ACTIVE_ACCOUNT_SET, publish);
   const expectedRevision = revision;
-  void subscription.then(async () => {
-    try {
-      const account = await wallet.client.getActiveAccount();
-      if (observers.has(observer) && revision === expectedRevision) observer(addressOf(account), undefined);
-    } catch (error) {
-      if (observers.has(observer) && revision === expectedRevision) observer(undefined, error);
-    }
-  }, (error: unknown) => {
-    subscription = undefined;
-    if (observers.has(observer)) observer(undefined, error);
-  });
-  return () => { observers.delete(observer); };
+  void subscription.then(
+    async () => {
+      try {
+        const account = await wallet.client.getActiveAccount();
+        if (observers.has(observer) && revision === expectedRevision)
+          observer(addressOf(account), undefined);
+      } catch (error) {
+        if (observers.has(observer) && revision === expectedRevision) observer(undefined, error);
+      }
+    },
+    (error: unknown) => {
+      subscription = undefined;
+      if (observers.has(observer)) observer(undefined, error);
+    },
+  );
+  return () => {
+    observers.delete(observer);
+  };
 }
 
 async function checkChain() {
-  if (await tezos.rpc.getChainId() !== network.chainId)
+  if ((await tezos.rpc.getChainId()) !== network.chainId)
     throw new Error('The RPC endpoint is not on Shadownet.');
 }
 
@@ -75,11 +88,22 @@ export async function getBalance(address: string): Promise<string> {
 async function counterContract() {
   const contract = await tezos.wallet.at(network.counterAddress);
   const entries = contract.entrypoints.entrypoints;
-  const storage = contract.script.code.find((part) => !Array.isArray(part) && 'prim' in part && part.prim === 'storage');
-  const storageType = storage && !Array.isArray(storage) && 'args' in storage ? storage.args?.[0] : undefined;
-  if (!storageType || Array.isArray(storageType) || !('prim' in storageType) || storageType.prim !== 'int' ||
-      entries.increment?.prim !== 'int' || entries.decrement?.prim !== 'int')
-    throw new Error('The configured counter does not have integer storage and counter entrypoints.');
+  const storage = contract.script.code.find(
+    (part) => !Array.isArray(part) && 'prim' in part && part.prim === 'storage',
+  );
+  const storageType =
+    storage && !Array.isArray(storage) && 'args' in storage ? storage.args?.[0] : undefined;
+  if (
+    !storageType ||
+    Array.isArray(storageType) ||
+    !('prim' in storageType) ||
+    storageType.prim !== 'int' ||
+    entries['increment']?.prim !== 'int' ||
+    entries['decrement']?.prim !== 'int'
+  )
+    throw new Error(
+      'The configured counter does not have integer storage and counter entrypoints.',
+    );
   return contract;
 }
 
@@ -87,8 +111,13 @@ export async function getCounter(): Promise<string> {
   await checkChain();
   await counterContract();
   const storage: unknown = await tezos.rpc.getStorage(network.counterAddress);
-  if (!storage || typeof storage !== 'object' || !('int' in storage) ||
-      typeof storage.int !== 'string' || !/^-?\d+$/.test(storage.int))
+  if (
+    !storage ||
+    typeof storage !== 'object' ||
+    !('int' in storage) ||
+    typeof storage.int !== 'string' ||
+    !/^-?\d+$/.test(storage.int)
+  )
     throw new Error('The counter did not return integer storage.');
   return storage.int;
 }
@@ -96,7 +125,8 @@ export async function getCounter(): Promise<string> {
 async function checkSender(sender: string) {
   const current = addressOf(await wallet.client.getActiveAccount());
   if (!current) throw new Error('Connect a wallet before sending an operation.');
-  if (current !== sender) throw new Error('The wallet account changed. Review the account and retry.');
+  if (current !== sender)
+    throw new Error('The wallet account changed. Review the account and retry.');
 }
 
 type Operation = { opHash: string; confirmation(): Promise<unknown>; status(): Promise<string> };
@@ -107,9 +137,12 @@ async function write(send: () => Promise<Operation>): Promise<string> {
     const operation = await send();
     await operation.confirmation();
     const status = await operation.status();
-    if (status !== 'applied') throw new Error(`The operation was included but execution ${status}.`);
+    if (status !== 'applied')
+      throw new Error(`The operation was included but execution ${status}.`);
     return operation.opHash;
-  } finally { writePending = false; }
+  } finally {
+    writePending = false;
+  }
 }
 
 export async function sendTezos(receiver: string, amount: string, sender: string): Promise<string> {
@@ -121,7 +154,10 @@ export async function sendTezos(receiver: string, amount: string, sender: string
   });
 }
 
-export async function changeCounter(direction: 'increment' | 'decrement', sender: string): Promise<string> {
+export async function changeCounter(
+  direction: 'increment' | 'decrement',
+  sender: string,
+): Promise<string> {
   return write(async () => {
     await checkChain();
     const contract = await counterContract();

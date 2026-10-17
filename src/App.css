@@ -149,7 +149,7 @@ a:hover {
   padding: 0px 10px 20px 10px;
 }
 
-#transfer-inputs input[type="text"] {
+#transfer-inputs input[type='text'] {
   padding: 15px;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
@@ -161,7 +161,7 @@ a:hover {
   margin-bottom: 5px;
 }
 
-#transfer-inputs input[type="number"] {
+#transfer-inputs input[type='number'] {
   padding: 15px;
   width: 60px;
   border: solid 2px #35636e;
@@ -185,6 +185,6 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }

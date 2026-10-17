@@ -2,13 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import * as wallet from './Wallet';
 
 type ReadResult = { value: string; error: null } | { value: null; error: string };
-const message = (error: unknown) => error instanceof Error ? error.message : 'The request failed. Please try again.';
+const message = (error: unknown) =>
+  error instanceof Error ? error.message : 'The request failed. Please try again.';
 
 export function useWalletSession() {
   const revision = useRef(0);
   const mounted = useRef(false);
   const locked = useRef(false);
-  const [session, setSession] = useState<{ address: string | undefined; revision: number }>({ address: undefined, revision: 0 });
+  const [session, setSession] = useState<{ address: string | undefined; revision: number }>({
+    address: undefined,
+    revision: 0,
+  });
   const [restoring, setRestoring] = useState(true);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,24 +32,35 @@ export function useWalletSession() {
       setBalance(null);
       setCounter(null);
     });
-    return () => { mounted.current = false; unsubscribe(); };
+    return () => {
+      mounted.current = false;
+      unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
     if (!session.address) return;
     let active = true;
-    setBalance(null);
-    setCounter(null);
     const current = () => active && revision.current === session.revision;
     void wallet.getBalance(session.address).then(
-      value => { if (current()) setBalance({ value, error: null }); },
-      (cause: unknown) => { if (current()) setBalance({ value: null, error: message(cause) }); },
+      (value) => {
+        if (current()) setBalance({ value, error: null });
+      },
+      (cause: unknown) => {
+        if (current()) setBalance({ value: null, error: message(cause) });
+      },
     );
     void wallet.getCounter().then(
-      value => { if (current()) setCounter({ value, error: null }); },
-      (cause: unknown) => { if (current()) setCounter({ value: null, error: message(cause) }); },
+      (value) => {
+        if (current()) setCounter({ value, error: null });
+      },
+      (cause: unknown) => {
+        if (current()) setCounter({ value: null, error: message(cause) });
+      },
     );
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [session, refresh]);
 
   async function run(action: () => Promise<string | void>) {
@@ -58,7 +73,14 @@ export function useWalletSession() {
     try {
       const receipt = await action();
       if (!mounted.current || revision.current !== started) return false;
-      if (receipt) { setOperation(receipt); setRefresh(value => value + 1); }
+      if (receipt) {
+        setBalance(null);
+        setCounter(null);
+        setBalance(null);
+        setCounter(null);
+        setOperation(receipt);
+        setRefresh((value) => value + 1);
+      }
       return true;
     } catch (cause) {
       if (mounted.current && revision.current === started) setError(message(cause));
@@ -70,17 +92,29 @@ export function useWalletSession() {
   }
 
   return {
-    ...session, restoring, pending, error, operation, balance, counter,
+    ...session,
+    restoring,
+    pending,
+    error,
+    operation,
+    balance,
+    counter,
     connect: () => run(wallet.connectWallet),
     disconnect: () => run(wallet.disconnectWallet),
-    retryReads: () => setRefresh(value => value + 1),
-    transfer: (receiver: string, amount: string) => run(async () => {
-      if (!session.address) throw new Error('Connect a wallet first.');
-      return wallet.sendTezos(receiver, amount, session.address);
-    }),
-    changeCounter: (direction: 'increment' | 'decrement') => run(async () => {
-      if (!session.address) throw new Error('Connect a wallet first.');
-      return wallet.changeCounter(direction, session.address);
-    }),
+    retryReads: () => {
+      setBalance(null);
+      setCounter(null);
+      setRefresh((value) => value + 1);
+    },
+    transfer: (receiver: string, amount: string) =>
+      run(async () => {
+        if (!session.address) throw new Error('Connect a wallet first.');
+        return wallet.sendTezos(receiver, amount, session.address);
+      }),
+    changeCounter: (direction: 'increment' | 'decrement') =>
+      run(async () => {
+        if (!session.address) throw new Error('Connect a wallet first.');
+        return wallet.changeCounter(direction, session.address);
+      }),
   };
 }

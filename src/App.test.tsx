@@ -4,18 +4,37 @@ import { beforeEach, expect, it, vi } from 'vitest';
 import App from './App';
 
 const sdk = vi.hoisted(() => ({
-  subscribeAccount: vi.fn(), connectWallet: vi.fn(), disconnectWallet: vi.fn(),
-  getBalance: vi.fn(), getCounter: vi.fn(), sendTezos: vi.fn(), changeCounter: vi.fn(),
+  subscribeAccount: vi.fn(),
+  connectWallet: vi.fn(),
+  disconnectWallet: vi.fn(),
+  getBalance: vi.fn(),
+  getCounter: vi.fn(),
+  sendTezos: vi.fn(),
+  changeCounter: vi.fn(),
 }));
 vi.mock('./Wallet', () => sdk);
 const alice = 'tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb';
 let emit: (address: string | undefined, error: unknown) => void;
-function deferred<T>() { let resolve!: (value: T) => void; let reject!: (error: Error) => void; const promise = new Promise<T>((yes, no) => { resolve = yes; reject = no; }); return { promise, resolve, reject }; }
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  let reject!: (error: Error) => void;
+  const promise = new Promise<T>((yes, no) => {
+    resolve = yes;
+    reject = no;
+  });
+  return { promise, resolve, reject };
+}
 beforeEach(() => {
   vi.resetAllMocks();
-  sdk.subscribeAccount.mockImplementation((listener: typeof emit) => { emit = listener; listener(alice, undefined); return vi.fn(); });
-  sdk.getBalance.mockResolvedValue('0'); sdk.getCounter.mockResolvedValue('42');
-  sdk.sendTezos.mockResolvedValue('op-transfer'); sdk.changeCounter.mockResolvedValue('op-counter');
+  sdk.subscribeAccount.mockImplementation((listener: typeof emit) => {
+    emit = listener;
+    listener(alice, undefined);
+    return vi.fn();
+  });
+  sdk.getBalance.mockResolvedValue('0');
+  sdk.getCounter.mockResolvedValue('42');
+  sdk.sendTezos.mockResolvedValue('op-transfer');
+  sdk.changeCounter.mockResolvedValue('op-counter');
 });
 async function fillTransfer() {
   const user = userEvent.setup();
@@ -25,37 +44,46 @@ async function fillTransfer() {
   return user;
 }
 it('preserves fractional input at the wallet boundary', async () => {
-  render(<App />); const user = await fillTransfer();
+  render(<App />);
+  const user = await fillTransfer();
   await user.click(screen.getByRole('button', { name: 'Send test XTZ' }));
   await screen.findByText('op-transfer');
   expect(sdk.sendTezos).toHaveBeenCalledWith(alice, '0.5', alice);
 });
 it('keeps transfer available when the counter cannot load', async () => {
   sdk.getCounter.mockRejectedValue(new Error('Counter unavailable'));
-  render(<App />); const user = await fillTransfer();
+  render(<App />);
+  const user = await fillTransfer();
   await user.click(screen.getByRole('button', { name: 'Counter contract' }));
   await screen.findByText('Counter unavailable');
   expect(screen.getByRole('button', { name: 'Increase by 1' }).hasAttribute('disabled')).toBe(true);
   await user.click(screen.getByRole('button', { name: 'Transfer' }));
-  expect(screen.getByRole('button', { name: 'Send test XTZ' }).hasAttribute('disabled')).toBe(false);
+  expect(screen.getByRole('button', { name: 'Send test XTZ' }).hasAttribute('disabled')).toBe(
+    false,
+  );
 });
 it('blocks transfer and both counter directions while one write is pending', async () => {
-  const request = deferred<string>(); sdk.changeCounter.mockReturnValue(request.promise);
-  render(<App />); const user = await fillTransfer();
+  const request = deferred<string>();
+  sdk.changeCounter.mockReturnValue(request.promise);
+  render(<App />);
+  const user = await fillTransfer();
   await user.click(screen.getByRole('button', { name: 'Counter contract' }));
   await user.click(screen.getByRole('button', { name: 'Increase by 1' }));
-  for (const name of ['Increase by 1', 'Decrease by 1', 'Disconnect']) expect(screen.getByRole('button', { name }).hasAttribute('disabled')).toBe(true);
+  for (const name of ['Increase by 1', 'Decrease by 1', 'Disconnect'])
+    expect(screen.getByRole('button', { name }).hasAttribute('disabled')).toBe(true);
   await user.click(screen.getByRole('button', { name: 'Transfer' }));
   expect(screen.getByRole('button', { name: 'Send test XTZ' }).hasAttribute('disabled')).toBe(true);
   expect(sdk.changeCounter).toHaveBeenCalledExactlyOnceWith('increment', alice);
   await act(async () => request.resolve('op-counter'));
 });
 it('supports decrement and retains the receipt when a refresh fails', async () => {
-  render(<App />); const user = await fillTransfer();
+  render(<App />);
+  const user = await fillTransfer();
   sdk.getBalance.mockRejectedValue(new Error('Balance refresh failed'));
   await user.click(screen.getByRole('button', { name: 'Counter contract' }));
   await user.click(screen.getByRole('button', { name: 'Decrease by 1' }));
-  await screen.findByText('op-counter'); await screen.findByText('Balance refresh failed');
+  await screen.findByText('op-counter');
+  await screen.findByText('Balance refresh failed');
   expect(sdk.changeCounter).toHaveBeenCalledExactlyOnceWith('decrement', alice);
   sdk.getBalance.mockResolvedValue('2');
   await user.click(screen.getByRole('button', { name: 'Refresh balance and counter' }));
@@ -63,18 +91,31 @@ it('supports decrement and retains the receipt when a refresh fails', async () =
   expect(screen.getByText('op-counter')).toBeTruthy();
 });
 it.each(['success', 'failure'])('ignores old transfer %s after A to B to A', async (result) => {
-  const request = deferred<string>(); sdk.sendTezos.mockReturnValue(request.promise);
-  render(<App />); const user = await fillTransfer();
+  const request = deferred<string>();
+  sdk.sendTezos.mockReturnValue(request.promise);
+  render(<App />);
+  const user = await fillTransfer();
   await user.click(screen.getByRole('button', { name: 'Send test XTZ' }));
-  act(() => { emit('other-account', undefined); emit(alice, undefined); });
-  await act(async () => { if (result === 'success') request.resolve('old-operation'); else request.reject(new Error('Old error')); });
-  expect(screen.queryByText('old-operation')).toBeNull(); expect(screen.queryByText('Old error')).toBeNull();
+  act(() => {
+    emit('other-account', undefined);
+    emit(alice, undefined);
+  });
+  await act(async () => {
+    if (result === 'success') request.resolve('old-operation');
+    else request.reject(new Error('Old error'));
+  });
+  expect(screen.queryByText('old-operation')).toBeNull();
+  expect(screen.queryByText('Old error')).toBeNull();
   expect((screen.getByLabelText('Amount in XTZ') as HTMLInputElement).value).toBe('');
 });
 it('ignores stale balance results and clears the disconnected view', async () => {
-  const old = deferred<string>(); sdk.getBalance.mockReturnValueOnce(old.promise);
+  const old = deferred<string>();
+  sdk.getBalance.mockReturnValueOnce(old.promise);
   render(<App />);
-  act(() => { emit('other-account', undefined); emit(alice, undefined); });
+  act(() => {
+    emit('other-account', undefined);
+    emit(alice, undefined);
+  });
   await screen.findByText('Balance: 0 ꜩ');
   await act(async () => old.resolve('999'));
   expect(screen.queryByText('Balance: 999 ꜩ')).toBeNull();
@@ -83,7 +124,8 @@ it('ignores stale balance results and clears the disconnected view', async () =>
 });
 it('preserves input on wallet rejection', async () => {
   sdk.sendTezos.mockRejectedValue(new Error('Request rejected'));
-  render(<App />); const user = await fillTransfer();
+  render(<App />);
+  const user = await fillTransfer();
   await user.click(screen.getByRole('button', { name: 'Send test XTZ' }));
   await screen.findByRole('alert');
   expect((screen.getByLabelText('Amount in XTZ') as HTMLInputElement).value).toBe('0.5');
@@ -95,8 +137,12 @@ it('submits only once when the form receives two immediate submit events', async
   render(<App />);
   await fillTransfer();
   const form = screen.getByRole('form', { name: 'Send test XTZ' });
-  act(() => { fireEvent.submit(form); });
-  act(() => { fireEvent.submit(form); });
+  act(() => {
+    fireEvent.submit(form);
+  });
+  act(() => {
+    fireEvent.submit(form);
+  });
   expect(sdk.sendTezos).toHaveBeenCalledExactlyOnceWith(alice, '0.5', alice);
   await act(async () => request.resolve('single-operation'));
   expect(await screen.findByText('single-operation')).toBeTruthy();
@@ -133,8 +179,12 @@ it.each(['success', 'failure'])('ignores a stale counter %s after A to B to A', 
   sdk.getCounter.mockReturnValueOnce(old.promise);
   render(<App />);
   const user = userEvent.setup();
-  act(() => { emit('other-account', undefined); });
-  act(() => { emit(alice, undefined); });
+  act(() => {
+    emit('other-account', undefined);
+  });
+  act(() => {
+    emit(alice, undefined);
+  });
   await user.click(screen.getByRole('button', { name: 'Counter contract' }));
   await screen.findByText('Current counter: 42');
   await act(async () => {
@@ -152,8 +202,12 @@ it('connects, disconnects, and reconnects using account events', async () => {
     listener(undefined, undefined);
     return vi.fn();
   });
-  sdk.connectWallet.mockImplementation(async () => { emit(alice, undefined); });
-  sdk.disconnectWallet.mockImplementation(async () => { emit(undefined, undefined); });
+  sdk.connectWallet.mockImplementation(async () => {
+    emit(alice, undefined);
+  });
+  sdk.disconnectWallet.mockImplementation(async () => {
+    emit(undefined, undefined);
+  });
   render(<App />);
   const user = userEvent.setup();
   await user.click(await screen.findByRole('button', { name: 'Connect wallet' }));
@@ -175,7 +229,9 @@ it('does not show a late connection failure after a newer account event', async 
   const user = userEvent.setup();
   await screen.findByText('Balance: 0 ꜩ');
   await user.click(screen.getByRole('button', { name: 'Switch account' }));
-  act(() => { emit('other-account', undefined); });
+  act(() => {
+    emit('other-account', undefined);
+  });
   await act(async () => connection.reject(new Error('Old connection failed')));
   expect(screen.getByText('other-account')).toBeTruthy();
   expect(screen.queryByText('Old connection failed')).toBeNull();
