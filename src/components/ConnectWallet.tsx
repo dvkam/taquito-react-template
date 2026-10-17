@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { TezosToolkit } from "@taquito/taquito";
-import { BeaconWallet } from "@taquito/beacon-wallet";
-import { NetworkType, BeaconEvent } from "@airgap/beacon-dapp";
+import { BeaconWallet, BeaconEvent } from "@taquito/beacon-wallet";
+import { NetworkType } from "@taquito/beacon-wallet/types";
 
 type ButtonProps = {
   Tezos: TezosToolkit;
@@ -54,10 +54,6 @@ const ConnectButton = ({
       const wallet = new BeaconWallet({
         name: "Taquito React template",
         preferredNetwork: NetworkType.GHOSTNET,
-        network: {
-          type: NetworkType.GHOSTNET,
-          rpcUrl: "https://ghostnet.ecadinfra.com",
-        },
         disableDefaultEvents: false, // Disable all events when true/ UI. This also disables the pairing alert.
       });
       
