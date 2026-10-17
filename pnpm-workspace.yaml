@@ -1,0 +1,9 @@
+autoDedupe: true
+
+lockfile:
+  includeResolutionSettings: true
+
+allowBuilds:
+  "@swc/core": false
+  "@taquito/taquito": false
+  esbuild: false
