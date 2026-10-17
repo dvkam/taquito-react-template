@@ -47,3 +47,18 @@ Vite targets ES2023-capable browsers. Buffer, stream, and util compatibility sup
 Refresh compatible dependencies with `pnpm update`, then run `pnpm build` and `pnpm audit`. Do not force a major transitive override solely to clear the audit count. The current wallet dependency tree still includes advisories for `decode-uri-component` and `elliptic`. The decoder's patched release changes module format, and elliptic has no patched release. Track upstream fixes and assess affected APIs before adding an override.
 
 The wallet libraries still account for most of the production bundle. Splitting them into a chunk does not remove their download cost when restoring a wallet on startup.
+
+## GitHub Pages
+
+Live demo: [dvkam.github.io/taquito-react-template](https://dvkam.github.io/taquito-react-template/).
+
+The Pages workflow deploys pushes to `master` after the full build and checks pass. It can also be run manually from that branch. The workflow uses GitHub Pages metadata to set the asset base path, while local development keeps `/`.
+
+To build the Pages layout locally:
+
+```sh
+PAGES_BASE_PATH=/taquito-react-template/ pnpm build
+PAGES_BASE_PATH=/taquito-react-template/ pnpm preview
+```
+
+GitHub Pages must use the GitHub Actions publishing source. Deployments use the `github-pages` environment and GitHub's short-lived deployment token. No separate deployment secret is required.
