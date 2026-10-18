@@ -237,3 +237,85 @@ it('does not show a late connection failure after a newer account event', async 
   expect(screen.queryByText('Old connection failed')).toBeNull();
   expect(screen.getByRole('button', { name: 'Disconnect' })).toHaveProperty('disabled', false);
 });
+
+it('closes a cancelled connection without an error and permits retry', async () => {
+  sdk.subscribeAccount.mockImplementation((listener: typeof emit) => {
+    emit = listener;
+    listener(undefined, undefined);
+    return vi.fn();
+  });
+  sdk.connectWallet.mockRejectedValueOnce({
+    message: '[ABORTED_ERROR]:The action was aborted by the user.',
+  });
+  render(<App />);
+  const user = userEvent.setup();
+  await user.click(await screen.findByRole('button', { name: 'Connect wallet' }));
+  await waitFor(() =>
+    expect(screen.getByRole('button', { name: 'Connect wallet' })).toHaveProperty(
+      'disabled',
+      false,
+    ),
+  );
+  expect(screen.queryByRole('alert')).toBeNull();
+  sdk.connectWallet.mockImplementationOnce(async () => {
+    emit(alice, undefined);
+  });
+  await user.click(screen.getByRole('button', { name: 'Connect wallet' }));
+  await screen.findByText('Balance: 0 ꜩ');
+  expect(sdk.connectWallet).toHaveBeenCalledTimes(2);
+});
+
+it('shows genuine non-Error wallet failures', async () => {
+  sdk.connectWallet.mockRejectedValueOnce({ message: 'Transport failed' });
+  render(<App />);
+  const user = userEvent.setup();
+  await user.click(await screen.findByRole('button', { name: 'Switch account' }));
+  expect(await screen.findByRole('alert')).toHaveProperty('textContent', 'Transport failed');
+});
+
+it('describes wallet connection without claiming network confirmation', async () => {
+  const request = deferred<void>();
+  sdk.subscribeAccount.mockImplementation((listener: typeof emit) => {
+    emit = listener;
+    listener(undefined, undefined);
+    return vi.fn();
+  });
+  sdk.connectWallet.mockReturnValue(request.promise);
+  render(<App />);
+  const user = userEvent.setup();
+  await user.click(await screen.findByRole('button', { name: 'Connect wallet' }));
+  expect(await screen.findByText('Waiting for wallet connection…')).toBeTruthy();
+  expect(screen.queryByText('Waiting for wallet approval and network confirmation…')).toBeNull();
+  await act(async () => request.resolve());
+});
+
+it('shows the public counter without a wallet and keeps writes disabled', async () => {
+  sdk.subscribeAccount.mockImplementation((listener: typeof emit) => {
+    emit = listener;
+    listener(undefined, undefined);
+    return vi.fn();
+  });
+  render(<App />);
+  expect(await screen.findByText('Current counter: 42')).toBeTruthy();
+  expect(screen.getByText('Connect a wallet to change the counter.')).toBeTruthy();
+  expect(screen.getByRole('button', { name: 'Increase by 1' }).hasAttribute('disabled')).toBe(true);
+  expect(screen.getByRole('button', { name: 'Decrease by 1' }).hasAttribute('disabled')).toBe(true);
+  expect(sdk.getBalance).not.toHaveBeenCalled();
+  expect(sdk.connectWallet).not.toHaveBeenCalled();
+  expect(sdk.changeCounter).not.toHaveBeenCalled();
+});
+
+it('retries public counter reads without requesting wallet access', async () => {
+  sdk.subscribeAccount.mockImplementation((listener: typeof emit) => {
+    emit = listener;
+    listener(undefined, undefined);
+    return vi.fn();
+  });
+  sdk.getCounter.mockRejectedValue(new Error('Counter temporarily unavailable'));
+  render(<App />);
+  await screen.findByText('Counter temporarily unavailable');
+  sdk.getCounter.mockResolvedValue('43');
+  await userEvent.setup().click(screen.getByRole('button', { name: 'Refresh counter' }));
+  expect(await screen.findByText('Current counter: 43')).toBeTruthy();
+  expect(sdk.connectWallet).not.toHaveBeenCalled();
+});
