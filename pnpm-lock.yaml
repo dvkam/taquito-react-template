@@ -171,14 +171,17 @@ importers:
   .:
     dependencies:
       '@taquito/beacon-wallet':
-        specifier: 25.0.0
-        version: 25.0.0
+        specifier: 25.1.0
+        version: 25.1.0
+      '@taquito/sapling':
+        specifier: file:vendor/taquito-sapling-25.1.0.tgz
+        version: file:vendor/taquito-sapling-25.1.0.tgz
       '@taquito/taquito':
-        specifier: 25.0.0
-        version: 25.0.0
+        specifier: 25.1.0
+        version: 25.1.0
       '@taquito/utils':
-        specifier: 25.0.0
-        version: 25.0.0
+        specifier: 25.1.0
+        version: 25.1.0
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -198,6 +201,9 @@ importers:
         specifier: ^0.12.5
         version: 0.12.5
     devDependencies:
+      '@playwright/test':
+        specifier: 1.64.1
+        version: 1.64.1
       '@testing-library/react':
         specifier: 16.3.3
         version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -384,6 +390,10 @@ packages:
     resolution: {integrity: sha512-rONPWMC7PeExE077uLE4oqWrZ1IvAfz3oH9LibVAcVCopJiA9R62uavnbEzdkVmJYI6M6Zgkbeb07+tWjlq2XA==}
     engines: {node: ^14.21.3 || >=16}
 
+  '@noble/ciphers@2.4.0':
+    resolution: {integrity: sha512-AnjFn0Jv92laAkvMrghlFZq4qQCIN/4DxFV/eooqtC2YTjB7kBeLMS2T9KJX4Dn+ZVXLOwK0lSgqDtx9gvxtiw==}
+    engines: {node: '>= 20.19.0'}
+
   '@noble/curves@1.8.0':
     resolution: {integrity: sha512-j84kjAbzEnQHaSIhRPUmB3/eVXu2k3dKPl2LOrR8fSOIL+89U+7lV117EWHtq/GHM3ReGHM46iRBdZfpc4HRUQ==}
     engines: {node: ^14.21.3 || >=16}
@@ -395,6 +405,10 @@ packages:
   '@noble/curves@1.9.7':
     resolution: {integrity: sha512-gbKGcRUYIjA3/zCCNaWDciTMFI0dCkvou3TL8Zmy5Nc7sJ47a0jtOeZoTaMxkuqRo9cRhjOdZJXegxYE5FN/xw==}
     engines: {node: ^14.21.3 || >=16}
+
+  '@noble/curves@2.4.0':
+    resolution: {integrity: sha512-P4/62zrgfH33CneE3Dn4WhJVA22YUU0eR51wKIan4NVRvwsA0YnPTwWGpNbpuacSujmSFLvyzpyuR30+fbq2Ew==}
+    engines: {node: '>= 20.19.0'}
 
   '@noble/hashes@1.7.0':
     resolution: {integrity: sha512-HXydb0DgzTpDPwbVeDGCG1gIu7X6+AuU6Zl6av/E/KG8LMsvPntvq+w17CHRpKBmN6Ybdrt1eP3k4cj8DJa78w==}
@@ -408,8 +422,16 @@ packages:
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
 
+  '@noble/hashes@2.2.0':
+    resolution: {integrity: sha512-IYqDGiTXab6FniAgnSdZwgWbomxpy9FtYvLKs7wCUs2a8RkITG+DFGO1DM9cr+E3/RgADRpFjrKVaJ1z6sjtEg==}
+    engines: {node: '>= 20.19.0'}
+
   '@noble/hashes@2.4.0':
     resolution: {integrity: sha512-X5XaVWZIBCT7HHZGm5I7ZQXDwLG+bGXuSrMQAW+7Zvl87h1kmc1ZB1VSRJcpUfoUrGQp4Fkoxm5kZ+Ms+aW+eA==}
+    engines: {node: '>= 20.19.0'}
+
+  '@noble/post-quantum@0.7.1':
+    resolution: {integrity: sha512-+P9981IiAnVh+rmcubozzVwrEy3XsN/tMhTnvsjV9VDaYpOnNCqWqKo2FLWxbu92YHfjGIlE5XnW175UK+ln+Q==}
     engines: {node: '>= 20.19.0'}
 
   '@oxc-project/types@0.154.0':
@@ -811,6 +833,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@playwright/test@1.64.1':
+    resolution: {integrity: sha512-IaYGml/nSOiZWROfPtuIL7neuu9qDOZ3TNvNljUIrhDMxiGTgPjzj/g9p9RxpS2tSepPDRY+UwAaEeiKtUvIAg==}
+    engines: {node: '>=20'}
+    hasBin: true
+
   '@rolldown/binding-android-arm-eabi@1.2.14':
     resolution: {integrity: sha512-aWR+XKH9+rW7m5fWq/5360J3mHycrx/o6xZM2DQFdJnTMdyP7/WzxPjhtLbVWdKo2y612/4U1bWqb3HQhiF7vg==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -921,8 +948,11 @@ packages:
     os: [linux]
     libc: [glibc]
 
-  '@scure/bip39@2.4.0':
-    resolution: {integrity: sha512-82dxFbZUYboyOf0AXiydsQrFQ5Q4h9mX+O2UkE91ROYmsc0BKMGZLwDmy96Jpa2+vrtoxomjUhy1RPIgH/r2nA==}
+  '@scure/base@2.2.0':
+    resolution: {integrity: sha512-b8XEupJibegiXV+tDUseI8oLQc8ei3d/4Jkb2RpbHh3MfE054ov3uIz2dhFkB3FI8iwYkEh0gGCApkrYggkPNg==}
+
+  '@scure/bip39@2.2.0':
+    resolution: {integrity: sha512-T/Bj/YvYMNkIPq6EENO6/rcs2e7qTNuyoUXf0KBFDmp0ZDu0H2X4Lq6yC3i0c8PcWkov5EbW+yQZZbdMmk154A==}
 
   '@stablelib/binary@1.0.1':
     resolution: {integrity: sha512-ClJWvmL6UBM/wjkvv/7m5VP3GMr9t0osr4yVgLZsLCOz4hGN9gIAFEqnJ0TsSMAN+n840nf2cHZnA5/KFqHC7Q==}
@@ -1014,44 +1044,53 @@ packages:
   '@stablelib/xsalsa20@2.0.1':
     resolution: {integrity: sha512-qFfcqrIqcZo40bAEpDSAbIcfE+8WFo+4HtzmlO+G8ObKukIaWGIROvz64NEYv50lQodY5OoQV3koC2EXXI9ofw==}
 
-  '@taquito/beacon-wallet@25.0.0':
-    resolution: {integrity: sha512-p+4WFmZ0/6iCdvniKvXB/w2fHxalhDzPncPSLBuogj49/U5LGfA56B+MKaIAgx9vhCGSBNQ9xrjSB1fbUZNXNg==}
+  '@taquito/beacon-wallet@25.1.0':
+    resolution: {integrity: sha512-GGUc+3vntzCBD9jbsQJ+KyuhAkC0J6i2MJIMT2ZxHSAXu8g0Po88Ri7JLZsrwZbUjNrmSmMyNQTGzKp3HkR6kg==}
     engines: {node: '>=22'}
 
-  '@taquito/core@25.0.0':
-    resolution: {integrity: sha512-TlU+eMEn47mAmIjTFP2U4ReHRU05FsnyVn/c5DQnJC0psZ6LRJXimAIA1KQ94afsCDByewsXLN5fjKwn47l72A==}
+  '@taquito/core@25.1.0':
+    resolution: {integrity: sha512-aIPQgHd2nQQQbtNhRb6hc3LxH6sBn+Ss02xYH+6Z/8FMLYWREpeWKasoeYKzfXI8JHRS+Cq8ZXiXWOdMuVmfIg==}
     engines: {node: '>=22'}
 
-  '@taquito/http-utils@25.0.0':
-    resolution: {integrity: sha512-/nkwDeTXEW10lSQdyTrLgp9GIWQc2yi6wQLjEFvXveevrMjuA+lfFU8QoOOZxXH0GM42KEmU/y/VA1wcgl+gKQ==}
+  '@taquito/http-utils@25.1.0':
+    resolution: {integrity: sha512-cw3Jzh6472JGgZsMziOR8odcHEppQ/J9qdepV8FTN3MIK94Q95Svj/CTcmPVZGbLBV6ETtHJ3voKLuYnIL3SQA==}
     engines: {node: '>=22'}
 
-  '@taquito/local-forging@25.0.0':
-    resolution: {integrity: sha512-sFeObpxya59PP5xFFsPWb3zLxASe3QwQqQ1fJWTPCs/Fph7/cxk5Kj0Oco961SC7CVSkG/ayz4/WINmm+oTlPA==}
+  '@taquito/local-forging@25.1.0':
+    resolution: {integrity: sha512-9qi4hSxd72ud+Ku/BjmIzrjDX4LidTsAQNw42S0+x4M/Y1wP0miuO9eA8pBUI3ajzACEuZN4G8IS4JjOveJu/g==}
     engines: {node: '>=22'}
 
-  '@taquito/michel-codec@25.0.0':
-    resolution: {integrity: sha512-ITM3lM3tEAblPVdzQk5Rv2nLMMOalrXbnIt5b5St8OVYwqaDyfsH3fxSGIVDPxRQyyBdgJ1403aVu6768/8m4Q==}
+  '@taquito/michel-codec@25.1.0':
+    resolution: {integrity: sha512-GhVTaEv3nt9KpcsFjAD7DneAGjT2Popik17tqveMwsofx4KWhxJLeCJ8qIclLb6yr3UUjhyZwbGeSnH6WJytzg==}
     engines: {node: '>=22'}
 
-  '@taquito/michelson-encoder@25.0.0':
-    resolution: {integrity: sha512-BWwAAwBhY3zngcMK8SkmBWDZ5aNVRnHlHvi7Xu6jnGW109yM3n9awxxCrFD8jOXPb3dly+/pulGnkv28+EvIIQ==}
+  '@taquito/michelson-encoder@25.1.0':
+    resolution: {integrity: sha512-VdwMwzplShj6KBS0rUQFfQnS8rKwJ60xhiEm4yIDclthaAREHM+iNHJDBui6RG66UiXyh4uQORDtWH59IldPdA==}
     engines: {node: '>=22'}
 
-  '@taquito/rpc@25.0.0':
-    resolution: {integrity: sha512-qqV4boldGOavsM6ZzK6xky4xAEyllYDyIO5C16cvkoUzoMCCsWMpRuXa1csSrQc+0IECkkDurNLTbrMJPne9tA==}
+  '@taquito/rpc@25.1.0':
+    resolution: {integrity: sha512-ljoGIBakHD48PctxnTi+FSy5D5rPYb6sAh6xutbw0aiL2kxrEUugwGseihiQmm10qoc4Akl7aR8WVL4o8YqJzg==}
     engines: {node: '>=22'}
 
-  '@taquito/signer@25.0.0':
-    resolution: {integrity: sha512-UDHwWd3O0VwZjbEw0NDsoQoIhoQv+xHxb/XAKW7ruSjUT6OkH5whhHpgTZ+T2eJLPDBZLY1RH8IdSl+6ZFtUXg==}
+  '@taquito/sapling-wasm@0.2.0':
+    resolution: {integrity: sha512-os62Xt3KNZMES9cgKS7h/ce20xffovqx6Ilxw3waXu2wxxMzzdSvxoS3piob7N+etMzTQQmyq0w94PSrYDODZA==}
     engines: {node: '>=22'}
 
-  '@taquito/taquito@25.0.0':
-    resolution: {integrity: sha512-MBNKXK1CrOlwBrI0IkjWbVcuwY238ZF8B6fuf2qA0uYp+UmVjukUJ4QCvRf+bayWzfiWBbkYP0upY6VGV3C1VQ==}
+  '@taquito/sapling@file:vendor/taquito-sapling-25.1.0.tgz':
+    resolution: {integrity: sha512-Mxv1z3ohm84qxcFcep/G9B7JxFXn0T1rwjS02hEJ6Y7zbjpr2YhpNLfG0c/GBp0Alv5EGyglebd5Ni+YtGbtSw==, tarball: file:vendor/taquito-sapling-25.1.0.tgz}
+    version: 25.1.0
     engines: {node: '>=22'}
 
-  '@taquito/utils@25.0.0':
-    resolution: {integrity: sha512-I/9hndZcx0yL6f1djPMhgxCpAopbh/E1ta5kYGs3AxDGrYKt0QpbWAvvUV7fwU9kgzHRQlm7fX8DP7zUbz7ntg==}
+  '@taquito/signer@25.1.0':
+    resolution: {integrity: sha512-hKOixLEHTE67bqBGDkpmBR40ih05kGzwRNqZPRoUbsTjXO/ArN++4DTV+cgrqGt7mOv+OXpKy4tPUcV/X1e97g==}
+    engines: {node: '>=22'}
+
+  '@taquito/taquito@25.1.0':
+    resolution: {integrity: sha512-ncrRN1dlcxyTJy0L6tmkSogRT6gqHPq4LrCYSTH1rVnJYXrlvVc9BjZMJ6tHdKORXul6nFfqSWQJtHvd0G3ABQ==}
+    engines: {node: '>=22'}
+
+  '@taquito/utils@25.1.0':
+    resolution: {integrity: sha512-AsSNfrNZAD2tfFt+culy3H3yBHm6X8rJSqH7S1iQpZCYKYDEBCnePjfjXEAKeOlSX5GfzbW5PlS/m+2YYh3L3w==}
     engines: {node: '>=22'}
 
   '@testing-library/dom@10.4.2':
@@ -1925,6 +1964,16 @@ packages:
     resolution: {integrity: sha512-dMACeu63HtRLmCG8VKdy4cShCPKaYDR4youZqoSWLxl5Gu99HUw8bw75thbPv9Nip+H+QYX8o3ZJbTdVZZ2TVg==}
     hasBin: true
 
+  playwright-core@1.64.1:
+    resolution: {integrity: sha512-BC4s8y6SEVA6Q1rSxZTto8hI1KUI3xXlHGZgvGqP4IqPdI/a6FX9H29IDNz7vKo9l21b6LfYosScPL6M3xxyDQ==}
+    engines: {node: '>=20'}
+    hasBin: true
+
+  playwright@1.64.1:
+    resolution: {integrity: sha512-HCrVhHr5QQuwYoswEUGTb7gGp522yflbv/ST8nF4sFWGuLjQCt17Q/EubpGGSNKYn1tsTCPZxqHhHCfVURu7UA==}
+    engines: {node: '>=20'}
+    hasBin: true
+
   pngjs@5.0.0:
     resolution: {integrity: sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==}
     engines: {node: '>=10.13.0'}
@@ -2601,6 +2650,8 @@ snapshots:
 
   '@noble/ciphers@1.2.1': {}
 
+  '@noble/ciphers@2.4.0': {}
+
   '@noble/curves@1.8.0':
     dependencies:
       '@noble/hashes': 1.7.0
@@ -2613,13 +2664,25 @@ snapshots:
     dependencies:
       '@noble/hashes': 1.8.0
 
+  '@noble/curves@2.4.0':
+    dependencies:
+      '@noble/hashes': 2.4.0
+
   '@noble/hashes@1.7.0': {}
 
   '@noble/hashes@1.7.1': {}
 
   '@noble/hashes@1.8.0': {}
 
+  '@noble/hashes@2.2.0': {}
+
   '@noble/hashes@2.4.0': {}
+
+  '@noble/post-quantum@0.7.1':
+    dependencies:
+      '@noble/ciphers': 2.4.0
+      '@noble/curves': 2.4.0
+      '@noble/hashes': 2.4.0
 
   '@oxc-project/types@0.154.0': {}
 
@@ -2812,6 +2875,10 @@ snapshots:
   '@oxlint/binding-win32-x64-msvc@1.88.0':
     optional: true
 
+  '@playwright/test@1.64.1':
+    dependencies:
+      playwright: 1.64.1
+
   '@rolldown/binding-android-arm-eabi@1.2.14':
     optional: true
 
@@ -2865,9 +2932,12 @@ snapshots:
   '@rollup/rollup-linux-x64-gnu@4.60.2':
     optional: true
 
-  '@scure/bip39@2.4.0':
+  '@scure/base@2.2.0': {}
+
+  '@scure/bip39@2.2.0':
     dependencies:
-      '@noble/hashes': 2.4.0
+      '@noble/hashes': 2.2.0
+      '@scure/base': 2.2.0
 
   '@stablelib/binary@1.0.1':
     dependencies:
@@ -3003,13 +3073,13 @@ snapshots:
       '@stablelib/salsa20': 2.0.1
       '@stablelib/wipe': 2.0.1
 
-  '@taquito/beacon-wallet@25.0.0':
+  '@taquito/beacon-wallet@25.1.0':
     dependencies:
       '@ecadlabs/beacon-dapp': 4.8.4-ecad
       '@ecadlabs/beacon-types': 4.8.4-ecad
-      '@taquito/core': 25.0.0
-      '@taquito/taquito': 25.0.0
-      '@taquito/utils': 25.0.0
+      '@taquito/core': 25.1.0
+      '@taquito/taquito': 25.1.0
+      '@taquito/utils': 25.1.0
       typedarray-to-buffer: 4.0.0
       util: 0.12.5
     transitivePeerDependencies:
@@ -3035,71 +3105,90 @@ snapshots:
       - uploadthing
       - utf-8-validate
 
-  '@taquito/core@25.0.0':
+  '@taquito/core@25.1.0':
     dependencies:
       json-stringify-safe: 5.0.1
 
-  '@taquito/http-utils@25.0.0':
+  '@taquito/http-utils@25.1.0':
     dependencies:
-      '@taquito/core': 25.0.0
+      '@taquito/core': 25.1.0
 
-  '@taquito/local-forging@25.0.0':
+  '@taquito/local-forging@25.1.0':
     dependencies:
-      '@taquito/core': 25.0.0
-      '@taquito/utils': 25.0.0
+      '@taquito/core': 25.1.0
+      '@taquito/utils': 25.1.0
       bignumber.js: 10.0.2
       fast-text-encoding: 1.0.6
 
-  '@taquito/michel-codec@25.0.0':
+  '@taquito/michel-codec@25.1.0':
     dependencies:
-      '@taquito/core': 25.0.0
+      '@taquito/core': 25.1.0
 
-  '@taquito/michelson-encoder@25.0.0':
+  '@taquito/michelson-encoder@25.1.0':
     dependencies:
-      '@taquito/core': 25.0.0
-      '@taquito/rpc': 25.0.0
-      '@taquito/signer': 25.0.0
-      '@taquito/utils': 25.0.0
+      '@taquito/core': 25.1.0
+      '@taquito/rpc': 25.1.0
+      '@taquito/signer': 25.1.0
+      '@taquito/utils': 25.1.0
       bignumber.js: 10.0.2
       fast-json-stable-stringify: 2.1.0
 
-  '@taquito/rpc@25.0.0':
+  '@taquito/rpc@25.1.0':
     dependencies:
-      '@taquito/core': 25.0.0
-      '@taquito/http-utils': 25.0.0
-      '@taquito/utils': 25.0.0
+      '@taquito/core': 25.1.0
+      '@taquito/http-utils': 25.1.0
+      '@taquito/utils': 25.1.0
       bignumber.js: 10.0.2
 
-  '@taquito/signer@25.0.0':
+  '@taquito/sapling-wasm@0.2.0': {}
+
+  '@taquito/sapling@file:vendor/taquito-sapling-25.1.0.tgz':
+    dependencies:
+      '@noble/hashes': 2.2.0
+      '@scure/bip39': 2.2.0
+      '@stablelib/nacl': 1.0.4
+      '@taquito/core': 25.1.0
+      '@taquito/rpc': 25.1.0
+      '@taquito/sapling-wasm': 0.2.0
+      '@taquito/taquito': 25.1.0
+      '@taquito/utils': 25.1.0
+      bignumber.js: 10.0.2
+      blakejs: 1.2.1
+      buffer: 6.0.3
+      typedarray-to-buffer: 4.0.0
+
+  '@taquito/signer@25.1.0':
     dependencies:
       '@noble/curves': 1.9.7
-      '@noble/hashes': 2.4.0
-      '@scure/bip39': 2.4.0
+      '@noble/hashes': 2.2.0
+      '@noble/post-quantum': 0.7.1
+      '@scure/bip39': 2.2.0
       '@stablelib/nacl': 1.0.4
-      '@taquito/core': 25.0.0
-      '@taquito/utils': 25.0.0
+      '@taquito/core': 25.1.0
+      '@taquito/utils': 25.1.0
       '@types/bn.js': 5.2.0
       bn.js: 5.2.5
       typedarray-to-buffer: 4.0.0
 
-  '@taquito/taquito@25.0.0':
+  '@taquito/taquito@25.1.0':
     dependencies:
-      '@taquito/core': 25.0.0
-      '@taquito/http-utils': 25.0.0
-      '@taquito/local-forging': 25.0.0
-      '@taquito/michel-codec': 25.0.0
-      '@taquito/michelson-encoder': 25.0.0
-      '@taquito/rpc': 25.0.0
-      '@taquito/signer': 25.0.0
-      '@taquito/utils': 25.0.0
+      '@taquito/core': 25.1.0
+      '@taquito/http-utils': 25.1.0
+      '@taquito/local-forging': 25.1.0
+      '@taquito/michel-codec': 25.1.0
+      '@taquito/michelson-encoder': 25.1.0
+      '@taquito/rpc': 25.1.0
+      '@taquito/signer': 25.1.0
+      '@taquito/utils': 25.1.0
       bignumber.js: 10.0.2
       rxjs: 7.8.2
 
-  '@taquito/utils@25.0.0':
+  '@taquito/utils@25.1.0':
     dependencies:
       '@noble/curves': 1.9.7
-      '@noble/hashes': 2.4.0
-      '@taquito/core': 25.0.0
+      '@noble/hashes': 2.2.0
+      '@noble/post-quantum': 0.7.1
+      '@taquito/core': 25.1.0
       '@types/bs58check': 2.1.2
       bignumber.js: 10.0.2
       blakejs: 1.2.1
@@ -4101,6 +4190,12 @@ snapshots:
       safe-stable-stringify: 2.5.0
       sonic-boom: 2.8.0
       thread-stream: 0.15.2
+
+  playwright-core@1.64.1: {}
+
+  playwright@1.64.1:
+    dependencies:
+      playwright-core: 1.64.1
 
   pngjs@5.0.0: {}
 

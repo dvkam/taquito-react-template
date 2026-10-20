@@ -1,0 +1,5 @@
+parameter (sapling_transaction 8);
+storage (pair bytes (pair int (sapling_state 8)));
+code { UNPAIR; DIP { CDR; CDR }; SAPLING_VERIFY_UPDATE;
+       IF_NONE { PUSH string "INVALID_SAPLING_PROOF"; FAILWITH } {};
+       NIL operation; PAIR };
