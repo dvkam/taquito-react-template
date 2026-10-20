@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createProofClient, verifyProof } from './client';
 import { MAX_MEMO_BYTES, type PreparedProof, type VerificationResult } from './protocol';
 import './SaplingLab.css';
+import PoolCycle from './PoolCycle';
 
 type Phase =
   | 'idle'
@@ -215,6 +216,7 @@ export default function SaplingLab() {
         )}
       </div>
       {error && <p role="alert">{error}</p>}
+      <PoolCycle />
       {proof && (
         <div className="sapling-result">
           <h3>Prepared transaction</h3>
