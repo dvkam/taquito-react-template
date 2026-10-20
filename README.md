@@ -2,6 +2,10 @@
 
 A React starter for connecting a Tezos wallet, sending test XTZ, and calling a counter contract on Shadownet.
 
+## Local Sapling proof experiment
+
+The local branch includes a real browser-worker proof lab with an independent Octez checker. Read [setup, operation, and verification instructions](docs/sapling-experiment.md). The experiment uses disposable public fixture keys and sends no chain transaction. Its verifier runs only through the local experiment server.
+
 ## Run locally
 
 Use Node 24 and pnpm 12.14.0. The repository pins both versions.

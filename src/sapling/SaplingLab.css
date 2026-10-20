@@ -1,0 +1,128 @@
+.sapling-lab {
+  margin-top: 2rem;
+}
+.sapling-kicker {
+  margin: 0 0 0.5rem;
+  color: #526759;
+  font-size: 0.8rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sapling-lab h2 {
+  font-size: 1.5rem;
+  letter-spacing: -0.025em;
+}
+.sapling-fixture {
+  border-left: 3px solid #b8c8bd;
+  padding-left: 1rem;
+  font-size: 0.9rem;
+}
+.sapling-explanation {
+  margin-top: 0.75rem;
+  padding: 0.25rem 1rem;
+  background: #f3f6f2;
+  border-radius: 0.5rem;
+}
+.sapling-form {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.sapling-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.sapling-status {
+  margin-top: 1.25rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d6e1d8;
+  border-radius: 0.5rem;
+  background: #f8faf7;
+}
+.sapling-status p {
+  margin: 0;
+}
+.sapling-status .hint {
+  margin-top: 0.5rem;
+}
+.sapling-status[data-phase='verified'] {
+  border-color: #649578;
+  background: #edf7ef;
+}
+.sapling-status[data-phase='rejected'] {
+  border-color: #bd7973;
+  background: #fff1ef;
+}
+.sapling-invalid {
+  color: #8d2525;
+  font-size: 0.9rem;
+}
+.sapling-result {
+  margin-top: 1.5rem;
+}
+.sapling-result h3 {
+  font-size: 1rem;
+}
+.sapling-result dl {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+}
+.sapling-result dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #e4ebe5;
+}
+.sapling-result dt {
+  color: #526759;
+}
+.sapling-result dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.sapling-result summary {
+  cursor: pointer;
+  padding: 0.75rem 0;
+  min-height: 44px;
+}
+.sapling-result textarea {
+  width: 100%;
+  resize: vertical;
+  color: inherit;
+  background: #f8faf7;
+  border: 1px solid #718c79;
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  font:
+    0.8rem ui-monospace,
+    monospace;
+  overflow-wrap: anywhere;
+}
+.sapling-lab summary:focus-visible,
+.sapling-lab textarea:focus-visible {
+  outline: 3px solid #2c7555;
+  outline-offset: 3px;
+}
+.sapling-lab button {
+  transition: background-color 120ms ease;
+}
+@media (max-width: 400px) {
+  .sapling-actions button {
+    flex: 1 1 auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sapling-lab button {
+    transition: none;
+  }
+  .sapling-lab button:active {
+    transform: none;
+  }
+}

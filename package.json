@@ -11,8 +11,14 @@
     "lint": "oxlint --type-aware --deny-warnings",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
-    "check": "pnpm run lint && pnpm run format:check && pnpm run typecheck"
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.browser-tests.json",
+    "check": "pnpm run lint && pnpm run format:check && pnpm run typecheck",
+    "sapling:setup": "node tools/setup-sapling.mjs",
+    "sapling:serve": "node tools/serve-sapling.mjs",
+    "sapling:experiment": "pnpm build && pnpm sapling:serve",
+    "test:browser": "playwright test",
+    "test:sapling": "pnpm build && pnpm test:browser",
+    "test:compat": "vitest run src/App.test.tsx src/Wallet.test.ts src/transfer.test.ts"
   },
   "dependencies": {
     "@taquito/beacon-wallet": "25.1.0",
