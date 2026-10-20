@@ -72,3 +72,7 @@ GitHub Pages must use the GitHub Actions publishing source. Deployments use the 
 The Sapling lab also has a **Run local payment cycle** control. It creates an isolated local Octez pool, shields 10 test XTZ, privately sends 3 to Bob and withdraws 2. The result reports Alice's 7, Bob's 1, contract backing of 8 and a recipient payout of 2, with payer fees and storage costs separate. It uses published disposable identities and no public network.
 
 See [the local pool guide](docs/sapling-pool.md) for setup and independent acceptance checks, and [the privacy experiment](docs/sapling-privacy.md) for the observer model and limits on anonymity claims.
+
+### Output-order privacy experiment
+
+The local [output-order experiment](experiments/output-order/README.md) compares an unchanged SDK with optional pre-signature shuffling. Its position measurements and protocol compatibility checks are separate. The ordinary app retains its original SDK. Read [the results](docs/sapling-output-order-experiment.md) for the measured signal, compatibility evidence and limitations. No upstream issue or PR has been created.

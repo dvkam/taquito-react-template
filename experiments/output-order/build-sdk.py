@@ -6,7 +6,7 @@ TAQUITO = Path('/home/david/workspace/taquito')
 REVISION = '8ecb7ad0db4af8dbfa1282385351dde28107e973'
 CACHE = ROOT / '.cache/output-order'
 EXPERIMENT = ROOT / 'experiments/output-order'
-archive = subprocess.check_output(['git', 'archive', REVISION, 'tsconfig.prod.json', 'packages/taquito-sapling'], cwd=TAQUITO)
+archive = subprocess.check_output(['git', 'archive', REVISION, 'tsconfig.base.json', 'tsconfig.prod.json', 'packages/taquito-sapling'], cwd=TAQUITO)
 metadata = {'sourceRevision': REVISION, 'node': subprocess.check_output(['node', '--version'], text=True).strip(), 'typescript': subprocess.check_output([str(TAQUITO / 'node_modules/.bin/tsc'), '--version'], text=True).strip(), 'rollup': subprocess.check_output([str(TAQUITO / 'node_modules/.bin/rollup'), '--version'], text=True).strip(), 'helperSha256': hashlib.sha256((EXPERIMENT / 'shuffle-outputs.ts').read_bytes()).hexdigest(), 'variants': {}}
 lock = TAQUITO / 'package-lock.json'
 if lock.exists(): metadata['dependencyLockSha256'] = hashlib.sha256(lock.read_bytes()).hexdigest()
