@@ -21,3 +21,11 @@ Compare the same synthetic multi-person transaction workload with direct persona
 Measure remaining candidate senders for each withdrawal, top-choice linkage accuracy against held-out ground truth, and the effect of amount and timing filters. Report workload size, assumptions, distributions, failures and confidence intervals. A larger candidate set in this experiment supports only that stated observer/workload result. It does not establish cryptographic security or superiority to Tornado Nova.
 
 Before making an advantage claim, implement the compared policies, retain an unmodified baseline, reproduce the result and include an amount/timing counterexample. Larger independent participation, external analysis and deployment-specific network behavior remain outside this local milestone.
+
+## Concrete SDK candidate for the next experiment
+
+The inspected Taquito builder creates recipient outputs in request order and appends a change output last when change is needed. Input selection follows incoming-note order until the requested amount is covered. This is source evidence, not a measured deanonymization result. See [the pinned transaction builder](https://github.com/ecadlabs/taquito/blob/8ecb7ad0db4af8dbfa1282385351dde28107e973/packages/taquito-sapling/src/sapling-tx-builder/sapling-transactions-builder.ts) and [input selection](https://github.com/ecadlabs/taquito/blob/8ecb7ad0db4af8dbfa1282385351dde28107e973/packages/taquito-sapling/src/taquito-sapling.ts).
+
+A bounded candidate is to shuffle recipient and change outputs before creating the binding signature, using suitable randomness. Compare output-position classification against the unchanged builder on a matched workload with independently known ownership. Confirm every proof with Octez, preserve sums and memos, and test exact-spend transactions where no change exists. Variable input/output counts and timing remain visible. A successful result would demonstrate removal of that deterministic position signal relative to this Taquito baseline, not an overall anonymity advantage over Tornado.
+
+This candidate is proposed, not implemented. The current milestone deliberately retains the merged SDK package unchanged.
