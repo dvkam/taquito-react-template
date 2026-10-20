@@ -43,7 +43,8 @@ export function createPoolSession(read, apply) {
           return { ...result, snapshot: await snapshot() };
         } catch (error) {
           uncertain = true;
-          throw error;
+          // Application already completed. Preserve its receipt even when refresh fails.
+          return { ...result, snapshot: null, version, uncertain, warning: String(error) };
         }
       }),
   };

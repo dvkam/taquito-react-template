@@ -39,13 +39,14 @@ async function act({ action, snapshot, parameterBaseUrl }: PoolRequest): Promise
       viewers.map(async (viewer) => (await viewer.getBalance()).toFixed()),
     );
     const histories = await Promise.all(
-      viewers.slice(0, 2).map(async (viewer) => viewer.getIncomingAndOutgoingTransactions()),
+      viewers.map(async (viewer) => viewer.getIncomingAndOutgoingTransactions()),
     );
     return {
       view: {
         aliceMutez: balances[0]!,
         bobMutez: balances[1]!,
         unrelatedMutez: balances[2]!,
+        unrelatedIncomingCount: histories[2]!.incoming.length,
         aliceMemos: histories[0]!.incoming.map((tx) => tx.memo),
         bobMemos: histories[1]!.incoming.map((tx) => tx.memo),
       },

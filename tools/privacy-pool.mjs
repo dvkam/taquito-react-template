@@ -53,7 +53,6 @@ export async function createPool() {
   const initialPayer = BigInt(await balance(payer));
   const initialRecipient = BigInt(await balance(recipient));
   let deposited = 0n;
-  let fees = 0n;
   async function snapshot() {
     // Session serialization keeps these reads coherent. Mockup has no external actors.
     const [diff, storage, poolMutez, recipientBalance, payerBalance] = await Promise.all([
@@ -76,7 +75,7 @@ export async function createPool() {
       recipientMutez,
       payer,
       payerSpentMutez,
-      feesAndStorageMutez: fees.toString(),
+      feesAndStorageMutez: (BigInt(payerSpentMutez) - deposited).toString(),
       depositedMutez: deposited.toString(),
     };
   }
@@ -115,8 +114,6 @@ export async function createPool() {
     if (!output.includes('This transaction was successfully applied'))
       throw new Error('Unexpected transfer result');
     deposited += amount;
-    fees +=
-      BigInt(before.payerSpentMutez) * -1n + initialPayer - BigInt(await balance(payer)) - amount;
     return {
       accepted: true,
       operationHash: output.match(/Operation hash is '(\w+)'/)?.[1],

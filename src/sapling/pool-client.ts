@@ -17,29 +17,49 @@ export async function poolPost(action: string, input: unknown): Promise<unknown>
 export function createPoolWorker() {
   const worker = new Worker(new URL('./pool.worker.ts', import.meta.url), { type: 'module' });
   let running = false;
+  let disposed = false;
+  let rejectPending: ((error: Error) => void) | null = null;
   return {
     act: (action: PoolAction, snapshot: PoolSnapshot): Promise<PoolResponse> => {
+      if (disposed) return Promise.reject(new Error('Pool worker stopped'));
       if (running) return Promise.reject(new Error('Worker busy'));
       running = true;
       return new Promise((resolve, reject) => {
+        rejectPending = reject;
         worker.onmessage = ({ data }: MessageEvent<PoolResponse>) => {
           running = false;
+          rejectPending = null;
           if (data.error) reject(new Error(data.error));
           else resolve(data);
         };
         worker.onerror = () => {
           running = false;
+          rejectPending = null;
           reject(new Error('Pool worker failed'));
         };
-        worker.postMessage({
-          action,
-          snapshot,
-          parameterBaseUrl: new URL(`${import.meta.env.BASE_URL}__sapling/params/`, location.origin)
-            .href,
-        });
+        try {
+          worker.postMessage({
+            action,
+            snapshot,
+            parameterBaseUrl: new URL(
+              `${import.meta.env.BASE_URL}__sapling/params/`,
+              location.origin,
+            ).href,
+          });
+        } catch (error) {
+          running = false;
+          rejectPending = null;
+          reject(error instanceof Error ? error : new Error('Could not send worker request'));
+        }
       });
     },
-    dispose: () => worker.terminate(),
+    dispose: () => {
+      disposed = true;
+      worker.terminate();
+      rejectPending?.(new Error('Pool worker stopped'));
+      rejectPending = null;
+      running = false;
+    },
   };
 }
 
@@ -67,8 +87,12 @@ export async function runPoolCycle(
       version: snapshot.version,
       transactionHex: proof.transactionHex,
       amountMutez: action === 'shield' ? '10000000' : '0',
-    })) as { accepted: boolean; snapshot: PoolSnapshot };
+    })) as { accepted: boolean; snapshot: PoolSnapshot | null; operationHash?: string };
     if (!applied.accepted) throw new Error('The local protocol rejected the transaction.');
+    if (!applied.snapshot)
+      throw new Error(
+        `Applied locally: ${applied.operationHash ?? 'receipt unavailable'}. State refresh failed. Do not resubmit. Inspect this local operation before starting a new pool.`,
+      );
     snapshot = applied.snapshot;
   }
   const { view } = await worker.act('observe', snapshot);

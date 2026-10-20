@@ -17,6 +17,7 @@ export type PoolView = {
   aliceMutez: string;
   bobMutez: string;
   unrelatedMutez: string;
+  unrelatedIncomingCount: number;
   aliceMemos: string[];
   bobMemos: string[];
 };

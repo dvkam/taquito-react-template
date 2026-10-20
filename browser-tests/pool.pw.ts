@@ -41,7 +41,12 @@ test('funded pool preserves backing and atomically rejects invalid calls', async
   const session = (await created.json()) as { id: string; snapshot: PoolSnapshot };
   let snapshot = session.snapshot;
   const initial = await act('observe', snapshot);
-  expect(initial.view).toMatchObject({ aliceMutez: '0', bobMutez: '0', unrelatedMutez: '0' });
+  expect(initial.view).toMatchObject({
+    aliceMutez: '0',
+    bobMutez: '0',
+    unrelatedMutez: '0',
+    unrelatedIncomingCount: 0,
+  });
   expect(params).toEqual([]);
   const evidence: unknown[] = [];
   const submit = async (transactionHex: string, amountMutez: string, accepted: boolean) => {
@@ -73,6 +78,7 @@ test('funded pool preserves backing and atomically rejects invalid calls', async
     aliceMutez: '10000000',
     bobMutez: '0',
     unrelatedMutez: '0',
+    unrelatedIncomingCount: 0,
   });
   console.log('Funded shield accepted; invalid deposits preserved state.');
   const transfer = (await act('transfer', snapshot)).transactionHex!;
@@ -86,6 +92,7 @@ test('funded pool preserves backing and atomically rejects invalid calls', async
     aliceMutez: '7000000',
     bobMutez: '3000000',
     unrelatedMutez: '0',
+    unrelatedIncomingCount: 0,
   });
   expect(viewAfterTransfer!.bobMemos).toContain('gift é');
   // Current version makes this a protocol replay check, not just the local stale guard.
@@ -114,6 +121,7 @@ test('funded pool preserves backing and atomically rejects invalid calls', async
     aliceMutez: '7000000',
     bobMutez: '1000000',
     unrelatedMutez: '0',
+    unrelatedIncomingCount: 0,
   });
   expect(snapshot.poolMutez).toBe('8000000');
   expect(snapshot.recipientMutez).toBe('2000000');
