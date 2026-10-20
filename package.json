@@ -18,7 +18,9 @@
     "sapling:experiment": "pnpm build && pnpm sapling:serve",
     "test:browser": "playwright test",
     "test:sapling": "pnpm build && pnpm test:browser",
-    "test:compat": "vitest run src/App.test.tsx src/Wallet.test.ts src/transfer.test.ts"
+    "test:compat": "vitest run src/App.test.tsx src/Wallet.test.ts src/transfer.test.ts",
+    "verify:pool-session": "node tools/verify-pool-session.mjs",
+    "test:pool": "playwright test browser-tests/pool.pw.ts"
   },
   "dependencies": {
     "@taquito/beacon-wallet": "25.1.0",

@@ -66,3 +66,9 @@ PAGES_BASE_PATH=/taquito-react-template/ pnpm preview
 ```
 
 GitHub Pages must use the GitHub Actions publishing source. Deployments use the `github-pages` environment and GitHub's short-lived deployment token. No separate deployment secret is required.
+
+### Funded local Sapling cycle
+
+The Sapling lab also has a **Run local payment cycle** control. It creates an isolated local Octez pool, shields 10 test XTZ, privately sends 3 to Bob and withdraws 2. The result reports Alice's 7, Bob's 1, contract backing of 8 and a recipient payout of 2, with payer fees and storage costs separate. It uses published disposable identities and no public network.
+
+See [the local pool guide](docs/sapling-pool.md) for setup and independent acceptance checks, and [the privacy experiment](docs/sapling-privacy.md) for the observer model and limits on anonymity claims.
