@@ -4,6 +4,7 @@ const baseURL = `http://127.0.0.1:${process.env['PORT'] || '4180'}${process.env[
 export default defineConfig({
   testDir: './browser-tests',
   testMatch: '**/*.pw.ts',
+  testIgnore: '**/output-order*.pw.ts',
   timeout: 120_000,
   workers: 1,
   reporter: 'list',

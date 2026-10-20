@@ -7,7 +7,9 @@ REVISION = '8ecb7ad0db4af8dbfa1282385351dde28107e973'
 CACHE = ROOT / '.cache/output-order'
 EXPERIMENT = ROOT / 'experiments/output-order'
 archive = subprocess.check_output(['git', 'archive', REVISION, 'tsconfig.prod.json', 'packages/taquito-sapling'], cwd=TAQUITO)
-metadata = {'sourceRevision': REVISION, 'node': subprocess.check_output(['node', '--version'], text=True).strip(), 'variants': {}}
+metadata = {'sourceRevision': REVISION, 'node': subprocess.check_output(['node', '--version'], text=True).strip(), 'typescript': subprocess.check_output([str(TAQUITO / 'node_modules/.bin/tsc'), '--version'], text=True).strip(), 'rollup': subprocess.check_output([str(TAQUITO / 'node_modules/.bin/rollup'), '--version'], text=True).strip(), 'helperSha256': hashlib.sha256((EXPERIMENT / 'shuffle-outputs.ts').read_bytes()).hexdigest(), 'variants': {}}
+lock = TAQUITO / 'package-lock.json'
+if lock.exists(): metadata['dependencyLockSha256'] = hashlib.sha256(lock.read_bytes()).hexdigest()
 for variant in ['baseline', 'candidate']:
     directory = CACHE / variant
     directory.mkdir(parents=True, exist_ok=True)
@@ -46,7 +48,18 @@ for variant in ['baseline', 'candidate']:
     # Both snapshots use the same installed tools and dependency graph. No installation or source-checkout change.
     subprocess.run([str(TAQUITO / 'node_modules/.bin/tsc'), '--project', 'tsconfig.prod.json', '--module', 'commonjs', '--moduleResolution', 'node', '--ignoreDeprecations', '6.0', '--esModuleInterop'], cwd=package, check=True)
     subprocess.run([str(TAQUITO / 'node_modules/.bin/rollup'), '-c', 'rollup.config.ts', '--bundleConfigAsCjs'], cwd=package, check=True)
-    metadata['variants'][variant] = {str(p.relative_to(package)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(package.glob('dist/taquito-sapling.*.js'))}
+    artifacts = [*package.glob('dist/taquito-sapling.*.js'), *package.glob('dist/lib/**/*.js'), *package.glob('dist/types/**/*.d.ts')]
+    dependencies = {}
+    for name in json.loads((package / 'package.json').read_text())['dependencies']:
+        for modules in [package / 'node_modules', directory / 'node_modules']:
+            manifest = modules / name / 'package.json'
+            if manifest.exists():
+                dependencies[name] = {'version': json.loads(manifest.read_text())['version'], 'manifestSha256': hashlib.sha256(manifest.read_bytes()).hexdigest()}
+                break
+    metadata['variants'][variant] = {'artifacts': {str(p.relative_to(package)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(artifacts)}, 'dependencies': dependencies}
+metadata['patchSha256'] = hashlib.sha256((EXPERIMENT / 'taquito-output-order.patch').read_bytes()).hexdigest()
+installed_lock = TAQUITO / 'node_modules/.package-lock.json'
+if installed_lock.exists(): metadata['installedDependencyLockSha256'] = hashlib.sha256(installed_lock.read_bytes()).hexdigest()
 CACHE.mkdir(parents=True, exist_ok=True)
 (CACHE / 'build-manifest.json').write_text(json.dumps(metadata, indent=2) + '\n')
-print(json.dumps(metadata, indent=2))
+print(json.dumps({'sourceRevision': REVISION, 'node': metadata['node'], 'typescript': metadata['typescript'], 'rollup': metadata['rollup'], 'artifactCounts': {key: len(value['artifacts']) for key, value in metadata['variants'].items()}}, indent=2))

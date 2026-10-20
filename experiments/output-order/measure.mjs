@@ -19,6 +19,8 @@ const baseline = require(
 const candidate = require(
   path('candidate', 'lib/sapling-tx-builder/sapling-transactions-builder.js'),
 ).SaplingTransactionBuilder;
+const packagedBaseline =
+  require('@taquito/sapling/dist/lib/sapling-tx-builder/sapling-transactions-builder.js').SaplingTransactionBuilder;
 const forger = new (require(
   path('baseline', 'lib/sapling-forger/sapling-forger.js'),
 ).SaplingForger)();
@@ -168,6 +170,12 @@ for (const [amounts, change] of [
   [[1, 1], 2],
 ]) {
   const before = await construct(baseline, undefined, amounts, change);
+  const packaged = await construct(packagedBaseline, undefined, amounts, change);
+  assert.equal(
+    packaged.encoded,
+    before.encoded,
+    'Source baseline must match the original installed vendor builder',
+  );
   for (const policy of [undefined, 'preserve']) {
     const after = await construct(candidate, policy, amounts, change, 0, () => {
       throw new Error('Default must not request entropy');
@@ -201,7 +209,12 @@ assert.deepEqual(
   await shieldAfter.builder.createShieldedTx(shields, new BigNumber(10), Buffer.alloc(0)),
   await shieldBefore.builder.createShieldedTx(shields, new BigNumber(10), Buffer.alloc(0)),
 );
+await construct(candidate, 'randomized', [10], 0, 0, () => {
+  throw new Error('One output needs no shuffle entropy');
+});
+assert.throws(() => fixture(candidate, 'invalid'), /Unknown output order/);
 const count = 4096;
+const corpus = [];
 const measurements = [];
 for (const recipients of [1, 2]) {
   for (const [name, Builder, mode] of [
@@ -243,6 +256,7 @@ for (const recipients of [1, 2]) {
     if (mode === undefined) assert.equal(row.frozenLast.accuracy, 1);
     else assert(histogram.every((value) => value > 0));
     measurements.push(row);
+    corpus.push({ variant: name, recipients, positions });
   }
 }
 const directory = new URL('.cache/output-order/results/', root);
@@ -263,6 +277,9 @@ const report = {
   },
   compatibility: {
     byteIdenticalDefaultCases: compatible,
+    originalVendorMatchesSourceBaseline: true,
+    invalidPolicyRejected: true,
+    singleOutputConsumesNoShuffleEntropy: true,
     shieldDefaultIdentical: true,
     permutationCases: 6,
     rejectionTailChecked: true,
@@ -272,4 +289,5 @@ const report = {
   measurements,
 };
 await writeFile(new URL('measurement.json', directory), JSON.stringify(report, null, 2));
+await writeFile(new URL('positions.json', directory), JSON.stringify(corpus));
 console.log(JSON.stringify({ compatibility: report.compatibility, measurements }, null, 2));

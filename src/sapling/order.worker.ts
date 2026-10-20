@@ -82,6 +82,11 @@ async function act(request: OrderRequest): Promise<OrderResponse> {
     transactionHex = await toolkit(0, snapshot).prepareShieldedTransaction([
       { to: addresses[0]!, amount: 10_000_000, mutez: true, memo: 'seed' },
     ]);
+  else if (action === 'multi-seed')
+    transactionHex = await toolkit(0, snapshot).prepareShieldedTransaction([
+      { to: addresses[0]!, amount: 6_000_000, mutez: true, memo: 'seed A' },
+      { to: addresses[1]!, amount: 4_000_000, mutez: true, memo: 'seed B' },
+    ]);
   else if (action === 'transfer')
     transactionHex = await toolkit(0, snapshot).prepareSaplingTransaction([
       { to: addresses[1]!, amount: 3_000_000, mutez: true, memo: 'pay é' },

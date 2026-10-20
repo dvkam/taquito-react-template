@@ -2,6 +2,7 @@ import type { PoolSnapshot } from './pool-protocol';
 export type OrderVariant = 'baseline' | 'candidate-default' | 'candidate-randomized';
 export type OrderAction =
   | 'seed'
+  | 'multi-seed'
   | 'transfer'
   | 'change-spend'
   | 'withdraw'

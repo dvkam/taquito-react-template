@@ -65,6 +65,7 @@ for (const variant of ['baseline', 'candidate-default', 'candidate-randomized'] 
     };
     const expectedBalances: Record<Exclude<OrderAction, 'observe'>, string[]> = {
       seed: ['10000000', '0', '0'],
+      'multi-seed': ['6000000', '4000000', '0'],
       transfer: ['7000000', '3000000', '0'],
       'change-spend': ['0', '3000000', '7000000'],
       withdraw:

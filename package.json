@@ -20,7 +20,10 @@
     "test:sapling": "pnpm build && pnpm test:browser",
     "test:compat": "vitest run src/App.test.tsx src/Wallet.test.ts src/transfer.test.ts",
     "verify:pool-session": "node tools/verify-pool-session.mjs",
-    "test:pool": "playwright test browser-tests/pool.pw.ts"
+    "test:pool": "playwright test browser-tests/pool.pw.ts",
+    "experiment:order:build": "python3 experiments/output-order/build-sdk.py",
+    "experiment:order:measure": "node experiments/output-order/measure.mjs",
+    "experiment:order:browser": "OUTPUT_ORDER_EXPERIMENT=1 pnpm exec vite build && pnpm exec playwright test --config playwright.output-order.config.ts"
   },
   "dependencies": {
     "@taquito/beacon-wallet": "25.1.0",
