@@ -4,6 +4,7 @@ import { stat, readFile } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { verifyTransaction } from './sapling-verify.mjs';
+import { poolRequest } from './pool-http.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dist = resolve(root, 'dist');
@@ -39,6 +40,7 @@ async function handleRequest(request, response) {
     ) {
       return json(response, 403, { error: 'Use the local experiment address.' });
     }
+    if (await poolRequest(request, response, url)) return;
     if (request.method === 'POST' && url.pathname.endsWith('/__sapling/verify')) {
       if (request.headers.origin && request.headers.origin !== `http://${request.headers.host}`) {
         return json(response, 403, { error: 'Use the local experiment page.' });
