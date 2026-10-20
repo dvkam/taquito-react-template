@@ -1,6 +1,6 @@
 # Run the local Sapling proof lab
 
-This experiment runs real Sapling WASM proof preparation in a module worker and independently verifies the returned transaction with Octez. It uses a published disposable seed, an empty local mock pool, memo size eight, and one mutez. It never submits a transaction to a chain. It is not a private wallet or a complete shield/transfer/unshield application.
+This experiment runs real Sapling WASM proof preparation in a module worker and independently verifies the returned transaction with Octez. It uses a published disposable seed, an empty local mock pool, memo size eight, and one mutez. This proof-only mode never submits a transaction. The separate [funded local cycle](sapling-pool.md) now tests shielding, private transfer and withdrawal against a persistent local contract. Both modes use published demonstration identities.
 
 ## Setup and run
 

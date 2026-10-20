@@ -61,31 +61,35 @@ export default function PoolCycle() {
       >
         Run local payment cycle
       </button>
-      <output aria-live="polite">{status}</output>
+      <div className="sapling-status">
+        <output aria-live="polite">{status}</output>
+      </div>
       {error && <p role="alert">{error}</p>}
       {result && (
-        <dl className="sapling-result">
-          <div>
-            <dt>Alice, decrypted</dt>
-            <dd>{result.view.aliceMutez} mutez</dd>
-          </div>
-          <div>
-            <dt>Bob, decrypted</dt>
-            <dd>{result.view.bobMutez} mutez</dd>
-          </div>
-          <div>
-            <dt>Public contract backing</dt>
-            <dd>{result.snapshot.poolMutez} mutez</dd>
-          </div>
-          <div>
-            <dt>Public recipient payout</dt>
-            <dd>{result.snapshot.recipientMutez} mutez</dd>
-          </div>
-          <div>
-            <dt>Separate payer fees and storage costs</dt>
-            <dd>{result.snapshot.feesAndStorageMutez} mutez</dd>
-          </div>
-        </dl>
+        <div className="sapling-result">
+          <dl>
+            <div>
+              <dt>Alice, decrypted</dt>
+              <dd>{result.view.aliceMutez} mutez</dd>
+            </div>
+            <div>
+              <dt>Bob, decrypted</dt>
+              <dd>{result.view.bobMutez} mutez</dd>
+            </div>
+            <div>
+              <dt>Public contract backing</dt>
+              <dd>{result.snapshot.poolMutez} mutez</dd>
+            </div>
+            <div>
+              <dt>Public recipient payout</dt>
+              <dd>{result.snapshot.recipientMutez} mutez</dd>
+            </div>
+            <div>
+              <dt>Separate payer fees and storage costs</dt>
+              <dd>{result.snapshot.feesAndStorageMutez} mutez</dd>
+            </div>
+          </dl>
+        </div>
       )}
     </section>
   );

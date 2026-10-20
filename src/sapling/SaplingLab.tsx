@@ -131,8 +131,9 @@ export default function SaplingLab() {
       <h2 id="sapling-heading">Sapling proof lab</h2>
       <p>Prepare a real shielding proof in a worker, then check it independently with Octez.</p>
       <p className="sapling-fixture">
-        This uses a public, disposable test account, an empty mock pool, and 1 mutez. Anyone can
-        derive its keys. Do not send funds to it. This experiment sends no transaction to a chain.
+        The proof-only check uses a public, disposable test account, an empty mock pool, and 1
+        mutez. Anyone can derive its keys. Do not send funds to it. This check submits no
+        transaction. The funded cycle below uses a separate local contract.
       </p>
       <button
         className="sapling-disclosure"

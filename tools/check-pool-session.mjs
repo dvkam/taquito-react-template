@@ -4,6 +4,7 @@ const actions = ['accept', 'reject', 'unknown', 'stale', 'snapshot'];
 let histories = 0;
 async function check(sequence) {
   let applied = 0;
+  let applyCalls = 0;
   let expectedVersion = 0;
   let quarantined = false;
   let outcome;
@@ -11,6 +12,7 @@ async function check(sequence) {
   const session = createPoolSession(
     async () => ({ applied }),
     async () => {
+      applyCalls++;
       await new Promise((resolve) => {
         release = resolve;
       });
@@ -31,11 +33,19 @@ async function check(sequence) {
       continue;
     }
     if (quarantined) {
-      await assert.rejects(session.submit(input), /POOL_OUTCOME_UNKNOWN/);
+      const beforeCalls = applyCalls;
+      const attempted = session.submit(input);
+      await Promise.resolve();
+      assert.equal(applyCalls, beforeCalls, 'A quarantined session entered apply');
+      await assert.rejects(attempted, /POOL_OUTCOME_UNKNOWN/);
       continue;
     }
     if (action === 'stale') {
-      await assert.rejects(session.submit({ ...input, version: -1 }), /STALE_POOL_STATE/);
+      const beforeCalls = applyCalls;
+      const attempted = session.submit({ ...input, version: -1 });
+      await Promise.resolve();
+      assert.equal(applyCalls, beforeCalls, 'A stale request entered apply');
+      await assert.rejects(attempted, /STALE_POOL_STATE/);
       continue;
     }
     outcome = action;

@@ -4,7 +4,7 @@ A React starter for connecting a Tezos wallet, sending test XTZ, and calling a c
 
 ## Local Sapling proof experiment
 
-The local branch includes a real browser-worker proof lab with an independent Octez checker. Read [setup, operation, and verification instructions](docs/sapling-experiment.md). The experiment uses disposable public fixture keys and sends no chain transaction. Its verifier runs only through the local experiment server.
+The local branch includes a real browser-worker proof lab with an independent Octez checker. Read [setup, operation, and verification instructions](docs/sapling-experiment.md). The proof-only mode uses disposable public fixture keys and submits no transaction. The funded local cycle is described below. Its verifier runs only through the local experiment server.
 
 ## Run locally
 
