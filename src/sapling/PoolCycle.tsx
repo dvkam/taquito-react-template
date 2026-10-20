@@ -61,7 +61,7 @@ export default function PoolCycle() {
       >
         Run local payment cycle
       </button>
-      <div className="sapling-status">
+      <div className="sapling-pool-status">
         <output aria-live="polite">{status}</output>
       </div>
       {error && <p role="alert">{error}</p>}
