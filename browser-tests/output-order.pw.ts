@@ -46,6 +46,7 @@ for (const variant of ['baseline', 'candidate-default', 'candidate-randomized'] 
     const session = (await creation.json()) as { id: string; snapshot: PoolSnapshot };
     let snapshot = session.snapshot;
     const evidence: unknown[] = [];
+    const rejections: unknown[] = [];
     const submit = async (transactionHex: string, amountMutez: string, accepted = true) => {
       const before = snapshot;
       const response = await request.post('./__sapling/pool/submit', {
@@ -58,8 +59,16 @@ for (const variant of ['baseline', 'candidate-default', 'candidate-randomized'] 
         operationHash?: string;
       };
       expect(result.accepted).toBe(accepted);
-      if (!accepted) expect(result.snapshot).toEqual(before);
-      else expect(result.operationHash).toMatch(/^o[1-9A-HJ-NP-Za-km-z]+$/);
+      if (!accepted) {
+        expect(result.snapshot).toEqual(before);
+        rejections.push({
+          transactionHex,
+          amountMutez,
+          before,
+          after: result.snapshot,
+          accepted: false,
+        });
+      } else expect(result.operationHash).toMatch(/^o[1-9A-HJ-NP-Za-km-z]+$/);
       snapshot = result.snapshot;
       return result;
     };
@@ -153,7 +162,7 @@ for (const variant of ['baseline', 'candidate-default', 'candidate-randomized'] 
     await worker.evaluate((instance) => instance.terminate());
     await writeFile(
       info.outputPath('output-order-evidence.json'),
-      JSON.stringify({ variant, evidence }, null, 2),
+      JSON.stringify({ variant, evidence, rejections }, null, 2),
     );
   });
 }

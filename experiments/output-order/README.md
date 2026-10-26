@@ -1,8 +1,30 @@
 # Local output-order experiment
 
-The ordinary playground keeps its original SDK dependency. Both experimental SDKs are compiled from pinned source into `.cache/output-order` and never installed over it. The active Taquito source and Git state stay unchanged. Builds reuse its installed dependencies.
+The ordinary playground keeps its pinned vendor SDK. The order experiment is an explicit build input and never replaces that dependency. Issue #3472 exists. The candidate contribution and this harness remain local.
 
-Use Ubuntu with Node 24 and the existing dependencies in `/home/david/workspace/taquito`. Run from the React template:
+## Current SDK protocol validation
+
+Use Ubuntu, Node 24, and the coherent installed dependencies in the isolated `/home/david/workspace/taquito-3472` worktree. Refresh main and rebase that worktree first if needed. Commit source changes before recording proof evidence.
+
+```sh
+python3 experiments/output-order/build-current-sdk.py
+PORT=4189 python3 experiments/output-order/run-current-protocol.py
+python3 experiments/output-order/verify-current-protocol.py
+```
+
+Set `SAPLING_ORDER_SDK_ROOT` for a different local SDK worktree. The builder records `origin/main` and the clean contribution HEAD. It archives the unchanged main SDK and builds it with the same installed dependencies as the candidate. Both builds use their standard package build commands.
+
+The runner supplies explicit baseline and candidate ES6 artifact paths to the opt-in Vite aliases. Supplying only one path is an error. It fingerprints the built and served files, runs five real Chromium worker/Octez scenarios, and verifies SDK inputs again. The final verification checks served artifact hashes and both dependency locks before the ordinary build is restored. It also checks saved mutation rejection snapshots and the recorded test status.
+
+The five cases cover multi-recipient shielding, the unchanged baseline, candidate default mode, and randomized private transfers with actual moved change. Preparation retries select moved outputs only for compatibility coverage. They are not an unbiased privacy sample.
+
+Evidence is in `.cache/output-order-current` and `test-results/output-order-current`. Keep the raw JSON, build manifest, test log, and verified summary together. This is a local bundled-consumer check, not packed npm consumer qualification or an all-browser SDK matrix.
+
+## Retained privacy experiment
+
+The historical construction experiment is pinned to source `8ecb7ad`. Its 4,096-transaction corpus per variant and output count uses mocked proof and encryption work. It measures the change-position signal separately from real protocol validation. Preserve the saved corpus and its manifest. Do not relabel its percentages as fresh measurements.
+
+The older commands remain available for a deliberately new measurement:
 
 ```sh
 pnpm experiment:order:build
@@ -10,14 +32,14 @@ pnpm experiment:order:measure
 PORT=4186 PAGES_BASE_PATH=/proof-lab/ pnpm experiment:order:browser
 ```
 
-The third command builds with the explicit experiment input and runs the dedicated Chromium config. Normal browser discovery excludes these tests. The 4,096-transaction position corpus and report are in `.cache/output-order/results`. The build manifest fingerprints the actual CJS/browser/type artifacts and dependencies. Samples are fresh randomness; retain each result and its corpus together.
+Those commands use the original archived experiment inputs, not the current contribution build. The original isolated 108-pass/three-failure SDK sweep was later explained and a source-aligned run passed all 111 tests. The current contribution has its own native/type/build evidence. Do not treat those different runs as one result.
 
-Compile the old/new public consumer separately:
+## Restore the ordinary playground
+
+After archiving and verifying the experimental served files, restore the normal inputs:
 
 ```sh
-/home/david/workspace/taquito/node_modules/.bin/tsc --ignoreConfig experiments/output-order/public-consumer.ts --noEmit --strict --skipLibCheck --moduleResolution bundler --module esnext --target es2023
+PAGES_BASE_PATH=/proof-lab/ pnpm build
 ```
 
-The optional unchanged upstream unit sweep uses `SAPLING_SNAPSHOT=baseline` or `candidate` with `pnpm exec vitest run --config experiments/output-order/upstream-vitest.config.mjs`. It is a separate diagnostic. Both snapshots currently have the same three failures out of 111; see the evidence report. Normal app Vitest tests remain 82.
-
-Restore the ordinary build with `PAGES_BASE_PATH=/proof-lab/ pnpm build`. The loopback preview then serves only the original app inputs. See [the measured result and limitations](../../docs/sapling-output-order-experiment.md), [the approved plan](plan.md), and [the local source patch](taquito-output-order.patch). No issue or PR has been created.
+The ordinary app has 94 unit tests. Its wallet and proof worker dependencies stay unchanged. See the task's local #3472 verification report and draft PR description for the current results and remaining limits.
