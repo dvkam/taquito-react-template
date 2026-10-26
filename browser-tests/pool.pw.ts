@@ -143,15 +143,72 @@ test('funded pool preserves backing and atomically rejects invalid calls', async
   );
 });
 
-test('the local payment control completes the funded cycle', async ({ page }) => {
-  test.setTimeout(300_000);
+test('the local payment control separates public and viewing-key perspectives', async ({
+  page,
+}, info) => {
+  test.setTimeout(360_000);
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('./');
   await page.getByRole('button', { name: 'Open Sapling lab' }).click();
+  const initial = await page.locator('[aria-labelledby="pool-heading"]').innerText();
+  expect(initial).not.toMatch(/send 3|privately to Bob|gift é/);
+  await page.evaluate(() => {
+    const output = document.querySelector('.sapling-pool-status');
+    const stages: string[] = [];
+    Object.assign(window, { poolObserverStages: stages });
+    if (output)
+      new MutationObserver(() => stages.push(output.textContent ?? '')).observe(output, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+      });
+  });
   await page.getByRole('button', { name: 'Run local payment cycle' }).click();
   await expect(page.getByRole('button', { name: 'Run local payment cycle' })).toBeDisabled();
-  await expect(page.getByText('Local payment cycle verified.')).toBeVisible({ timeout: 240_000 });
+  await expect(page.getByText('Local payment cycle verified.')).toBeVisible({ timeout: 300_000 });
+  const observer = page.getByRole('region', { name: 'Public chain report' });
+  await expect(observer).toBeVisible();
+  const publicText = await observer.innerText();
+  expect(publicText).not.toMatch(/7000000|1000000|gift é|Alice|Bob|3 XTZ/);
+  await expect(observer.getByText('8000000 mutez', { exact: true })).toBeVisible();
+  await expect(observer.getByText('2000000 mutez', { exact: true })).toBeVisible();
+  await expect(observer.getByText('Private update', { exact: true })).toBeVisible();
+  await expect(observer.getByText(/Backing change: 0 XTZ/)).toBeVisible();
+  await page.screenshot({ path: info.outputPath('public-observer-mobile.png'), fullPage: true });
+  await page.getByRole('button', { name: 'Alice', exact: true }).focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('region', { name: 'Alice viewing key report' })).toBeVisible();
   await expect(page.getByText('7000000 mutez', { exact: true })).toBeVisible();
+  await expect(page.getByText('1000000 mutez', { exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Bob', exact: true }).click();
+  await expect(page.getByRole('region', { name: 'Alice viewing key report' })).toHaveCount(0);
+  await expect(page.getByText('7000000 mutez', { exact: true })).toHaveCount(0);
   await expect(page.getByText('1000000 mutez', { exact: true })).toBeVisible();
-  await expect(page.getByText('8000000 mutez', { exact: true })).toBeVisible();
-  await expect(page.getByText('2000000 mutez', { exact: true })).toBeVisible();
+  await expect(page.getByText('gift é', { exact: true })).toBeVisible();
+  await page.screenshot({ path: info.outputPath('bob-viewing-key-mobile.png'), fullPage: true });
+  await page.getByRole('button', { name: 'Public observer' }).click();
+  await expect(observer).toBeVisible();
+  await expect(page.getByText('gift é', { exact: true })).toHaveCount(0);
+  await expect(page.getByText('7000000 mutez', { exact: true })).toHaveCount(0);
+  await expect(page.getByText('1000000 mutez', { exact: true })).toHaveCount(0);
+  const stages = await page.evaluate(
+    () => (window as unknown as { poolObserverStages: string[] }).poolObserverStages,
+  );
+  expect(stages.join(' ')).not.toMatch(/Alice|Bob|private 3|gift é/);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  await writeFile(
+    info.outputPath('perspectives-evidence.json'),
+    JSON.stringify(
+      {
+        publicText,
+        stages,
+        balances: { alice: '7000000', bob: '1000000', backing: '8000000', payout: '2000000' },
+      },
+      null,
+      2,
+    ),
+  );
 });

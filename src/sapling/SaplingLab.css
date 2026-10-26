@@ -127,3 +127,70 @@
     transform: none;
   }
 }
+
+.pool-role-picker {
+  border: 0;
+  padding: 0;
+  margin: 1.25rem 0;
+}
+.pool-role-picker legend {
+  font-weight: 650;
+  margin-bottom: 0.75rem;
+}
+.pool-role-picker > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.pool-role-picker button[aria-pressed='true'] {
+  background: #254f3c;
+  color: #fff;
+  border-color: #254f3c;
+}
+.pool-demo-notice {
+  padding: 0.8rem 1rem;
+  border-left: 3px solid #718c79;
+  background: #f3f6f2;
+  font-size: 0.9rem;
+}
+.pool-perspective {
+  padding: 1rem;
+  border: 1px solid #d6e1d8;
+  border-radius: 0.5rem;
+}
+.pool-perspective h4 {
+  margin: 0.5rem 0;
+}
+.pool-perspective small {
+  display: block;
+  font-size: 0.8rem;
+  color: #526759;
+}
+.pool-timeline {
+  padding-left: 1.3rem;
+}
+.pool-timeline li {
+  padding: 0.5rem 0;
+}
+.pool-timeline span {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.pool-perspective {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.pool-timeline small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 480px) {
+  .pool-perspective dl > div {
+    display: block;
+  }
+  .pool-perspective dd {
+    text-align: left;
+    margin-top: 0.25rem;
+  }
+}

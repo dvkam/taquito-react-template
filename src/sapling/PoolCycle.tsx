@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { createPoolWorker, runPoolCycle } from './pool-client';
-import type { PoolSnapshot, PoolView } from './pool-protocol';
+import { createPoolWorker, PoolReceiptError, runPoolCycle } from './pool-client';
+import PoolPerspectives from './PoolPerspectives';
+
 export default function PoolCycle() {
   const [status, setStatus] = useState('No local pool created.');
-  const [result, setResult] = useState<{ snapshot: PoolSnapshot; view: PoolView } | null>(null);
+  const [result, setResult] = useState<Awaited<ReturnType<typeof runPoolCycle>>>(null);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const operation = useRef<{ worker: ReturnType<typeof createPoolWorker> | null; active: boolean }>(
@@ -33,8 +34,12 @@ export default function PoolCycle() {
       })
       .catch((cause: unknown) => {
         if (operation.current.active) {
-          setError(cause instanceof Error ? cause.message : 'Local cycle failed');
-          setStatus('Local cycle stopped. Start a fresh pool to retry.');
+          setError(
+            cause instanceof PoolReceiptError
+              ? cause.message
+              : 'The local cycle could not finish. Inspect the local verifier output before starting a fresh pool.',
+          );
+          setStatus('Local cycle stopped. Check the local verifier before starting a fresh pool.');
         }
       })
       .finally(() => {
@@ -50,8 +55,9 @@ export default function PoolCycle() {
     <section aria-labelledby="pool-heading">
       <h3 id="pool-heading">Funded local payment cycle</h3>
       <p>
-        Shield 10 test XTZ, send 3 privately to Bob, then withdraw 2. This creates a fresh local
-        Octez contract with public disposable identities. It uses no public network or real funds.
+        Create a local pool, make a private transfer, then withdraw to a public recipient. Octez
+        checks each transition. This uses published disposable identities, no public network, and no
+        real funds.
       </p>
       <button
         disabled={running}
@@ -65,32 +71,7 @@ export default function PoolCycle() {
         <output aria-live="polite">{status}</output>
       </div>
       {error && <p role="alert">{error}</p>}
-      {result && (
-        <div className="sapling-result">
-          <dl>
-            <div>
-              <dt>Alice, decrypted</dt>
-              <dd>{result.view.aliceMutez} mutez</dd>
-            </div>
-            <div>
-              <dt>Bob, decrypted</dt>
-              <dd>{result.view.bobMutez} mutez</dd>
-            </div>
-            <div>
-              <dt>Public contract backing</dt>
-              <dd>{result.snapshot.poolMutez} mutez</dd>
-            </div>
-            <div>
-              <dt>Public recipient payout</dt>
-              <dd>{result.snapshot.recipientMutez} mutez</dd>
-            </div>
-            <div>
-              <dt>Separate payer fees and storage costs</dt>
-              <dd>{result.snapshot.feesAndStorageMutez} mutez</dd>
-            </div>
-          </dl>
-        </div>
-      )}
+      {result && <PoolPerspectives publicHistory={result.publicHistory} view={result.view} />}
     </section>
   );
 }
