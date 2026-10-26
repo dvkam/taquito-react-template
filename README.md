@@ -76,3 +76,7 @@ See [the local pool guide](docs/sapling-pool.md) for setup and independent accep
 ### Output-order privacy experiment
 
 The local [output-order experiment](experiments/output-order/README.md) compares an unchanged SDK with optional pre-signature shuffling. Its position measurements and protocol compatibility checks are separate. The ordinary app retains its original SDK. Read [the results](docs/sapling-output-order-experiment.md) for the measured signal, compatibility evidence and limitations. No upstream issue or PR has been created.
+
+### Inspect the funded cycle
+
+The local cycle has separate Public observer, Alice, and Bob reports. See [perspective usage](docs/sapling-perspectives.md) and [executed evidence](docs/sapling-perspectives-evidence.md). The selector uses published demo keys and provides no access control.
