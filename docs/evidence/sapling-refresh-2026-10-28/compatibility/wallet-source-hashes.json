@@ -1,0 +1,12 @@
+{
+  "baseRevision": "44d26ba",
+  "files": {
+    "src/Wallet.ts": "cb7f5132be47a3447e2273d659dbc0ae183f7cb61d5d57c495ae74a9ef333498",
+    "src/useWalletSession.ts": "e91ce0fc263e8c2156117d00e31f8ba6cca86c2087a850fd5eadab57c8b418cc",
+    "src/transfer.ts": "a6aa1460730fe455a32c537a372ea3f40a955f16abfe33379915dcf5fc0fba7b",
+    "src/network.ts": "3d4a236cbd8f6fbeffdc646781ff58fdf3ca25c4408a52b926e5cf8e1b5cf39a",
+    "src/App.test.tsx": "4fcbd7ee6ed5eb3a486e4e17765211421bec9c4687e7fa5a4d2002dd9cd43c3f",
+    "src/Wallet.test.ts": "167aac389767feb3387ada6867789caaa66cfe95b02162918887627eeb0d3fc0",
+    "src/transfer.test.ts": "4915d77b38ec4841c37738a191a6daa230549292e0203b32ab9f0fbde603ca9c"
+  }
+}

@@ -80,3 +80,5 @@ The local [output-order experiment](experiments/output-order/README.md) compares
 ### Inspect the funded cycle
 
 The local cycle has separate Public observer, Alice, and Bob reports. See [perspective usage](docs/sapling-perspectives.md) and [executed evidence](docs/sapling-perspectives-evidence.md). The selector uses published demo keys and provides no access control.
+
+See the [28 October refresh evidence](docs/evidence/sapling-refresh-2026-10-28/README.md) for current privacy measurements, separate compatibility results, and the [review record](docs/evidence/sapling-refresh-2026-10-28/review.md).

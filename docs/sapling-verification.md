@@ -1,3 +1,5 @@
+> Follow-up, 28 October 2026: [fresh rebased evidence](evidence/sapling-refresh-2026-10-28/README.md) records the current source, privacy measurements, compatibility checks and review corrections. The earlier figures below remain historical.
+
 # Worker experiment verification record
 
 Validated locally on Ubuntu 24.04 under WSL with Node 24.21.0 and pnpm 12.14.0. No branch was pushed and no issue, PR, deployment, wallet permission, or chain transaction was created for this experiment.

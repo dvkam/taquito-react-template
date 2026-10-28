@@ -1,3 +1,5 @@
+> Follow-up, 28 October 2026: [fresh rebased evidence](evidence/sapling-refresh-2026-10-28/README.md) records the current source, privacy measurements, compatibility checks and review corrections. The earlier figures below remain historical.
+
 # Sapling perspective implementation and evidence
 
 Completed locally on 26 October 2026. Baseline 7578fc8. Implementation 75211c0. No push, issue update, PR creation, comment, or deployment occurred.
