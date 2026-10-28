@@ -1,18 +1,52 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { createHash, webcrypto } from 'node:crypto';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 const root = new URL('../../', import.meta.url);
 const require = createRequire(new URL('../../package.json', import.meta.url));
+const current = process.env['SAPLING_ORDER_CURRENT'] === '1';
+const cacheName = current ? 'output-order-current' : 'output-order';
+const manifest = JSON.parse(
+  await readFile(new URL(`.cache/${cacheName}/build-manifest.json`, root), 'utf8'),
+);
 const sourceRequire = createRequire(
-  '/home/david/workspace/taquito/packages/taquito-sapling/package.json',
+  current
+    ? `${manifest.sdkRoot}/packages/taquito-sapling/package.json`
+    : '/home/david/workspace/taquito/packages/taquito-sapling/package.json',
 );
 const BigNumber = sourceRequire('bignumber.js').default;
 const path = (variant, file) =>
-  fileURLToPath(
-    new URL(`.cache/output-order/${variant}/packages/taquito-sapling/dist/${file}`, root),
+  current
+    ? `${manifest.variants[variant].directory}/dist/${file}`
+    : fileURLToPath(
+        new URL(`.cache/output-order/${variant}/packages/taquito-sapling/dist/${file}`, root),
+      );
+function verifyCurrentInputs() {
+  if (!current) return;
+  const git = (...args) =>
+    execFileSync('git', ['-C', manifest.sdkRoot, ...args], { encoding: 'utf8' }).trim();
+  assert.equal(git('rev-parse', 'HEAD'), manifest.candidateRevision);
+  assert.equal(git('status', '--porcelain'), '');
+}
+async function verifyCurrentArtifacts() {
+  if (!current) return;
+  const hash = async (file) =>
+    createHash('sha256')
+      .update(await readFile(file))
+      .digest('hex');
+  for (const data of Object.values(manifest.variants))
+    for (const [name, expected] of Object.entries(data.artifacts))
+      assert.equal(await hash(`${data.directory}/${name}`), expected, name);
+  assert.equal(await hash(`${manifest.sdkRoot}/package-lock.json`), manifest.dependencyLockSha256);
+  assert.equal(
+    await hash(`${manifest.sdkRoot}/node_modules/.package-lock.json`),
+    manifest.installedDependencyLockSha256,
   );
+  verifyCurrentInputs();
+}
+await verifyCurrentArtifacts();
 const baseline = require(
   path('baseline', 'lib/sapling-tx-builder/sapling-transactions-builder.js'),
 ).SaplingTransactionBuilder;
@@ -212,7 +246,7 @@ assert.deepEqual(
 await construct(candidate, 'randomized', [10], 0, 0, () => {
   throw new Error('One output needs no shuffle entropy');
 });
-assert.throws(() => fixture(candidate, 'invalid'), /Unknown output order/);
+assert.throws(() => fixture(candidate, 'invalid'), /Unknown (?:Sapling )?output order/);
 const count = 4096;
 const corpus = [];
 const measurements = [];
@@ -259,11 +293,11 @@ for (const recipients of [1, 2]) {
     corpus.push({ variant: name, recipients, positions });
   }
 }
-const directory = new URL('.cache/output-order/results/', root);
-await mkdir(directory, { recursive: true });
-const manifest = JSON.parse(
-  await readFile(new URL('.cache/output-order/build-manifest.json', root), 'utf8'),
+const directory = new URL(
+  current ? '.cache/output-order-current/privacy/' : '.cache/output-order/results/',
+  root,
 );
+await mkdir(directory, { recursive: true });
 const report = {
   source: manifest,
   workload: {
@@ -288,6 +322,21 @@ const report = {
   },
   measurements,
 };
-await writeFile(new URL('measurement.json', directory), JSON.stringify(report, null, 2));
+await verifyCurrentArtifacts();
+if (current) {
+  await writeFile(
+    new URL('construction-compatibility.json', directory),
+    JSON.stringify({ source: manifest, checks: report.compatibility }, null, 2),
+  );
+}
+const privacyReport = current
+  ? {
+      source: report.source,
+      workload: report.workload,
+      measurements: report.measurements,
+      inputHashesVerified: true,
+    }
+  : report;
+await writeFile(new URL('measurement.json', directory), JSON.stringify(privacyReport, null, 2));
 await writeFile(new URL('positions.json', directory), JSON.stringify(corpus));
 console.log(JSON.stringify({ compatibility: report.compatibility, measurements }, null, 2));

@@ -15,7 +15,8 @@ assert not subprocess.check_output(['git', 'status', '--porcelain'], cwd=SDK, te
 for data in manifest['variants'].values():
     for name, expected in data['artifacts'].items():
         assert sha(Path(data['directory']) / name) == expected, name
-served = {str(p.relative_to(ROOT / 'dist')): sha(p) for p in sorted((ROOT / 'dist').rglob('*')) if p.is_file()}
+browser_dist = Path(manifest.get('browserDist', ROOT / 'dist'))
+served = {str(p.relative_to(browser_dist)): sha(p) for p in sorted(browser_dist.rglob('*')) if p.is_file()}
 assert served == manifest['servedArtifacts'], 'Served build changed during verification'
 assert sha(SDK / 'package-lock.json') == manifest['dependencyLockSha256']
 assert sha(SDK / 'node_modules/.package-lock.json') == manifest['installedDependencyLockSha256']

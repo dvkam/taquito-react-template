@@ -38,7 +38,7 @@ Use `pnpm test`, `pnpm check`, or `pnpm format` for individual tasks. `pnpm-work
 
 Balances and counter values remain decimal strings. Conflicting writes share a pending guard. A failed read after a confirmed write does not erase the operation receipt or trigger another write.
 
-The app uses Taquito's supported wallet exports and default pairing UI. It does not contain private signing keys. Never put keys into a Vite environment variable, since those values can enter the browser bundle.
+The wallet controls use Taquito's supported wallet exports and default pairing UI. The Sapling lab contains published disposable spending keys for its local tests. They are not wallet credentials. Never put keys into a Vite environment variable, since those values can enter the browser bundle.
 
 ## React Compiler and browser support
 
@@ -75,7 +75,7 @@ See [the local pool guide](docs/sapling-pool.md) for setup and independent accep
 
 ### Output-order privacy experiment
 
-The local [output-order experiment](experiments/output-order/README.md) compares an unchanged SDK with optional pre-signature shuffling. Its position measurements and protocol compatibility checks are separate. The ordinary app retains its original SDK. Read [the results](docs/sapling-output-order-experiment.md) for the measured signal, compatibility evidence and limitations. No upstream issue or PR has been created.
+The local [output-order experiment](experiments/output-order/README.md) compares an unchanged SDK with optional pre-signature shuffling. Its position measurements and protocol compatibility checks are separate. The ordinary app retains its original SDK. Read [the results](docs/sapling-output-order-experiment.md) for the measured signal, compatibility evidence and limitations. The SDK proposal is tracked in [Taquito issue #3472](https://github.com/ecadlabs/taquito/issues/3472). No PR has been opened for it.
 
 ### Inspect the funded cycle
 

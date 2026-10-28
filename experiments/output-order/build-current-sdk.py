@@ -6,6 +6,7 @@ import json
 import os
 import subprocess
 import tarfile
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 SDK = Path(os.environ.get('SAPLING_ORDER_SDK_ROOT', '/home/david/workspace/taquito-3472')).resolve()
@@ -26,8 +27,8 @@ base = git('rev-parse', 'origin/main')
 if git('merge-base', head, base) != base:
     raise RuntimeError('Rebase the local SDK contribution onto recorded main first.')
 archive = subprocess.check_output(['git', 'archive', base, 'tsconfig.json', 'tsconfig.base.json', 'tsconfig.prod.json', 'packages/taquito-sapling'], cwd=SDK)
-baseline = CACHE / 'baseline'
-baseline.mkdir(parents=True, exist_ok=True)
+# A fresh directory prevents removed upstream files surviving from an earlier run.
+baseline = Path(tempfile.mkdtemp(prefix='baseline-', dir=CACHE))
 with tarfile.open(fileobj=io.BytesIO(archive)) as files:
     files.extractall(baseline, filter='data')
 package = baseline / 'packages/taquito-sapling'

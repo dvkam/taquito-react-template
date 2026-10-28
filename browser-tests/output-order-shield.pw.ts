@@ -12,7 +12,9 @@ for (const variant of ['baseline', 'candidate-randomized'] as const) {
   }, info) => {
     test.setTimeout(900_000);
     await page.goto('./experiments/output-order/index.html');
-    const asset = (await readdir('dist/assets')).find((name) => /^order.worker-.*\.js$/.test(name));
+    const asset = (await readdir(`${process.env['SAPLING_DIST_DIR'] || 'dist'}/assets`)).find(
+      (name) => /^order.worker-.*\.js$/.test(name),
+    );
     expect(asset).toBeDefined();
     const worker = await page.evaluateHandle(
       (url) => new Worker(url, { type: 'module' }),

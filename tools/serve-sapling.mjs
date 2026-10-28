@@ -7,7 +7,7 @@ import { verifyTransaction } from './sapling-verify.mjs';
 import { poolRequest } from './pool-http.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const dist = resolve(root, 'dist');
+const dist = resolve(root, process.env.SAPLING_DIST_DIR || 'dist');
 const params = resolve(
   process.env.SAPLING_PARAMS_PARENT || resolve(root, '.cache/sapling'),
   'zcash-params',

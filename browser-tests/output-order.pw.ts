@@ -15,8 +15,8 @@ for (const variant of ['baseline', 'candidate-default', 'candidate-randomized'] 
     const pageErrors: string[] = [];
     page.on('pageerror', (error) => pageErrors.push(error.message));
     await page.goto('./experiments/output-order/index.html');
-    const workerAsset = (await readdir('dist/assets')).find((name) =>
-      /^order.worker-.*\.js$/.test(name),
+    const workerAsset = (await readdir(`${process.env['SAPLING_DIST_DIR'] || 'dist'}/assets`)).find(
+      (name) => /^order.worker-.*\.js$/.test(name),
     );
     expect(workerAsset).toBeDefined();
     const worker = await page.evaluateHandle(

@@ -21,7 +21,8 @@ def verify():
             if sha(Path(data['directory']) / name) != expected:
                 raise RuntimeError('SDK artifact changed: ' + name)
 verify()
-env = dict(os.environ, OUTPUT_ORDER_EXPERIMENT='1', PAGES_BASE_PATH='/proof-lab/', PORT=os.environ.get('PORT', '4189'), SAPLING_ORDER_BASELINE_SDK=manifest['browserPaths']['baseline'], SAPLING_ORDER_CANDIDATE_SDK=manifest['browserPaths']['candidate'])
+browser_dist = CACHE / 'browser-dist'
+env = dict(os.environ, SAPLING_DIST_DIR=str(browser_dist), OUTPUT_ORDER_EXPERIMENT='1', PAGES_BASE_PATH='/proof-lab/', PORT=os.environ.get('PORT', '4189'), SAPLING_ORDER_BASELINE_SDK=manifest['browserPaths']['baseline'], SAPLING_ORDER_CANDIDATE_SDK=manifest['browserPaths']['candidate'])
 
 def run(command, name):
     with (CACHE / (name + '.log')).open('w') as log:
@@ -32,8 +33,9 @@ def run(command, name):
         if process.wait():
             raise RuntimeError(name + ' failed; retain its logs before retrying')
 
-run(['pnpm', 'exec', 'vite', 'build'], 'browser-build')
-manifest['servedArtifacts'] = {str(p.relative_to(ROOT / 'dist')): sha(p) for p in sorted((ROOT / 'dist').rglob('*')) if p.is_file()}
+run(['pnpm', 'exec', 'vite', 'build', '--outDir', str(browser_dist)], 'browser-build')
+manifest['browserDist'] = str(browser_dist)
+manifest['servedArtifacts'] = {str(p.relative_to(browser_dist)): sha(p) for p in sorted((browser_dist).rglob('*')) if p.is_file()}
 manifest['protocol'] = subprocess.check_output([str(ROOT / '.cache/sapling/octez-client'), '--version'], text=True).strip()
 (CACHE / 'protocol-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
 run(['pnpm', 'exec', 'playwright', 'test', '--config', 'playwright.output-order.config.ts', '--output', 'test-results/output-order-current'], 'protocol-tests')
