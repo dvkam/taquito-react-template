@@ -113,15 +113,23 @@ export async function runPoolCycle(
     publicHistory.push(publicPoolState(snapshot, applied.operationHash));
   }
   if (!active()) return null;
-  const { view } = await worker.act('observe', snapshot);
+  const lastReceipt = publicHistory.at(-1)?.operationHash ?? undefined;
+  let observation;
+  try {
+    observation = await worker.act('observe', snapshot);
+  } catch {
+    if (!active()) return null;
+    throw new PoolReceiptError(lastReceipt);
+  }
   if (!active()) return null;
-  if (!view) throw new Error('Missing decrypted balances');
+  const { view } = observation;
   if (
+    !view ||
     view.aliceMutez !== '7000000' ||
     view.bobMutez !== '1000000' ||
     snapshot.poolMutez !== '8000000' ||
     snapshot.recipientMutez !== '2000000'
   )
-    throw new Error('The local balances did not reconcile.');
+    throw new PoolReceiptError(lastReceipt);
   return { snapshot, view, publicHistory };
 }

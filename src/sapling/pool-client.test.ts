@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest';
-import { createPoolWorker, runPoolCycle } from './pool-client';
+import { createPoolWorker, PoolReceiptError, runPoolCycle } from './pool-client';
 import type { PoolSnapshot } from './pool-protocol';
 
 class FakeWorker {
@@ -194,3 +194,31 @@ it('retains the public receipt if an accepted snapshot belongs to a different po
   );
   expect(worker.act).toHaveBeenCalledOnce();
 });
+
+it.each(['rejected', 'missing', 'alice-mismatch', 'bob-mismatch'])(
+  'retains the final public receipt after a %s observation',
+  async (failure) => {
+    mockCycle();
+    const act = vi.fn().mockResolvedValue({ transactionHex: 'abcd' });
+    for (let i = 0; i < 3; i++) act.mockResolvedValueOnce({ transactionHex: 'abcd' });
+    if (failure === 'rejected') act.mockRejectedValueOnce(new Error('PRIVATE_DECRYPTION_FAILURE'));
+    else if (failure === 'missing') act.mockResolvedValueOnce({});
+    else
+      act.mockResolvedValueOnce({
+        view: {
+          ...successfulView,
+          [failure === 'alice-mismatch' ? 'aliceMutez' : 'bobMutez']: '0',
+        },
+      });
+    const running = runPoolCycle({ act, dispose: vi.fn() }, vi.fn(), () => true);
+    await expect(running).rejects.toBeInstanceOf(PoolReceiptError);
+    await expect(running).rejects.toThrow('Applied locally: op-3');
+    await expect(running).rejects.not.toThrow('PRIVATE_DECRYPTION_FAILURE');
+    expect(act.mock.calls.map(([action]) => action)).toEqual([
+      'shield',
+      'transfer',
+      'unshield',
+      'observe',
+    ]);
+  },
+);
