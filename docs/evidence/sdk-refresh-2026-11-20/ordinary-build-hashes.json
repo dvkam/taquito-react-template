@@ -1,0 +1,15 @@
+{
+  "ordinaryFinalBuildMatchesTestedBuild": true,
+  "artifacts": {
+    "assets/SaplingLab-Blht5xnw.js": "dcbec183868dda88b3c2dc3928539b2a3ad4e775b6b93c1c2b65b7b8b065d1fd",
+    "assets/SaplingLab-DbLT2Ppl.css": "99c7e50a4a704ea15beb3a28b88262157cd2763a1d004cf6cde7c631099b58fb",
+    "assets/index-C6zwKqVC.css": "4f5faa77e9ddf30e5b91fffda75eadea7eca095652de677148cf0cf6533bb6d6",
+    "assets/index-lrMpMeBd.js": "52c9bc24e77e18a6d32198c2140b3918be779239666708037634b70c48438ac2",
+    "assets/index_bg-L1AbcfKk.wasm": "83780a5ec6655cacab84a72ab1147e6fcaf801998890d506bf1406f571372a25",
+    "assets/pool.worker-oGEKVnEF.js": "24531309ff6db433c70a021d0d6094ddc4152942a57a46b8fe742d5df153c932",
+    "assets/proof.worker-uhBRzlCx.js": "9f1bf71a8d3aefaa761e47162047b6a1d70fbbc1348e34d4a38d20843ca4d9fe",
+    "built-with-taquito.png": "9ace1a07273d4bf7dc00ee1249b54225618c0cf0a991ef65626bb62c06c0d676",
+    "favicon.png": "03ee8bb6f39aeedda997aafcd2c35c5de830d05a1779ade8f4b82d326cc21958",
+    "index.html": "d68a7ec06f62dd0a8ba2884dc95b99d0edfbb94604089daefdff91cb03447f01"
+  }
+}

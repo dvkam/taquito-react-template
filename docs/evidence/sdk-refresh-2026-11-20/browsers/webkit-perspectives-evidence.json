@@ -1,0 +1,16 @@
+{
+  "publicText": "What the chain reveals\n\nAmounts entering or leaving the pool are public. A private update does not reveal its recipients or note values directly.\n\nPublic contract backing\n8 XTZ\n8000000 mutez\nPublic recipient payout\n2 XTZ\n2000000 mutez\nSeparate payer fees and storage costs\n0.584129 XTZ\n584129 mutez\nEncrypted outputs recorded\n4\nSpent-note nullifiers recorded\n2\nPublic pool history\nDeposit\nBacking change: 10 XTZ. New encrypted outputs: 1. New nullifiers: 0.\nLocal operation: oo963CnJXLiy4fpCqchvPG8jvqQeJnNGdGCFenXgQekDXVq2wXS\nPrivate update\nBacking change: 0 XTZ. New encrypted outputs: 2. New nullifiers: 1.\nLocal operation: onoKnF713WJpPVaAC2h6gR9KpuzSQ2ZkzdALKnEbsvJV16q1VEy\nWithdrawal\nBacking change: -2 XTZ. New encrypted outputs: 1. New nullifiers: 1.\nLocal operation: oogb1GagrXGhmykqTd4PSsb5e9WRRJpeSE41SCYcoN72u4RYs8w\nInspect public identifiers\n\nPublic data does not directly label change. Timing, counts, the public payer, and builder patterns may still reveal information. This view is not a proof of anonymity.",
+  "stages": [
+    "Creating a funded local contract.",
+    "Preparing the 10 XTZ deposit.",
+    "Preparing a private update.",
+    "Preparing the 2 XTZ withdrawal.",
+    "Local payment cycle verified."
+  ],
+  "balances": {
+    "alice": "7000000",
+    "bob": "1000000",
+    "backing": "8000000",
+    "payout": "2000000"
+  }
+}

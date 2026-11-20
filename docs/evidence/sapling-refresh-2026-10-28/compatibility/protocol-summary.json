@@ -1,0 +1,73 @@
+{
+  "protocolHash": "PtTALLiNtPec7mE7yY4m3k26J8Qukef3E3ehzhfXgFZKGtDdAXu",
+  "octezBinarySha256": "2e03901db6e0eab373e16ecf1d37055f6adf8a300a3cbed449eb61e45a511b63",
+  "baseRevision": "e9a573bbb2699a64bfdc5bb1416c90015557b178",
+  "candidateRevision": "179d34c3f90b0bc33df9b98b0d8b72c8e8a2d891",
+  "browser": "Chromium",
+  "octez": "e5d8a6b8 (2026-10-15 09:10:29 +0200) (Octez 25.3 (build: 0))",
+  "servedArtifactHashesVerified": true,
+  "sdkArtifactHashesVerified": true,
+  "dependencyLocksUnchanged": true,
+  "cycles": [
+    {
+      "variant": "candidate-randomized",
+      "acceptedApplications": 6,
+      "changeOutputPosition": 1,
+      "changeSpentInLaterAction": true,
+      "rejectedMutationsWithUnchangedState": 2,
+      "preparationAttempts": {
+        "seed": 1,
+        "transfer": 3,
+        "change-spend": 1,
+        "withdraw": 1,
+        "exact-multi": 1,
+        "multi": 1
+      }
+    },
+    {
+      "variant": "baseline",
+      "acceptedApplications": 6,
+      "changeOutputPosition": 2,
+      "changeSpentInLaterAction": true,
+      "rejectedMutationsWithUnchangedState": 2,
+      "preparationAttempts": {
+        "seed": 1,
+        "transfer": 1,
+        "change-spend": 1,
+        "withdraw": 1,
+        "exact-multi": 1,
+        "multi": 1
+      }
+    },
+    {
+      "variant": "candidate-default",
+      "acceptedApplications": 3,
+      "changeOutputPosition": 2,
+      "changeSpentInLaterAction": false,
+      "rejectedMutationsWithUnchangedState": 2,
+      "preparationAttempts": {
+        "seed": 1,
+        "transfer": 1,
+        "withdraw": 1
+      }
+    }
+  ],
+  "shields": [
+    {
+      "variant": "candidate-randomized",
+      "acceptedApplications": 1,
+      "preparationAttempts": 5,
+      "aliceOutputPosition": 1,
+      "bobOutputPosition": 0
+    },
+    {
+      "variant": "baseline",
+      "acceptedApplications": 1,
+      "preparationAttempts": 1,
+      "aliceOutputPosition": 0,
+      "bobOutputPosition": 1
+    }
+  ],
+  "acceptedApplications": 17,
+  "rejectedMutationsWithUnchangedState": 6
+}

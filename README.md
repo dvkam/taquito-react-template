@@ -2,6 +2,10 @@
 
 A React starter for connecting a Tezos wallet, sending test XTZ, and calling a counter contract on Shadownet.
 
+## Local Sapling proof experiment
+
+The local branch includes a real browser-worker proof lab with an independent Octez checker. Read [setup, operation, and verification instructions](docs/sapling-experiment.md). The proof-only mode uses disposable public fixture keys and submits no transaction. The funded local cycle is described below. Its verifier runs only through the local experiment server.
+
 ## Run locally
 
 Use Node 24 and pnpm 12.14.0. The repository pins both versions.
@@ -20,7 +24,7 @@ pnpm build
 pnpm preview
 ```
 
-The build runs type-aware Oxlint, Oxfmt, strict TypeScript checks for the app and tools, Vitest tests, and Vite's production build. GitHub Actions runs the same command on pushes and pull requests. Tests use controlled wallet responses and need no account or private key.
+The build verifies the installed SDK package bytes, then runs type-aware Oxlint, Oxfmt, strict TypeScript checks for the app and tools, Vitest tests, and Vite's production build. GitHub Actions runs the same command on pushes and pull requests. Tests use controlled wallet responses and need no account or private key.
 
 Use `pnpm test`, `pnpm check`, or `pnpm format` for individual tasks. `pnpm-workspace.yaml` enables automatic deduplication. Keep `pnpm-lock.yaml` committed.
 
@@ -34,7 +38,7 @@ Use `pnpm test`, `pnpm check`, or `pnpm format` for individual tasks. `pnpm-work
 
 Balances and counter values remain decimal strings. Conflicting writes share a pending guard. A failed read after a confirmed write does not erase the operation receipt or trigger another write.
 
-The app uses Taquito's supported wallet exports and default pairing UI. It does not contain private signing keys. Never put keys into a Vite environment variable, since those values can enter the browser bundle.
+The wallet controls use Taquito's supported wallet exports and default pairing UI. The Sapling lab contains published disposable spending keys for its local tests. They are not wallet credentials. Never put keys into a Vite environment variable, since those values can enter the browser bundle.
 
 ## React Compiler and browser support
 
@@ -62,3 +66,21 @@ PAGES_BASE_PATH=/taquito-react-template/ pnpm preview
 ```
 
 GitHub Pages must use the GitHub Actions publishing source. Deployments use the `github-pages` environment and GitHub's short-lived deployment token. No separate deployment secret is required.
+
+### Funded local Sapling cycle
+
+The Sapling lab also has a **Run local payment cycle** control. It creates an isolated local Octez pool, shields 10 test XTZ, privately sends 3 to Bob and withdraws 2. The result reports Alice's 7, Bob's 1, contract backing of 8 and a recipient payout of 2, with payer fees and storage costs separate. It uses published disposable identities and no public network.
+
+See [the local pool guide](docs/sapling-pool.md) for setup and independent acceptance checks, and [the privacy experiment](docs/sapling-privacy.md) for the observer model and limits on anonymity claims.
+
+### Output-order privacy experiment
+
+The local [output-order experiment](experiments/output-order/README.md) compares omitted, preserve and randomized modes in the same pinned current SDK. Its mocked position measurements and real protocol compatibility checks are separate. Output ordering shipped in [Taquito PR #3499](https://github.com/ecadlabs/taquito/pull/3499). The ordinary app keeps the default preserved order. Read the [current SDK provenance](vendor/README.md) and the [historical results](docs/sapling-output-order-experiment.md) for the scope and limits.
+
+### Inspect the funded cycle
+
+The local cycle has separate Public observer, Alice, and Bob reports. See [perspective usage](docs/sapling-perspectives.md) and [executed evidence](docs/sapling-perspectives-evidence.md). The selector uses published demo keys and provides no access control.
+
+See the [28 October refresh evidence](docs/evidence/sapling-refresh-2026-10-28/README.md) for historical privacy measurements, separate compatibility results, and the [review record](docs/evidence/sapling-refresh-2026-10-28/review.md).
+
+See [the November SDK refresh](docs/sdk-refresh-2026-11-20.md) for the current source pin and separate proof, privacy and compatibility gates.

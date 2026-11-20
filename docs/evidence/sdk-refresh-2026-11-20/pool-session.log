@@ -1,0 +1,9 @@
+$ node tools/verify-pool-session.mjs
+Checked 781 histories of up to four actions against the real session module, including overlapping calls.
+Confirmed receipt survives a failed state refresh.
+baseline: passed
+lost confirmed receipt: broken variant detected
+missing busy guard: broken variant detected
+missing stale guard: broken variant detected
+missing uncertain guard: broken variant detected
+version moves on rejection: broken variant detected

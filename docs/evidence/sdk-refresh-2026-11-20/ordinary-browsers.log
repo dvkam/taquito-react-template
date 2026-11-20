@@ -1,0 +1,39 @@
+
+Running 18 tests using 1 worker
+
+Viewing-only state checked without parameter downloads.
+Funded shield accepted; invalid deposits preserved state.
+[WebServer] STALE_POOL_STATE
+Private transfer accepted; duplicate spend rejected.
+  ✓   1 [chromium] › browser-tests/pool.pw.ts:5:1 › funded pool preserves backing and atomically rejects invalid calls (4.2m)
+  ✓   2 [chromium] › browser-tests/pool.pw.ts:146:1 › the local payment control separates public and viewing-key perspectives (2.9m)
+  ✓   3 [chromium] › browser-tests/sapling.pw.ts:5:1 › opens the Sapling lab without downloading proving parameters (827ms)
+  ✓   4 [chromium] › browser-tests/sapling.pw.ts:17:1 › prepares a real worker proof and independently verifies it with Octez (1.0m)
+  ✓   5 [chromium] › browser-tests/sapling.pw.ts:119:1 › recovers from a failed download and stopping a worker (21.6s)
+  ✓   6 [chromium] › browser-tests/sapling.pw.ts:137:1 › keeps the lab usable at a narrow viewport with reduced motion (984ms)
+Viewing-only state checked without parameter downloads.
+Funded shield accepted; invalid deposits preserved state.
+[WebServer] STALE_POOL_STATE
+Private transfer accepted; duplicate spend rejected.
+  ✓   7 [firefox] › browser-tests/pool.pw.ts:5:1 › funded pool preserves backing and atomically rejects invalid calls (5.6m)
+  ✓   8 [firefox] › browser-tests/pool.pw.ts:146:1 › the local payment control separates public and viewing-key perspectives (2.9m)
+  ✓   9 [firefox] › browser-tests/sapling.pw.ts:5:1 › opens the Sapling lab without downloading proving parameters (2.7s)
+  ✓  10 [firefox] › browser-tests/sapling.pw.ts:17:1 › prepares a real worker proof and independently verifies it with Octez (53.4s)
+  ✓  11 [firefox] › browser-tests/sapling.pw.ts:119:1 › recovers from a failed download and stopping a worker (21.0s)
+  ✓  12 [firefox] › browser-tests/sapling.pw.ts:137:1 › keeps the lab usable at a narrow viewport with reduced motion (1.3s)
+Viewing-only state checked without parameter downloads.
+Funded shield accepted; invalid deposits preserved state.
+[WebServer] STALE_POOL_STATE
+Private transfer accepted; duplicate spend rejected.
+  ✓  13 [webkit] › browser-tests/pool.pw.ts:5:1 › funded pool preserves backing and atomically rejects invalid calls (3.0m)
+  ✓  14 [webkit] › browser-tests/pool.pw.ts:146:1 › the local payment control separates public and viewing-key perspectives (2.1m)
+  ✓  15 [webkit] › browser-tests/sapling.pw.ts:5:1 › opens the Sapling lab without downloading proving parameters (918ms)
+  ✓  16 [webkit] › browser-tests/sapling.pw.ts:17:1 › prepares a real worker proof and independently verifies it with Octez (31.2s)
+  ✓  17 [webkit] › browser-tests/sapling.pw.ts:119:1 › recovers from a failed download and stopping a worker (13.4s)
+  ✓  18 [webkit] › browser-tests/sapling.pw.ts:137:1 › keeps the lab usable at a narrow viewport with reduced motion (913ms)
+
+  Slow test file: [firefox] › browser-tests/pool.pw.ts (8.6m)
+  Slow test file: [chromium] › browser-tests/pool.pw.ts (7.1m)
+  Slow test file: [webkit] › browser-tests/pool.pw.ts (5.1m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  18 passed (24.4m)

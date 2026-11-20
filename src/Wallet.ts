@@ -16,11 +16,11 @@ type Account = Awaited<ReturnType<typeof wallet.client.getActiveAccount>>;
 type Observer = (address: string | undefined, error: unknown) => void;
 const observers = new Set<Observer>();
 let revision = 0;
-let subscription: Promise<void> | undefined;
+let subscription: ReturnType<typeof wallet.client.subscribeToEvent> | undefined;
 let writePending = false;
 
 function addressOf(account: Account) {
-  if (account && account.network.type !== NetworkType.SHADOWNET)
+  if (account && account.network?.type !== NetworkType.SHADOWNET)
     throw new Error('Select a Shadownet wallet account.');
   return account?.address;
 }

@@ -1,0 +1,26 @@
+$ vitest run
+
+ RUN  v5.0.5 <playground>
+
+ ✓ src/sapling/client.test.ts (24 tests) 119ms
+ ✓ src/transfer.test.ts (14 tests) 27ms
+ ✓ src/sapling/pool-client.test.ts (12 tests) 144ms
+ ✓ src/Wallet.test.ts (12 tests) 613ms
+ ✓ src/sapling/PoolPerspectives.test.tsx (3 tests) 756ms
+   ✓ starts public and removes private data across keyboard role changes 743ms
+ ✓ src/sapling/PoolCycle.test.tsx (4 tests) 855ms
+   ✓ does not present private diagnostic text after failure 414ms
+   ✓ clears a private perspective before restart and defaults back to public on completion 329ms
+ ✓ src/sapling/SaplingLab.test.tsx (10 tests) 1959ms
+   ✓ opens without loading proof parameters and counts UTF-8 memo bytes 466ms
+ ✓ src/App.test.tsx (20 tests) 5291ms
+   ✓ preserves fractional input at the wallet boundary 1180ms
+   ✓ keeps transfer available when the counter cannot load 698ms
+   ✓ blocks transfer and both counter directions while one write is pending 583ms
+   ✓ supports decrement and retains the receipt when a refresh fails 458ms
+   ✓ submits only once when the form receives two immediate submit events 333ms
+
+ Test Files  8 passed (8)
+      Tests  99 passed (99)
+   Start at  13:50:57
+   Duration  8.02s (environment 54%, tests 35%, setup 8%, import 3%, transform 1%)

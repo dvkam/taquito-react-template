@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useWalletSession } from './useWalletSession';
 import { network } from './network';
 import './App.css';
+
+const SaplingLab = lazy(() => import('./sapling/SaplingLab'));
 
 function TransferForm({
   pending,
@@ -59,6 +61,7 @@ function TransferForm({
 
 function App() {
   const session = useWalletSession();
+  const [labOpen, setLabOpen] = useState(false);
   const [view, setView] = useState<'transfer' | 'counter'>('transfer');
   const busy = session.restoring || session.pending;
   return (
@@ -205,6 +208,16 @@ function App() {
           </button>
         </div>
       </section>
+      <div className="wallet-controls" style={{ marginTop: '2rem' }}>
+        <button aria-expanded={labOpen} onClick={() => setLabOpen(!labOpen)}>
+          {labOpen ? 'Close Sapling lab' : 'Open Sapling lab'}
+        </button>
+      </div>
+      {labOpen && (
+        <Suspense fallback={<output aria-live="polite">Opening Sapling lab…</output>}>
+          <SaplingLab />
+        </Suspense>
+      )}
       <footer>
         <a href="https://taquito.io/">Built with Taquito</a>
       </footer>
