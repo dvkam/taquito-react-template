@@ -218,3 +218,10 @@ it('keeps one SDK subscription while removing individual observers', async () =>
   expect(second).toHaveBeenLastCalledWith(undefined, undefined);
   stopSecond();
 });
+
+it('rejects an account without network details with a Shadownet error', async () => {
+  const wallet = await import('./Wallet');
+  mocks.account.mockResolvedValue({ address });
+  await expect(wallet.sendTezos(address, '1', address)).rejects.toThrow(/Shadownet/);
+  expect(mocks.send).not.toHaveBeenCalled();
+});

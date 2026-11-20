@@ -4,18 +4,28 @@ import hashlib
 import json
 import os
 import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / 'tools'))
+from sdk_snapshot import load_snapshot
+load_snapshot(ROOT)
 CACHE = ROOT / '.cache/output-order-current'
 manifest = json.loads((CACHE / 'build-manifest.json').read_text())
 SDK = Path(manifest['sdkRoot'])
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 def verify():
-    if subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=SDK, text=True).strip() != manifest['candidateRevision']:
-        raise RuntimeError('SDK revision changed since build')
-    if subprocess.check_output(['git', 'status', '--porcelain'], cwd=SDK, text=True).strip():
-        raise RuntimeError('SDK source changed since build')
+    load_snapshot(ROOT)
+    if sha(ROOT / 'pnpm-lock.yaml') != manifest['appLockSha256']:
+        raise RuntimeError('Application dependency lock changed')
+    if sha(ROOT / manifest['vendorManifest']) != manifest['vendorManifestSha256']:
+        raise RuntimeError('Vendor manifest changed')
+    if sha(SDK / 'package-lock.json') != manifest['dependencyLockSha256'] or sha(SDK / 'node_modules/.package-lock.json') != manifest['installedDependencyLockSha256']:
+        raise RuntimeError('SDK dependency lock changed')
+    for name, expected in manifest['sourceInputs'].items():
+        if sha(SDK / name) != expected:
+            raise RuntimeError('SDK source changed: ' + name)
     for data in manifest['variants'].values():
         for name, expected in data['artifacts'].items():
             if sha(Path(data['directory']) / name) != expected:

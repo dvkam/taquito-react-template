@@ -4,7 +4,7 @@ import type { PoolSnapshot } from '../src/sapling/pool-protocol';
 import type { OrderResponse } from '../src/sapling/order-protocol';
 import { readOrderTransaction } from '../src/sapling/order-wire';
 
-for (const variant of ['baseline', 'candidate-randomized'] as const) {
+for (const variant of ['current-default', 'current-randomized'] as const) {
   test(`${variant}: multi-recipient shield preserves values and memos`, async ({
     page,
     request,
@@ -38,7 +38,7 @@ for (const variant of ['baseline', 'candidate-randomized'] as const) {
       );
     let proof = await act('multi-seed', session.snapshot);
     let attempts = 1;
-    if (variant === 'candidate-randomized') {
+    if (variant === 'current-randomized') {
       while (proof.preview!.notes[0]![0]!.position !== 1 && attempts < 32) {
         proof = await act('multi-seed', session.snapshot);
         attempts++;

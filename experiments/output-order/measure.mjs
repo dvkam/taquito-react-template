@@ -6,32 +6,14 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 const root = new URL('../../', import.meta.url);
 const require = createRequire(new URL('../../package.json', import.meta.url));
-const current = process.env['SAPLING_ORDER_CURRENT'] === '1';
-const cacheName = current ? 'output-order-current' : 'output-order';
 const manifest = JSON.parse(
-  await readFile(new URL(`.cache/${cacheName}/build-manifest.json`, root), 'utf8'),
+  await readFile(new URL('.cache/output-order-current/build-manifest.json', root), 'utf8'),
 );
-const sourceRequire = createRequire(
-  current
-    ? `${manifest.sdkRoot}/packages/taquito-sapling/package.json`
-    : '/home/david/workspace/taquito/packages/taquito-sapling/package.json',
-);
+const sourceRequire = createRequire(`${manifest.sdkRoot}/packages/taquito-sapling/package.json`);
 const BigNumber = sourceRequire('bignumber.js').default;
-const path = (variant, file) =>
-  current
-    ? `${manifest.variants[variant].directory}/dist/${file}`
-    : fileURLToPath(
-        new URL(`.cache/output-order/${variant}/packages/taquito-sapling/dist/${file}`, root),
-      );
-function verifyCurrentInputs() {
-  if (!current) return;
-  const git = (...args) =>
-    execFileSync('git', ['-C', manifest.sdkRoot, ...args], { encoding: 'utf8' }).trim();
-  assert.equal(git('rev-parse', 'HEAD'), manifest.candidateRevision);
-  assert.equal(git('status', '--porcelain'), '');
-}
+const path = (variant, file) => `${manifest.variants[variant].directory}/dist/${file}`;
 async function verifyCurrentArtifacts() {
-  if (!current) return;
+  execFileSync('python3', [fileURLToPath(new URL('tools/sdk_snapshot.py', root))]);
   const hash = async (file) =>
     createHash('sha256')
       .update(await readFile(file))
@@ -44,7 +26,10 @@ async function verifyCurrentArtifacts() {
     await hash(`${manifest.sdkRoot}/node_modules/.package-lock.json`),
     manifest.installedDependencyLockSha256,
   );
-  verifyCurrentInputs();
+  for (const [file, expected] of Object.entries(manifest.sourceInputs))
+    assert.equal(await hash(`${manifest.sdkRoot}/${file}`), expected, file);
+  assert.equal(await hash(new URL('pnpm-lock.yaml', root)), manifest.appLockSha256);
+  assert.equal(await hash(new URL(manifest.vendorManifest, root)), manifest.vendorManifestSha256);
 }
 await verifyCurrentArtifacts();
 const baseline = require(
@@ -53,7 +38,7 @@ const baseline = require(
 const candidate = require(
   path('candidate', 'lib/sapling-tx-builder/sapling-transactions-builder.js'),
 ).SaplingTransactionBuilder;
-const packagedBaseline =
+const installedCurrentBuilder =
   require('@taquito/sapling/dist/lib/sapling-tx-builder/sapling-transactions-builder.js').SaplingTransactionBuilder;
 const forger = new (require(
   path('baseline', 'lib/sapling-forger/sapling-forger.js'),
@@ -110,13 +95,13 @@ function fixture(Builder, outputOrder, randomBytes = secureBytes) {
     };
   };
   builder.createBindingSignature = async (parameters) => {
-    signed = parameters.outputs.map((output) => output.commitment.toString('hex'));
+    signed = parameters.outputs.map((output) => Buffer.from(output.commitment).toString('hex'));
     return createHash('sha512')
       .update(
         JSON.stringify({
           signed,
           balance: parameters.balance.toFixed(),
-          bound: parameters.boundData.toString('hex'),
+          bound: Buffer.from(parameters.boundData).toString('hex'),
         }),
       )
       .digest();
@@ -137,16 +122,16 @@ async function construct(Builder, outputOrder, amounts, change, iteration = 0, r
   });
   assert.deepEqual(
     setup.signed(),
-    tx.outputs.map((output) => output.commitment.toString('hex')),
+    tx.outputs.map((output) => Buffer.from(output.commitment).toString('hex')),
     'Outputs must be ordered before signature creation',
   );
-  const encoded = forger
-    .forgeSaplingTransaction({
+  const encoded = Buffer.from(
+    forger.forgeSaplingTransaction({
       ...tx,
       root: 'fbc2f4300c01f0b7820d00e3347c8da4ee614674376cbc45359daa54f9b5493e',
       boundData: Buffer.alloc(0),
-    })
-    .toString('hex');
+    }),
+  ).toString('hex');
   return {
     tx,
     encoded,
@@ -204,11 +189,11 @@ for (const [amounts, change] of [
   [[1, 1], 2],
 ]) {
   const before = await construct(baseline, undefined, amounts, change);
-  const packaged = await construct(packagedBaseline, undefined, amounts, change);
+  const packaged = await construct(installedCurrentBuilder, undefined, amounts, change);
   assert.equal(
     packaged.encoded,
     before.encoded,
-    'Source baseline must match the original installed vendor builder',
+    'Source baseline must match the installed current builder',
   );
   for (const policy of [undefined, 'preserve']) {
     const after = await construct(candidate, policy, amounts, change, 0, () => {
@@ -252,9 +237,9 @@ const corpus = [];
 const measurements = [];
 for (const recipients of [1, 2]) {
   for (const [name, Builder, mode] of [
-    ['unchanged', baseline, undefined],
-    ['candidate-default', candidate, undefined],
-    ['candidate-randomized', candidate, 'randomized'],
+    ['current-default', baseline, undefined],
+    ['current-preserve', candidate, 'preserve'],
+    ['current-randomized', candidate, 'randomized'],
   ]) {
     const positions = [];
     for (let i = 0; i < count; i++) {
@@ -287,16 +272,13 @@ for (const recipients of [1, 2]) {
         heldOut.length,
       ),
     };
-    if (mode === undefined) assert.equal(row.frozenLast.accuracy, 1);
+    if (mode !== 'randomized') assert.equal(row.frozenLast.accuracy, 1);
     else assert(histogram.every((value) => value > 0));
     measurements.push(row);
     corpus.push({ variant: name, recipients, positions });
   }
 }
-const directory = new URL(
-  current ? '.cache/output-order-current/privacy/' : '.cache/output-order/results/',
-  root,
-);
+const directory = new URL('.cache/output-order-current/privacy/', root);
 await mkdir(directory, { recursive: true });
 const report = {
   source: manifest,
@@ -311,7 +293,7 @@ const report = {
   },
   compatibility: {
     byteIdenticalDefaultCases: compatible,
-    originalVendorMatchesSourceBaseline: true,
+    installedCurrentSdkMatchesSource: true,
     invalidPolicyRejected: true,
     singleOutputConsumesNoShuffleEntropy: true,
     shieldDefaultIdentical: true,
@@ -323,20 +305,16 @@ const report = {
   measurements,
 };
 await verifyCurrentArtifacts();
-if (current) {
-  await writeFile(
-    new URL('construction-compatibility.json', directory),
-    JSON.stringify({ source: manifest, checks: report.compatibility }, null, 2),
-  );
-}
-const privacyReport = current
-  ? {
-      source: report.source,
-      workload: report.workload,
-      measurements: report.measurements,
-      inputHashesVerified: true,
-    }
-  : report;
+await writeFile(
+  new URL('construction-compatibility.json', directory),
+  JSON.stringify({ source: manifest, checks: report.compatibility }, null, 2),
+);
+const privacyReport = {
+  source: report.source,
+  workload: report.workload,
+  measurements: report.measurements,
+  inputHashesVerified: true,
+};
 await writeFile(new URL('measurement.json', directory), JSON.stringify(privacyReport, null, 2));
 await writeFile(new URL('positions.json', directory), JSON.stringify(corpus));
 console.log(JSON.stringify({ compatibility: report.compatibility, measurements }, null, 2));

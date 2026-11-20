@@ -2,3 +2,26 @@ autoDedupe: true
 
 lockfile:
   includeResolutionSettings: true
+
+minimumReleaseAgeExclude:
+  - '@ecadlabs/beacon-core@4.9.0-ecad-beta.6'
+  - '@ecadlabs/beacon-dapp@4.9.0-ecad-beta.6'
+  - '@ecadlabs/beacon-transport-matrix@4.9.0-ecad-beta.6'
+  - '@ecadlabs/beacon-transport-postmessage@4.9.0-ecad-beta.6'
+  - '@ecadlabs/beacon-transport-walletconnect@4.9.0-ecad-beta.6'
+  - '@ecadlabs/beacon-types@4.9.0-ecad-beta.6'
+  - '@ecadlabs/beacon-ui@4.9.0-ecad-beta.6'
+  - '@ecadlabs/beacon-utils@4.9.0-ecad-beta.6'
+
+overrides:
+  '@taquito/beacon-wallet': 'file:vendor/d2915a1b/taquito-beacon-wallet-25.1.1.tgz'
+  '@taquito/core': 'file:vendor/d2915a1b/taquito-core-25.1.1.tgz'
+  '@taquito/http-utils': 'file:vendor/d2915a1b/taquito-http-utils-25.1.1.tgz'
+  '@taquito/local-forging': 'file:vendor/d2915a1b/taquito-local-forging-25.1.1.tgz'
+  '@taquito/michel-codec': 'file:vendor/d2915a1b/taquito-michel-codec-25.1.1.tgz'
+  '@taquito/michelson-encoder': 'file:vendor/d2915a1b/taquito-michelson-encoder-25.1.1.tgz'
+  '@taquito/rpc': 'file:vendor/d2915a1b/taquito-rpc-25.1.1.tgz'
+  '@taquito/sapling': 'file:vendor/d2915a1b/taquito-sapling-25.1.1.tgz'
+  '@taquito/signer': 'file:vendor/d2915a1b/taquito-signer-25.1.1.tgz'
+  '@taquito/taquito': 'file:vendor/d2915a1b/taquito-taquito-25.1.1.tgz'
+  '@taquito/utils': 'file:vendor/d2915a1b/taquito-utils-25.1.1.tgz'

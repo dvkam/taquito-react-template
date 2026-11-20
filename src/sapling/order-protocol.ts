@@ -1,5 +1,5 @@
 import type { PoolSnapshot } from './pool-protocol';
-export type OrderVariant = 'baseline' | 'candidate-default' | 'candidate-randomized';
+export type OrderVariant = 'current-default' | 'current-preserve' | 'current-randomized';
 export type OrderAction =
   | 'seed'
   | 'multi-seed'

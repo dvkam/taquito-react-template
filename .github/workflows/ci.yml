@@ -28,5 +28,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Check SDK cache corruption controls
+        run: pnpm verify:sdk-cache
+
       - name: Run full build and checks
         run: pnpm run build

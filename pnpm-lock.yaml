@@ -166,22 +166,35 @@ settings:
   excludeLinksFromLockfile: false
   linkWorkspacePackages: false
 
+overrides:
+  '@taquito/beacon-wallet': file:vendor/d2915a1b/taquito-beacon-wallet-25.1.1.tgz
+  '@taquito/core': file:vendor/d2915a1b/taquito-core-25.1.1.tgz
+  '@taquito/http-utils': file:vendor/d2915a1b/taquito-http-utils-25.1.1.tgz
+  '@taquito/local-forging': file:vendor/d2915a1b/taquito-local-forging-25.1.1.tgz
+  '@taquito/michel-codec': file:vendor/d2915a1b/taquito-michel-codec-25.1.1.tgz
+  '@taquito/michelson-encoder': file:vendor/d2915a1b/taquito-michelson-encoder-25.1.1.tgz
+  '@taquito/rpc': file:vendor/d2915a1b/taquito-rpc-25.1.1.tgz
+  '@taquito/sapling': file:vendor/d2915a1b/taquito-sapling-25.1.1.tgz
+  '@taquito/signer': file:vendor/d2915a1b/taquito-signer-25.1.1.tgz
+  '@taquito/taquito': file:vendor/d2915a1b/taquito-taquito-25.1.1.tgz
+  '@taquito/utils': file:vendor/d2915a1b/taquito-utils-25.1.1.tgz
+
 importers:
 
   .:
     dependencies:
       '@taquito/beacon-wallet':
-        specifier: 25.1.0
-        version: 25.1.0
+        specifier: file:vendor/d2915a1b/taquito-beacon-wallet-25.1.1.tgz
+        version: file:vendor/d2915a1b/taquito-beacon-wallet-25.1.1.tgz
       '@taquito/sapling':
-        specifier: file:vendor/taquito-sapling-25.1.0.tgz
-        version: file:vendor/taquito-sapling-25.1.0.tgz
+        specifier: file:vendor/d2915a1b/taquito-sapling-25.1.1.tgz
+        version: file:vendor/d2915a1b/taquito-sapling-25.1.1.tgz
       '@taquito/taquito':
-        specifier: 25.1.0
-        version: 25.1.0
+        specifier: file:vendor/d2915a1b/taquito-taquito-25.1.1.tgz
+        version: file:vendor/d2915a1b/taquito-taquito-25.1.1.tgz
       '@taquito/utils':
-        specifier: 25.1.0
-        version: 25.1.0
+        specifier: file:vendor/d2915a1b/taquito-utils-25.1.1.tgz
+        version: file:vendor/d2915a1b/taquito-utils-25.1.1.tgz
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -313,29 +326,29 @@ packages:
     resolution: {integrity: sha512-OoKoR0f76dCY666JlcbhmVTs2drYj1GUXZTYTcbUgJjh9Nv41aFfZ21bPQTERm5+L5cBDo466NltB2lplS5GBw==}
     engines: {node: '>=20.19.0'}
 
-  '@ecadlabs/beacon-core@4.8.4-ecad':
-    resolution: {integrity: sha512-UABP0xOGCK5r7Ys3Wk+lugLdIzJTo5Y0mDVcbSETevj2GiLN91sPA6jP6I2JfKJo+YHXJWXTher5j5z6xKGP6A==}
+  '@ecadlabs/beacon-core@4.9.0-ecad-beta.6':
+    resolution: {integrity: sha512-z1Wk3H8DP+PhGZiEU884hhSCakV1ghmel7n4LbL0RhFsTAMWnYr2bjEtMpFYm5qQDyaSwKDGXPEl8BZu19OSXQ==}
 
-  '@ecadlabs/beacon-dapp@4.8.4-ecad':
-    resolution: {integrity: sha512-oqhpzfO37xQ1gFQ2pqpSzlzEAQdTK7LqM517MFvJZFWkt6vS3GPjgQwyihg9Qj11f0GRP004/1uXvOJoX5hbJA==}
+  '@ecadlabs/beacon-dapp@4.9.0-ecad-beta.6':
+    resolution: {integrity: sha512-QbU4XQ87Qofa9MFYp0DfrBF+tzc62R01GcGXnp4rzqxyLEwlk/neqHQ0Eq9GoKDSe7sR34LaTCrBd9ioZtkl5A==}
 
-  '@ecadlabs/beacon-transport-matrix@4.8.4-ecad':
-    resolution: {integrity: sha512-VJ49Jy18jrhjGZCuhpU+beetglWW0H1W4C0l+dyC/q1EA/4Bmwz0cceetv1SYeriR3en0kHAYi7mbkgqvY0nDA==}
+  '@ecadlabs/beacon-transport-matrix@4.9.0-ecad-beta.6':
+    resolution: {integrity: sha512-RcuZpJVYZcbJ0CK7QgzQwBMxLjQh2KsffipVv9DSDg/WIgyj05nbwh7Hp9qKVTRtlR3NZM/f6r2YjOdb8jUpAA==}
 
-  '@ecadlabs/beacon-transport-postmessage@4.8.4-ecad':
-    resolution: {integrity: sha512-/OkFfCyO1EYOKSbccx/2HM8ZrLg1KRkDgli2Axqwl9g9D7pHjFFt7kxUeSBCbQ3eUmV8jGwDPpDtnrHfRsdynQ==}
+  '@ecadlabs/beacon-transport-postmessage@4.9.0-ecad-beta.6':
+    resolution: {integrity: sha512-22uTVkCt1J4JuXfex1GsPoIY9ULdic3l/CBnLSFseVDqHV8IB4YkFqF3P1bh7fgFsm+z9iA87ne4LfaEySzLog==}
 
-  '@ecadlabs/beacon-transport-walletconnect@4.8.4-ecad':
-    resolution: {integrity: sha512-urZ/onRBPgdkINNm4PI31qIdyBmTEO4ze3z4jHusdMMumNqZlvDD9vIIrLxP9v+g5UdQa75Kld4Fof667Zv1Tg==}
+  '@ecadlabs/beacon-transport-walletconnect@4.9.0-ecad-beta.6':
+    resolution: {integrity: sha512-yDMZaaFP2T17Vf9bFtElDx2dWe7+D5sXJzrs6n50E3o8LA/E3nJvp3V10aO2SnIuuqlAq923RyiHzdKAPXTl3Q==}
 
-  '@ecadlabs/beacon-types@4.8.4-ecad':
-    resolution: {integrity: sha512-LO07IxtGjeQXyiuZSxXoB8jTETlpct+3kFZP8mRAfbaGTrDDouR7cwYx623reKHn7ap9VtQXCkzzPBYRZNCV5g==}
+  '@ecadlabs/beacon-types@4.9.0-ecad-beta.6':
+    resolution: {integrity: sha512-PpH4hwJY59odEH/MxNkx5uAp3JVPPspcArynET6QZs4q7GHP5I4X1hObn3x+t5nHsT8MHhUklT+7Mf5OTxXb1A==}
 
-  '@ecadlabs/beacon-ui@4.8.4-ecad':
-    resolution: {integrity: sha512-FcOVHQ/o32JmbPyL+N+GiL6O0KcXfR4hZDxFiyVJKBj+3sT3GuK3XyT57AAfP2BZNqwa2uXGs9NoyH5OZiMjYw==}
+  '@ecadlabs/beacon-ui@4.9.0-ecad-beta.6':
+    resolution: {integrity: sha512-ZNN9Q0kT2zi9p49Tup9+1tq2UmEpTDH/2do6/N2MDD4LBYGx8F/nhN8wF9gkHlyCwDA2P9/vUTB+6U6hXTwkZg==}
 
-  '@ecadlabs/beacon-utils@4.8.4-ecad':
-    resolution: {integrity: sha512-9pKJyeXbxKH80PmuBF1JQwD/WMTMfzsGHoWTLg0kr9uN1C6IcjTtne/S2KiTvCoYvKpdSsEvTpSBLeuNUNhftw==}
+  '@ecadlabs/beacon-utils@4.9.0-ecad-beta.6':
+    resolution: {integrity: sha512-3RKiJDWouM2kUuaqwLr5YhyQ2/jh9F2UhyOh1At2rWOG2FhDfZGOg2Y5Y90JnmNYdeCds/vsop/39DyE32IghQ==}
 
   '@ethersproject/address@5.8.0':
     resolution: {integrity: sha512-GhH/abcC46LJwshoN+uBNoKVFPxUuZm6dA257z0vZkKmU1+t8xTn8oK7B9qrj8W2rFRMch4gbJl6PmVxjxBEBA==}
@@ -402,10 +415,6 @@ packages:
     resolution: {integrity: sha512-warwspo+UYUPep0Q+vtdVB4Ugn8GGQj8iyB3gnRWsztmUHTI3S1nhdiWNsPUGL0vud7JlRRk1XEu7Lq1KGTnMQ==}
     engines: {node: ^14.21.3 || >=16}
 
-  '@noble/curves@1.9.7':
-    resolution: {integrity: sha512-gbKGcRUYIjA3/zCCNaWDciTMFI0dCkvou3TL8Zmy5Nc7sJ47a0jtOeZoTaMxkuqRo9cRhjOdZJXegxYE5FN/xw==}
-    engines: {node: ^14.21.3 || >=16}
-
   '@noble/curves@2.4.0':
     resolution: {integrity: sha512-P4/62zrgfH33CneE3Dn4WhJVA22YUU0eR51wKIan4NVRvwsA0YnPTwWGpNbpuacSujmSFLvyzpyuR30+fbq2Ew==}
     engines: {node: '>= 20.19.0'}
@@ -421,10 +430,6 @@ packages:
   '@noble/hashes@1.8.0':
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
-
-  '@noble/hashes@2.2.0':
-    resolution: {integrity: sha512-IYqDGiTXab6FniAgnSdZwgWbomxpy9FtYvLKs7wCUs2a8RkITG+DFGO1DM9cr+E3/RgADRpFjrKVaJ1z6sjtEg==}
-    engines: {node: '>= 20.19.0'}
 
   '@noble/hashes@2.4.0':
     resolution: {integrity: sha512-X5XaVWZIBCT7HHZGm5I7ZQXDwLG+bGXuSrMQAW+7Zvl87h1kmc1ZB1VSRJcpUfoUrGQp4Fkoxm5kZ+Ms+aW+eA==}
@@ -937,25 +942,19 @@ packages:
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
-  '@rollup/rollup-darwin-arm64@4.60.2':
-    resolution: {integrity: sha512-UwRE7CGpvSVEQS8gUMBe1uADWjNnVgP3Iusyda1nSRwNDCsRjnGc7w6El6WLQsXmZTbLZx9cecegumcitNfpmA==}
+  '@rollup/rollup-darwin-arm64@4.68.7':
+    resolution: {integrity: sha512-Lgu2AV7jbOTNNhkQ/OurNm7Snqu1Ux/3y7k8q47fbpPa3q63aIzKKp1xFzax5KH4pcdUzbnX/riuFsxKflsF+g==}
     cpu: [arm64]
     os: [darwin]
 
-  '@rollup/rollup-linux-x64-gnu@4.60.2':
-    resolution: {integrity: sha512-UQjrkIdWrKI626Du8lCQ6MJp/6V1LAo2bOK9OTu4mSn8GGXIkPXk/Vsp4bLHCd9Z9Iz2OTEaokUE90VweJgIYQ==}
+  '@rollup/rollup-linux-x64-gnu@4.68.7':
+    resolution: {integrity: sha512-rsTjTf5HAm6F4sI6uUfJf2pc+7AWBKxgc2RveGvwB2OvVa1GezSSCDD1rtXPuFhcg3itPv7iHgcZsq/RwWvJ4Q==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@scure/base@2.2.0':
-    resolution: {integrity: sha512-b8XEupJibegiXV+tDUseI8oLQc8ei3d/4Jkb2RpbHh3MfE054ov3uIz2dhFkB3FI8iwYkEh0gGCApkrYggkPNg==}
-
-  '@scure/bip39@2.2.0':
-    resolution: {integrity: sha512-T/Bj/YvYMNkIPq6EENO6/rcs2e7qTNuyoUXf0KBFDmp0ZDu0H2X4Lq6yC3i0c8PcWkov5EbW+yQZZbdMmk154A==}
-
-  '@stablelib/binary@1.0.1':
-    resolution: {integrity: sha512-ClJWvmL6UBM/wjkvv/7m5VP3GMr9t0osr4yVgLZsLCOz4hGN9gIAFEqnJ0TsSMAN+n840nf2cHZnA5/KFqHC7Q==}
+  '@scure/bip39@2.4.0':
+    resolution: {integrity: sha512-82dxFbZUYboyOf0AXiydsQrFQ5Q4h9mX+O2UkE91ROYmsc0BKMGZLwDmy96Jpa2+vrtoxomjUhy1RPIgH/r2nA==}
 
   '@stablelib/binary@2.0.1':
     resolution: {integrity: sha512-U9iAO8lXgEDONsA0zPPSgcf3HUBNAqHiJmSHgZz62OvC3Hi2Bhc5kTnQ3S1/L+sthDTHtCMhcEiklmIly6uQ3w==}
@@ -963,68 +962,41 @@ packages:
   '@stablelib/blake2b@2.0.1':
     resolution: {integrity: sha512-kBN4i9FHpkTEVrHwKtb1ZjI6QwyoK8emY9TaLcHHFSZkw2FN9Td8Js9mU2U10q+EZ3Mp6z78QgdPDwJXbc3Dtw==}
 
-  '@stablelib/bytes@1.0.1':
-    resolution: {integrity: sha512-Kre4Y4kdwuqL8BR2E9hV/R5sOrUj6NanZaZis0V6lX5yzqC3hBuVSDXUIBqQv/sCpmuWRiHLwqiT1pqqjuBXoQ==}
-
   '@stablelib/bytes@2.0.1':
     resolution: {integrity: sha512-QIzI6V7nkJA5CjOZ7GoceBd4CIKrJoC471VaI6jh1xPQ2cMhkhQK4HddyzCXOR2y+fBF3/5B2HO3FXXI9C+Xzg==}
-
-  '@stablelib/constant-time@1.0.1':
-    resolution: {integrity: sha512-tNOs3uD0vSJcK6z1fvef4Y+buN7DXhzHDPqRLSXUel1UfqMB1PWNsnnAezrKfEwTLpN0cGH2p9NNjs6IqeD0eg==}
 
   '@stablelib/constant-time@2.0.1':
     resolution: {integrity: sha512-0NWPogffRm+UWBH0+iM5otZmNrVe5OHFIvyoNIVankMAYOQzMwcdVALOVPrB5Ho0dST+Oc3H8/hPh65Z8R/uew==}
 
-  '@stablelib/ed25519@2.1.0':
-    resolution: {integrity: sha512-8GLWoJur9nJiErABKHs5MjceSiYJJ2n8QP9k8Q5x6GWU2y5oAQ6qzPh8kCgQy5aHlUxcmRA1frQ5Gu2bHoIDPw==}
+  '@stablelib/ed25519@2.1.1':
+    resolution: {integrity: sha512-A4VE8ylbvQANsl0M2HaS5LD7il0orXuqRzkky3lijJ+efcU9b+GrllOzQt/sxsJZz7IbeRzh4DSzEs9FtNSX2g==}
 
   '@stablelib/hash@2.0.0':
     resolution: {integrity: sha512-u3WPSqGido8lwJuMcrBgM5K54LrPGhkWAdtsyccf7dGsLixAZUds77zOAbu7bvKPwQlmoByH0txBi5rTmEKuHg==}
 
-  '@stablelib/int@1.0.1':
-    resolution: {integrity: sha512-byr69X/sDtDiIjIV6m4roLVWnNNlRGzsvxw+agj8CIEazqWGOQp2dTYgQhtyVXV9wpO6WyXRQUzLV/JRNumT2w==}
-
   '@stablelib/int@2.0.1':
     resolution: {integrity: sha512-Ht63fQp3wz/F8U4AlXEPb7hfJOIILs8Lq55jgtD7KueWtyjhVuzcsGLSTAWtZs3XJDZYdF1WcSKn+kBtbzupww==}
-
-  '@stablelib/keyagreement@1.0.1':
-    resolution: {integrity: sha512-VKL6xBwgJnI6l1jKrBAfn265cspaWBPAPEc62VBQrWHLqVgNRE09gQ/AnOEyKUWrrqfD+xSQ3u42gJjLDdMDQg==}
 
   '@stablelib/keyagreement@2.0.1':
     resolution: {integrity: sha512-2+tWBLCMtWlHQ7GqjD5L+lQRyWtun4Lou0IOdTML8zuTuAS0EgihnHFx+4uMZwYU1In40J/WlpyKSLidHfStRQ==}
 
-  '@stablelib/nacl@1.0.4':
-    resolution: {integrity: sha512-PJ2U/MrkXSKUM8C4qFs87WeCNxri7KQwR8Cdwm9q2sweGuAtTvOJGuW0F3N+zn+ySLPJA98SYWSSpogMJ1gCmw==}
-
   '@stablelib/nacl@2.0.1':
     resolution: {integrity: sha512-tNHlKrhK17RlaAP4wTBS/NudvP/YJxTxwY3grfwDZw5Q98TBi3fQZNTnZD55jLOpg3IyQP7TFL6q5USkzT3MtQ==}
-
-  '@stablelib/poly1305@1.0.1':
-    resolution: {integrity: sha512-1HlG3oTSuQDOhSnLwJRKeTRSAdFNVB/1djy2ZbS35rBSJ/PFqx9cf9qatinWghC2UbfOYD8AcrtbUQl8WoxabA==}
 
   '@stablelib/poly1305@2.0.1':
     resolution: {integrity: sha512-D8xfZcL/5zeVARJ9I2fZOUCnZvsJx8G4JDQvD+ecsnaCildPtqZDwqqjtOc4cfHAdScrMjOzUVsssjXUTBw3YQ==}
 
-  '@stablelib/random@1.0.2':
-    resolution: {integrity: sha512-rIsE83Xpb7clHPVRlBj8qNe5L8ISQOzjghYQm/dZ7VaM2KHYwMW5adjQjrzTZCchFnNCNhkwtnOBa9HTMJCI8w==}
-
   '@stablelib/random@2.0.1':
     resolution: {integrity: sha512-W6GAtXEEs7r+dSbuBsvoFmlyL3gLxle41tQkjKu17dDWtDdjhVUbtRfRCQcCUeczwkgjQxMPopgwYEvxXtHXGw==}
-
-  '@stablelib/salsa20@1.0.2':
-    resolution: {integrity: sha512-nfjKzw0KTKrrKBasEP+j7UP4I8Xudom8lVZIBCp0kQNARXq72IlSic0oabg2FC1NU68L4RdHrNJDd8bFwrphYA==}
 
   '@stablelib/salsa20@2.0.1':
     resolution: {integrity: sha512-Eqf8K+UCBKMhg5biPscnmNHc6c6wZV/WplNdJZEMQrPexE6iO3Vfvw15qf2qw/+aQhiRqcDwtSefYXu4dIG+QA==}
 
-  '@stablelib/sha512@2.0.1':
-    resolution: {integrity: sha512-DUNe5cbnoH3sSIN+MG04RvTCLXtkbyy/SnQxiNO+GgF/KSXkkUSlF6mUVvCUdZBZ2X3NgogR+tAvaRSn8wxnLw==}
+  '@stablelib/sha512@2.0.2':
+    resolution: {integrity: sha512-GXsvhU3Q0EA+aXEy1f/misPZVOrgJQeKBaI9x7sp9ipjyv1zZpRrjh1hmHnfzsqFKI01SF3Ojh6JBdxbQYHc+A==}
 
   '@stablelib/utf8@2.1.0':
     resolution: {integrity: sha512-peZgjgrPYOvjbJcVp91yYQLocr/qw5zcLsQBL+vH3D/d0IS+Cvcsbvlu+LLEcG8sVbkWMxr0ZABhY/0t3JMh0w==}
-
-  '@stablelib/wipe@1.0.1':
-    resolution: {integrity: sha512-WfqfX/eXGiAd3RJe4VU2snh/ZPwtSjLG4ynQ/vYzvghTh7dHFcI1wl+nrkWG6lGhukOxOsUHfv8dUXr58D0ayg==}
 
   '@stablelib/wipe@2.0.1':
     resolution: {integrity: sha512-1eU2K9EgOcV4qc9jcP6G72xxZxEm5PfeI5H55l08W95b4oRJaqhmlWRc4xZAm6IVSKhVNxMi66V67hCzzuMTAg==}
@@ -1032,65 +1004,69 @@ packages:
   '@stablelib/x25519-session@2.0.1':
     resolution: {integrity: sha512-GQrplqJsHiKwrXBoUpwpguaydLQbCiemcyeitnlDyTHhbtv3x5DO7zmZFac1RBIBxcdfYCwW6RaGmRdBKNm6Zg==}
 
-  '@stablelib/x25519@1.0.3':
-    resolution: {integrity: sha512-KnTbKmUhPhHavzobclVJQG5kuivH+qDLpe84iRqX3CLrKp881cF160JvXJ+hjn1aMyCwYOKeIZefIH/P5cJoRw==}
-
   '@stablelib/x25519@2.0.1':
     resolution: {integrity: sha512-qi04HS2puHaBf50kM/kes5QcZFGsx8yF0YmCjLCOa/LPmnBaKEKX9ZR82OnnCwMn72YH13R/bBZgr/UP0aPFfA==}
-
-  '@stablelib/xsalsa20@1.0.2':
-    resolution: {integrity: sha512-7XdBGbcNgBShmuhDXv1G1WPVCkjZdkb1oPMzSidO7Fve0MHntH6TjFkj5bfLI+aRE+61weO076vYpP/jmaAYog==}
 
   '@stablelib/xsalsa20@2.0.1':
     resolution: {integrity: sha512-qFfcqrIqcZo40bAEpDSAbIcfE+8WFo+4HtzmlO+G8ObKukIaWGIROvz64NEYv50lQodY5OoQV3koC2EXXI9ofw==}
 
-  '@taquito/beacon-wallet@25.1.0':
-    resolution: {integrity: sha512-GGUc+3vntzCBD9jbsQJ+KyuhAkC0J6i2MJIMT2ZxHSAXu8g0Po88Ri7JLZsrwZbUjNrmSmMyNQTGzKp3HkR6kg==}
+  '@taquito/beacon-wallet@file:vendor/d2915a1b/taquito-beacon-wallet-25.1.1.tgz':
+    resolution: {integrity: sha512-2ufR0h9hWbIGbapUtnVcbAfWKT8NtFZua1tUlxuwaz8rw1hEz4KXWCJcejM7xMqEpMsa1ay9J3hXLOgtxAu5NA==, tarball: file:vendor/d2915a1b/taquito-beacon-wallet-25.1.1.tgz}
+    version: 25.1.1
     engines: {node: '>=22'}
 
-  '@taquito/core@25.1.0':
-    resolution: {integrity: sha512-aIPQgHd2nQQQbtNhRb6hc3LxH6sBn+Ss02xYH+6Z/8FMLYWREpeWKasoeYKzfXI8JHRS+Cq8ZXiXWOdMuVmfIg==}
+  '@taquito/core@file:vendor/d2915a1b/taquito-core-25.1.1.tgz':
+    resolution: {integrity: sha512-HaTdpkzSTSlQ/EFzQ1Z25MjIQJK7fp59PsUkMig/MLXJ5L1+fq3Zarl3YJt3ULS5RFSVvqWQ2E9+rymMvVTh5g==, tarball: file:vendor/d2915a1b/taquito-core-25.1.1.tgz}
+    version: 25.1.1
     engines: {node: '>=22'}
 
-  '@taquito/http-utils@25.1.0':
-    resolution: {integrity: sha512-cw3Jzh6472JGgZsMziOR8odcHEppQ/J9qdepV8FTN3MIK94Q95Svj/CTcmPVZGbLBV6ETtHJ3voKLuYnIL3SQA==}
+  '@taquito/http-utils@file:vendor/d2915a1b/taquito-http-utils-25.1.1.tgz':
+    resolution: {integrity: sha512-Nt/KTPAhj3vDe7EkyD35FCvhzJvCYtvU5dix5r1j60GdT0/EUxcIAuRt+kYDmZ9JYlP0/hME66gXc1xCmlRK7g==, tarball: file:vendor/d2915a1b/taquito-http-utils-25.1.1.tgz}
+    version: 25.1.1
     engines: {node: '>=22'}
 
-  '@taquito/local-forging@25.1.0':
-    resolution: {integrity: sha512-9qi4hSxd72ud+Ku/BjmIzrjDX4LidTsAQNw42S0+x4M/Y1wP0miuO9eA8pBUI3ajzACEuZN4G8IS4JjOveJu/g==}
+  '@taquito/local-forging@file:vendor/d2915a1b/taquito-local-forging-25.1.1.tgz':
+    resolution: {integrity: sha512-T58C1imuDn/r4RwIKJSlUUWUADZXGodhvkQG0nW8zU3Tn++Wf1FBEEfj3wCVB+omvOykeeuG738Q0rUhU5eIuQ==, tarball: file:vendor/d2915a1b/taquito-local-forging-25.1.1.tgz}
+    version: 25.1.1
     engines: {node: '>=22'}
 
-  '@taquito/michel-codec@25.1.0':
-    resolution: {integrity: sha512-GhVTaEv3nt9KpcsFjAD7DneAGjT2Popik17tqveMwsofx4KWhxJLeCJ8qIclLb6yr3UUjhyZwbGeSnH6WJytzg==}
+  '@taquito/michel-codec@file:vendor/d2915a1b/taquito-michel-codec-25.1.1.tgz':
+    resolution: {integrity: sha512-wdgrBOZ9Xqzzdh0+Nu6ipewp5EE+HyECBiDRQKLePZgbPNOFQa09Wyp1wqby9pOvX5vlPvzUrLruDjh1qWocgQ==, tarball: file:vendor/d2915a1b/taquito-michel-codec-25.1.1.tgz}
+    version: 25.1.1
     engines: {node: '>=22'}
 
-  '@taquito/michelson-encoder@25.1.0':
-    resolution: {integrity: sha512-VdwMwzplShj6KBS0rUQFfQnS8rKwJ60xhiEm4yIDclthaAREHM+iNHJDBui6RG66UiXyh4uQORDtWH59IldPdA==}
+  '@taquito/michelson-encoder@file:vendor/d2915a1b/taquito-michelson-encoder-25.1.1.tgz':
+    resolution: {integrity: sha512-qNOZpNQp9bJIxhc/7vVvNwS+JhaHpgFShWCprBVo6UbThoKi3xezoOM9yERyLp89hrAaFExCeXIBYhGg7StPKA==, tarball: file:vendor/d2915a1b/taquito-michelson-encoder-25.1.1.tgz}
+    version: 25.1.1
     engines: {node: '>=22'}
 
-  '@taquito/rpc@25.1.0':
-    resolution: {integrity: sha512-ljoGIBakHD48PctxnTi+FSy5D5rPYb6sAh6xutbw0aiL2kxrEUugwGseihiQmm10qoc4Akl7aR8WVL4o8YqJzg==}
+  '@taquito/rpc@file:vendor/d2915a1b/taquito-rpc-25.1.1.tgz':
+    resolution: {integrity: sha512-Fxe+ufRGdFUA8Ws4AwYNZn5bNaW3e1j9c7Ul2Ca8aG7U8LZQeyXu72CQllHyGxx72QnKKFVMD3m1AoXtBxZYQw==, tarball: file:vendor/d2915a1b/taquito-rpc-25.1.1.tgz}
+    version: 25.1.1
     engines: {node: '>=22'}
 
-  '@taquito/sapling-wasm@0.2.0':
-    resolution: {integrity: sha512-os62Xt3KNZMES9cgKS7h/ce20xffovqx6Ilxw3waXu2wxxMzzdSvxoS3piob7N+etMzTQQmyq0w94PSrYDODZA==}
+  '@taquito/sapling-wasm@0.3.0':
+    resolution: {integrity: sha512-VrUYh8pMVZVD4qQfDTEWSnDeRXN0pea1+bKT3iF6YsQ2IlxkOzFb5vdJhDHRwLR+6+u96UU1tl2o802NbXoSZA==}
     engines: {node: '>=22'}
 
-  '@taquito/sapling@file:vendor/taquito-sapling-25.1.0.tgz':
-    resolution: {integrity: sha512-Mxv1z3ohm84qxcFcep/G9B7JxFXn0T1rwjS02hEJ6Y7zbjpr2YhpNLfG0c/GBp0Alv5EGyglebd5Ni+YtGbtSw==, tarball: file:vendor/taquito-sapling-25.1.0.tgz}
-    version: 25.1.0
+  '@taquito/sapling@file:vendor/d2915a1b/taquito-sapling-25.1.1.tgz':
+    resolution: {integrity: sha512-EjjwAwUXo1ne0HUp/SaSI/NF5hhaczjAt0JP7HRki7QcsoJz+CSxKO08jFBLTxvA0HDmIyoN9KzrFR96/cvI8A==, tarball: file:vendor/d2915a1b/taquito-sapling-25.1.1.tgz}
+    version: 25.1.1
     engines: {node: '>=22'}
 
-  '@taquito/signer@25.1.0':
-    resolution: {integrity: sha512-hKOixLEHTE67bqBGDkpmBR40ih05kGzwRNqZPRoUbsTjXO/ArN++4DTV+cgrqGt7mOv+OXpKy4tPUcV/X1e97g==}
+  '@taquito/signer@file:vendor/d2915a1b/taquito-signer-25.1.1.tgz':
+    resolution: {integrity: sha512-gUEzupjESQTiykDV+svoqZXmAAQ7FXiDrgL3MoMBqBZLlqGdwC4AZP8JwNB9oI8zWJ5vUbaMLqSVEQXjqrGAhg==, tarball: file:vendor/d2915a1b/taquito-signer-25.1.1.tgz}
+    version: 25.1.1
     engines: {node: '>=22'}
 
-  '@taquito/taquito@25.1.0':
-    resolution: {integrity: sha512-ncrRN1dlcxyTJy0L6tmkSogRT6gqHPq4LrCYSTH1rVnJYXrlvVc9BjZMJ6tHdKORXul6nFfqSWQJtHvd0G3ABQ==}
+  '@taquito/taquito@file:vendor/d2915a1b/taquito-taquito-25.1.1.tgz':
+    resolution: {integrity: sha512-rzEnrJGoUBY+9pEg0Il9tCyC6RZDHsKDyUB71uWDz8YL95YgDoVPFwShMKcQFQVzfFHHyv8LE7krGHiPLjXfWw==, tarball: file:vendor/d2915a1b/taquito-taquito-25.1.1.tgz}
+    version: 25.1.1
     engines: {node: '>=22'}
 
-  '@taquito/utils@25.1.0':
-    resolution: {integrity: sha512-AsSNfrNZAD2tfFt+culy3H3yBHm6X8rJSqH7S1iQpZCYKYDEBCnePjfjXEAKeOlSX5GfzbW5PlS/m+2YYh3L3w==}
+  '@taquito/utils@file:vendor/d2915a1b/taquito-utils-25.1.1.tgz':
+    resolution: {integrity: sha512-4baxxKzST+KoRmBwFGRaah64yS0mWc54a/rPYXf45xbWOax5LBD7Ml0uru+WLr3uUGcv3FB1dsI+2QDmU7RYEw==, tarball: file:vendor/d2915a1b/taquito-utils-25.1.1.tgz}
+    version: 25.1.1
     engines: {node: '>=22'}
 
   '@testing-library/dom@10.4.2':
@@ -1124,14 +1100,14 @@ packages:
   '@types/bn.js@5.2.0':
     resolution: {integrity: sha512-DLbJ1BPqxvQhIGbeu8VbUC1DiAiahHtAYvA0ZEAa4P31F7IaArc8z3C3BRQdWX4mtLQuABG4yzp76ZrS02Ui1Q==}
 
-  '@types/bs58check@2.1.2':
-    resolution: {integrity: sha512-xpXaQlOIY1KoXlA/ytHGHpEIU87PJt+g9SH7nC6HdCgaBwT2IEZIwBMHbjuX6BpnfbiUMlmwqurdLDwXpcdmSA==}
-
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
 
-  '@types/chrome@0.1.43':
-    resolution: {integrity: sha512-ukH/HhmR6ht+UTX3PLUWJxgJ/RQcK2Foj4lBzsF24SIWsXgqhGuXqjd8FFuwioPP7d/JUKLM4g8GZxw3F4HTcA==}
+  '@types/chrome@0.1.40':
+    resolution: {integrity: sha512-UnfyRAe8ORu9HSuTH0EqyOEUin3JrWW9Nl/gDXezNfTUrfIoxw+WRZgKOxGz0t5BnjbfXBnS2eCYfW2PxH1wcA==}
+
+  '@types/chrome@0.3.7':
+    resolution: {integrity: sha512-jWZgbHqWbTL1a5+PoyN0OJutNyejWgyZ5MdcvKo6iJE1TNRtXR3FxsC4WzNl52yZWPidfWC8NV/VUNZf+OFKcA==}
 
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
@@ -1404,9 +1380,6 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  base-x@4.0.1:
-    resolution: {integrity: sha512-uAZ8x6r6S3aUM9rbHGVOIsR15U/ZSc82b3ymnCPsT45Gk1DDvhDPdIgB5MrhirZWt+5K0EEPQH985kNqZgNPFw==}
-
   base-x@5.0.1:
     resolution: {integrity: sha512-M7uio8Zt++eg3jPj+rHMfCC+IuygQHHCOU+IYsVtik6FWjuYpVt/+MRKcgsAMHh8mMFAwnB+Bs+mTrFiXjMzKg==}
 
@@ -1434,14 +1407,8 @@ packages:
   brorand@1.1.0:
     resolution: {integrity: sha512-cKV8tMCEpQs4hK/ik71d6LrPOnpkpGBR0wzxqr68g2m/LB2GxVYQroAjMJZRVM1Y4BCjCKc3vAamxSzOY2RP+w==}
 
-  bs58@5.0.0:
-    resolution: {integrity: sha512-r+ihvQJvahgYT50JD05dyJNKlmmSlMoOGwn1lCcEzanPglg7TxYjioQUYehQ9mAR/+hOSd2jRc/Z2y5UxBymvQ==}
-
   bs58@6.0.0:
     resolution: {integrity: sha512-PD0wEnEYg6ijszw/u8s+iI3H17cTymlrwkKhDhPZq+Sokl3AU4htyBFTjAeNAlCCmg0f53g6ih3jATyCKftTfw==}
-
-  bs58check@3.0.1:
-    resolution: {integrity: sha512-hjuuJvoWEybo7Hn/0xOrczQKKEKD63WguEjlhLExYs2wUBcebDC1jDNK17eEAD2lYfw82d5ASC1d7K3SWszjaQ==}
 
   bs58check@4.0.0:
     resolution: {integrity: sha512-FsGDOnFg9aVI9erdriULkd/JjEWONV/lQE5aYziB5PoBsXRind56lh8doIZIc9X4HoxT5x4bLjMWN1/NB8Zp5g==}
@@ -1594,9 +1561,6 @@ packages:
     resolution: {integrity: sha512-dwsoQlS7h9hMeYUq1W++23NDcBLV4KqONnITDV9DjfS3q1SgDGVrBdvvTLUotWtPSD7asWDV9/CmsZPy8Hf70A==}
     engines: {node: '>=6'}
 
-  fast-text-encoding@1.0.6:
-    resolution: {integrity: sha512-VhXlQgj9ioXCqGstD37E/HBeqEGV/qOD/kmbVG8h5xKBYvM1L3lR1Zn4555cQ8GkYbJa8aJSipLPndE1k6zK2w==}
-
   fdir@6.5.0:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
     engines: {node: '>=12.0.0'}
@@ -1727,9 +1691,6 @@ packages:
     peerDependenciesMeta:
       canvas:
         optional: true
-
-  json-stringify-safe@5.0.1:
-    resolution: {integrity: sha512-ZClg6AaYvamvYEE82d3Iyd3vSSIjQ+odgjaTzRuO3s7toCdFKczob2i0zCh7JE8kWn17yvAWhUVxvqGwUalsRA==}
 
   keyvaluestorage-interface@1.0.0:
     resolution: {integrity: sha512-8t6Q3TclQ4uZynJY9IGr2+SsIGwK9JHcO6ootkHCGA0CrQCRy+VkouYNO2xicET6b9al7QKzpebNow+gkpCL8g==}
@@ -2159,9 +2120,6 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  typedarray-to-buffer@4.0.0:
-    resolution: {integrity: sha512-6dOYeZfS3O9RtRD1caom0sMxgK59b27+IwoNy8RDPsmslSGOyU+mpTamlaIW7aNKi90ZQZ9DFaZL3YRoiSCULQ==}
-
   typescript@7.0.2:
     resolution: {integrity: sha512-8FYau96o3NKOhbjKi/qNvG/W5jhzxkbdm5sj9AbZ/5T5sWqn3hJgLfGx27sRKZWTvyzCP8dLRBTf5tBTSRVUNA==}
     engines: {node: '>=16.20.0'}
@@ -2460,10 +2418,11 @@ snapshots:
 
   '@csstools/css-tokenizer@4.0.2': {}
 
-  '@ecadlabs/beacon-core@4.8.4-ecad':
+  '@ecadlabs/beacon-core@4.9.0-ecad-beta.6':
     dependencies:
-      '@ecadlabs/beacon-types': 4.8.4-ecad
-      '@ecadlabs/beacon-utils': 4.8.4-ecad
+      '@ecadlabs/beacon-types': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-utils': 4.9.0-ecad-beta.6
+      '@noble/hashes': 1.7.0
       '@stablelib/blake2b': 2.0.1
       '@stablelib/nacl': 2.0.1
       '@stablelib/utf8': 2.1.0
@@ -2471,15 +2430,15 @@ snapshots:
       broadcast-channel: 7.4.0
       bs58check: 4.0.0
 
-  '@ecadlabs/beacon-dapp@4.8.4-ecad':
+  '@ecadlabs/beacon-dapp@4.9.0-ecad-beta.6':
     dependencies:
-      '@ecadlabs/beacon-core': 4.8.4-ecad
-      '@ecadlabs/beacon-transport-matrix': 4.8.4-ecad
-      '@ecadlabs/beacon-transport-postmessage': 4.8.4-ecad
-      '@ecadlabs/beacon-transport-walletconnect': 4.8.4-ecad
-      '@ecadlabs/beacon-types': 4.8.4-ecad
-      '@ecadlabs/beacon-ui': 4.8.4-ecad
-      '@ecadlabs/beacon-utils': 4.8.4-ecad
+      '@ecadlabs/beacon-core': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-transport-matrix': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-transport-postmessage': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-transport-walletconnect': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-types': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-ui': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-utils': 4.9.0-ecad-beta.6
       '@walletconnect/types': 2.18.0
       broadcast-channel: 7.4.0
       bs58check: 4.0.0
@@ -2506,25 +2465,26 @@ snapshots:
       - uploadthing
       - utf-8-validate
 
-  '@ecadlabs/beacon-transport-matrix@4.8.4-ecad':
+  '@ecadlabs/beacon-transport-matrix@4.9.0-ecad-beta.6':
     dependencies:
-      '@ecadlabs/beacon-core': 4.8.4-ecad
-      '@ecadlabs/beacon-types': 4.8.4-ecad
-      '@ecadlabs/beacon-utils': 4.8.4-ecad
+      '@ecadlabs/beacon-core': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-types': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-utils': 4.9.0-ecad-beta.6
       '@stablelib/blake2b': 2.0.1
       '@stablelib/utf8': 2.1.0
 
-  '@ecadlabs/beacon-transport-postmessage@4.8.4-ecad':
+  '@ecadlabs/beacon-transport-postmessage@4.9.0-ecad-beta.6':
     dependencies:
-      '@ecadlabs/beacon-core': 4.8.4-ecad
-      '@ecadlabs/beacon-types': 4.8.4-ecad
-      '@ecadlabs/beacon-utils': 4.8.4-ecad
+      '@ecadlabs/beacon-core': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-types': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-utils': 4.9.0-ecad-beta.6
 
-  '@ecadlabs/beacon-transport-walletconnect@4.8.4-ecad':
+  '@ecadlabs/beacon-transport-walletconnect@4.9.0-ecad-beta.6':
     dependencies:
-      '@ecadlabs/beacon-core': 4.8.4-ecad
-      '@ecadlabs/beacon-types': 4.8.4-ecad
-      '@ecadlabs/beacon-utils': 4.8.4-ecad
+      '@ecadlabs/beacon-core': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-types': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-utils': 4.9.0-ecad-beta.6
+      '@walletconnect/keyvaluestorage': 1.1.1
       '@walletconnect/sign-client': 2.18.0
       '@walletconnect/types': 2.18.0
       '@walletconnect/utils': 2.18.0
@@ -2551,26 +2511,26 @@ snapshots:
       - uploadthing
       - utf-8-validate
 
-  '@ecadlabs/beacon-types@4.8.4-ecad':
+  '@ecadlabs/beacon-types@4.9.0-ecad-beta.6':
     dependencies:
-      '@types/chrome': 0.1.43
+      '@types/chrome': 0.3.7
 
-  '@ecadlabs/beacon-ui@4.8.4-ecad':
+  '@ecadlabs/beacon-ui@4.9.0-ecad-beta.6':
     dependencies:
-      '@ecadlabs/beacon-core': 4.8.4-ecad
-      '@ecadlabs/beacon-types': 4.8.4-ecad
+      '@ecadlabs/beacon-core': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-types': 4.9.0-ecad-beta.6
       qrcode: 1.5.4
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
     optionalDependencies:
-      '@rollup/rollup-darwin-arm64': 4.60.2
-      '@rollup/rollup-linux-x64-gnu': 4.60.2
+      '@rollup/rollup-darwin-arm64': 4.68.7
+      '@rollup/rollup-linux-x64-gnu': 4.68.7
 
-  '@ecadlabs/beacon-utils@4.8.4-ecad':
+  '@ecadlabs/beacon-utils@4.9.0-ecad-beta.6':
     dependencies:
       '@stablelib/blake2b': 2.0.1
       '@stablelib/bytes': 2.0.1
-      '@stablelib/ed25519': 2.1.0
+      '@stablelib/ed25519': 2.1.1
       '@stablelib/nacl': 2.0.1
       '@stablelib/random': 2.0.1
       '@stablelib/utf8': 2.1.0
@@ -2660,10 +2620,6 @@ snapshots:
     dependencies:
       '@noble/hashes': 1.7.1
 
-  '@noble/curves@1.9.7':
-    dependencies:
-      '@noble/hashes': 1.8.0
-
   '@noble/curves@2.4.0':
     dependencies:
       '@noble/hashes': 2.4.0
@@ -2673,8 +2629,6 @@ snapshots:
   '@noble/hashes@1.7.1': {}
 
   '@noble/hashes@1.8.0': {}
-
-  '@noble/hashes@2.2.0': {}
 
   '@noble/hashes@2.4.0': {}
 
@@ -2926,22 +2880,15 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@rollup/rollup-darwin-arm64@4.60.2':
+  '@rollup/rollup-darwin-arm64@4.68.7':
     optional: true
 
-  '@rollup/rollup-linux-x64-gnu@4.60.2':
+  '@rollup/rollup-linux-x64-gnu@4.68.7':
     optional: true
 
-  '@scure/base@2.2.0': {}
-
-  '@scure/bip39@2.2.0':
+  '@scure/bip39@2.4.0':
     dependencies:
-      '@noble/hashes': 2.2.0
-      '@scure/base': 2.2.0
-
-  '@stablelib/binary@1.0.1':
-    dependencies:
-      '@stablelib/int': 1.0.1
+      '@noble/hashes': 2.4.0
 
   '@stablelib/binary@2.0.1':
     dependencies:
@@ -2953,41 +2900,23 @@ snapshots:
       '@stablelib/hash': 2.0.0
       '@stablelib/wipe': 2.0.1
 
-  '@stablelib/bytes@1.0.1': {}
-
   '@stablelib/bytes@2.0.1': {}
-
-  '@stablelib/constant-time@1.0.1': {}
 
   '@stablelib/constant-time@2.0.1': {}
 
-  '@stablelib/ed25519@2.1.0':
+  '@stablelib/ed25519@2.1.1':
     dependencies:
       '@stablelib/random': 2.0.1
-      '@stablelib/sha512': 2.0.1
+      '@stablelib/sha512': 2.0.2
       '@stablelib/wipe': 2.0.1
 
   '@stablelib/hash@2.0.0': {}
 
-  '@stablelib/int@1.0.1': {}
-
   '@stablelib/int@2.0.1': {}
-
-  '@stablelib/keyagreement@1.0.1':
-    dependencies:
-      '@stablelib/bytes': 1.0.1
 
   '@stablelib/keyagreement@2.0.1':
     dependencies:
       '@stablelib/bytes': 2.0.1
-
-  '@stablelib/nacl@1.0.4':
-    dependencies:
-      '@stablelib/poly1305': 1.0.1
-      '@stablelib/random': 1.0.2
-      '@stablelib/wipe': 1.0.1
-      '@stablelib/x25519': 1.0.3
-      '@stablelib/xsalsa20': 1.0.2
 
   '@stablelib/nacl@2.0.1':
     dependencies:
@@ -2997,31 +2926,15 @@ snapshots:
       '@stablelib/x25519': 2.0.1
       '@stablelib/xsalsa20': 2.0.1
 
-  '@stablelib/poly1305@1.0.1':
-    dependencies:
-      '@stablelib/constant-time': 1.0.1
-      '@stablelib/wipe': 1.0.1
-
   '@stablelib/poly1305@2.0.1':
     dependencies:
       '@stablelib/constant-time': 2.0.1
       '@stablelib/wipe': 2.0.1
 
-  '@stablelib/random@1.0.2':
-    dependencies:
-      '@stablelib/binary': 1.0.1
-      '@stablelib/wipe': 1.0.1
-
   '@stablelib/random@2.0.1':
     dependencies:
       '@stablelib/binary': 2.0.1
       '@stablelib/wipe': 2.0.1
-
-  '@stablelib/salsa20@1.0.2':
-    dependencies:
-      '@stablelib/binary': 1.0.1
-      '@stablelib/constant-time': 1.0.1
-      '@stablelib/wipe': 1.0.1
 
   '@stablelib/salsa20@2.0.1':
     dependencies:
@@ -3029,15 +2942,13 @@ snapshots:
       '@stablelib/constant-time': 2.0.1
       '@stablelib/wipe': 2.0.1
 
-  '@stablelib/sha512@2.0.1':
+  '@stablelib/sha512@2.0.2':
     dependencies:
       '@stablelib/binary': 2.0.1
       '@stablelib/hash': 2.0.0
       '@stablelib/wipe': 2.0.1
 
   '@stablelib/utf8@2.1.0': {}
-
-  '@stablelib/wipe@1.0.1': {}
 
   '@stablelib/wipe@2.0.1': {}
 
@@ -3049,23 +2960,11 @@ snapshots:
       '@stablelib/wipe': 2.0.1
       '@stablelib/x25519': 2.0.1
 
-  '@stablelib/x25519@1.0.3':
-    dependencies:
-      '@stablelib/keyagreement': 1.0.1
-      '@stablelib/random': 1.0.2
-      '@stablelib/wipe': 1.0.1
-
   '@stablelib/x25519@2.0.1':
     dependencies:
       '@stablelib/keyagreement': 2.0.1
       '@stablelib/random': 2.0.1
       '@stablelib/wipe': 2.0.1
-
-  '@stablelib/xsalsa20@1.0.2':
-    dependencies:
-      '@stablelib/binary': 1.0.1
-      '@stablelib/salsa20': 1.0.2
-      '@stablelib/wipe': 1.0.1
 
   '@stablelib/xsalsa20@2.0.1':
     dependencies:
@@ -3073,15 +2972,15 @@ snapshots:
       '@stablelib/salsa20': 2.0.1
       '@stablelib/wipe': 2.0.1
 
-  '@taquito/beacon-wallet@25.1.0':
+  '@taquito/beacon-wallet@file:vendor/d2915a1b/taquito-beacon-wallet-25.1.1.tgz':
     dependencies:
-      '@ecadlabs/beacon-dapp': 4.8.4-ecad
-      '@ecadlabs/beacon-types': 4.8.4-ecad
-      '@taquito/core': 25.1.0
-      '@taquito/taquito': 25.1.0
-      '@taquito/utils': 25.1.0
-      typedarray-to-buffer: 4.0.0
-      util: 0.12.5
+      '@ecadlabs/beacon-dapp': 4.9.0-ecad-beta.6
+      '@ecadlabs/beacon-types': 4.9.0-ecad-beta.6
+      '@taquito/core': file:vendor/d2915a1b/taquito-core-25.1.1.tgz
+      '@taquito/taquito': file:vendor/d2915a1b/taquito-taquito-25.1.1.tgz
+      '@taquito/utils': file:vendor/d2915a1b/taquito-utils-25.1.1.tgz
+      '@types/chrome': 0.1.40
+      '@types/react': 19.3.0
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -3105,96 +3004,88 @@ snapshots:
       - uploadthing
       - utf-8-validate
 
-  '@taquito/core@25.1.0':
-    dependencies:
-      json-stringify-safe: 5.0.1
+  '@taquito/core@file:vendor/d2915a1b/taquito-core-25.1.1.tgz': {}
 
-  '@taquito/http-utils@25.1.0':
+  '@taquito/http-utils@file:vendor/d2915a1b/taquito-http-utils-25.1.1.tgz':
     dependencies:
-      '@taquito/core': 25.1.0
+      '@taquito/core': file:vendor/d2915a1b/taquito-core-25.1.1.tgz
 
-  '@taquito/local-forging@25.1.0':
+  '@taquito/local-forging@file:vendor/d2915a1b/taquito-local-forging-25.1.1.tgz':
     dependencies:
-      '@taquito/core': 25.1.0
-      '@taquito/utils': 25.1.0
+      '@taquito/core': file:vendor/d2915a1b/taquito-core-25.1.1.tgz
+      '@taquito/rpc': file:vendor/d2915a1b/taquito-rpc-25.1.1.tgz
+      '@taquito/utils': file:vendor/d2915a1b/taquito-utils-25.1.1.tgz
       bignumber.js: 10.0.2
-      fast-text-encoding: 1.0.6
 
-  '@taquito/michel-codec@25.1.0':
+  '@taquito/michel-codec@file:vendor/d2915a1b/taquito-michel-codec-25.1.1.tgz':
     dependencies:
-      '@taquito/core': 25.1.0
+      '@taquito/core': file:vendor/d2915a1b/taquito-core-25.1.1.tgz
 
-  '@taquito/michelson-encoder@25.1.0':
+  '@taquito/michelson-encoder@file:vendor/d2915a1b/taquito-michelson-encoder-25.1.1.tgz':
     dependencies:
-      '@taquito/core': 25.1.0
-      '@taquito/rpc': 25.1.0
-      '@taquito/signer': 25.1.0
-      '@taquito/utils': 25.1.0
+      '@taquito/core': file:vendor/d2915a1b/taquito-core-25.1.1.tgz
+      '@taquito/rpc': file:vendor/d2915a1b/taquito-rpc-25.1.1.tgz
+      '@taquito/signer': file:vendor/d2915a1b/taquito-signer-25.1.1.tgz
+      '@taquito/utils': file:vendor/d2915a1b/taquito-utils-25.1.1.tgz
       bignumber.js: 10.0.2
       fast-json-stable-stringify: 2.1.0
 
-  '@taquito/rpc@25.1.0':
+  '@taquito/rpc@file:vendor/d2915a1b/taquito-rpc-25.1.1.tgz':
     dependencies:
-      '@taquito/core': 25.1.0
-      '@taquito/http-utils': 25.1.0
-      '@taquito/utils': 25.1.0
+      '@taquito/core': file:vendor/d2915a1b/taquito-core-25.1.1.tgz
+      '@taquito/http-utils': file:vendor/d2915a1b/taquito-http-utils-25.1.1.tgz
+      '@taquito/utils': file:vendor/d2915a1b/taquito-utils-25.1.1.tgz
       bignumber.js: 10.0.2
 
-  '@taquito/sapling-wasm@0.2.0': {}
+  '@taquito/sapling-wasm@0.3.0': {}
 
-  '@taquito/sapling@file:vendor/taquito-sapling-25.1.0.tgz':
+  '@taquito/sapling@file:vendor/d2915a1b/taquito-sapling-25.1.1.tgz':
     dependencies:
-      '@noble/hashes': 2.2.0
-      '@scure/bip39': 2.2.0
-      '@stablelib/nacl': 1.0.4
-      '@taquito/core': 25.1.0
-      '@taquito/rpc': 25.1.0
-      '@taquito/sapling-wasm': 0.2.0
-      '@taquito/taquito': 25.1.0
-      '@taquito/utils': 25.1.0
+      '@noble/hashes': 2.4.0
+      '@scure/bip39': 2.4.0
+      '@stablelib/nacl': 2.0.1
+      '@taquito/core': file:vendor/d2915a1b/taquito-core-25.1.1.tgz
+      '@taquito/rpc': file:vendor/d2915a1b/taquito-rpc-25.1.1.tgz
+      '@taquito/sapling-wasm': 0.3.0
+      '@taquito/taquito': file:vendor/d2915a1b/taquito-taquito-25.1.1.tgz
+      '@taquito/utils': file:vendor/d2915a1b/taquito-utils-25.1.1.tgz
       bignumber.js: 10.0.2
       blakejs: 1.2.1
-      buffer: 6.0.3
-      typedarray-to-buffer: 4.0.0
 
-  '@taquito/signer@25.1.0':
+  '@taquito/signer@file:vendor/d2915a1b/taquito-signer-25.1.1.tgz':
     dependencies:
-      '@noble/curves': 1.9.7
-      '@noble/hashes': 2.2.0
+      '@noble/curves': 2.4.0
+      '@noble/hashes': 2.4.0
       '@noble/post-quantum': 0.7.1
-      '@scure/bip39': 2.2.0
-      '@stablelib/nacl': 1.0.4
-      '@taquito/core': 25.1.0
-      '@taquito/utils': 25.1.0
+      '@scure/bip39': 2.4.0
+      '@stablelib/nacl': 2.0.1
+      '@taquito/core': file:vendor/d2915a1b/taquito-core-25.1.1.tgz
+      '@taquito/utils': file:vendor/d2915a1b/taquito-utils-25.1.1.tgz
       '@types/bn.js': 5.2.0
       bn.js: 5.2.5
-      typedarray-to-buffer: 4.0.0
 
-  '@taquito/taquito@25.1.0':
+  '@taquito/taquito@file:vendor/d2915a1b/taquito-taquito-25.1.1.tgz':
     dependencies:
-      '@taquito/core': 25.1.0
-      '@taquito/http-utils': 25.1.0
-      '@taquito/local-forging': 25.1.0
-      '@taquito/michel-codec': 25.1.0
-      '@taquito/michelson-encoder': 25.1.0
-      '@taquito/rpc': 25.1.0
-      '@taquito/signer': 25.1.0
-      '@taquito/utils': 25.1.0
+      '@noble/hashes': 2.4.0
+      '@taquito/core': file:vendor/d2915a1b/taquito-core-25.1.1.tgz
+      '@taquito/http-utils': file:vendor/d2915a1b/taquito-http-utils-25.1.1.tgz
+      '@taquito/local-forging': file:vendor/d2915a1b/taquito-local-forging-25.1.1.tgz
+      '@taquito/michel-codec': file:vendor/d2915a1b/taquito-michel-codec-25.1.1.tgz
+      '@taquito/michelson-encoder': file:vendor/d2915a1b/taquito-michelson-encoder-25.1.1.tgz
+      '@taquito/rpc': file:vendor/d2915a1b/taquito-rpc-25.1.1.tgz
+      '@taquito/signer': file:vendor/d2915a1b/taquito-signer-25.1.1.tgz
+      '@taquito/utils': file:vendor/d2915a1b/taquito-utils-25.1.1.tgz
       bignumber.js: 10.0.2
       rxjs: 7.8.2
 
-  '@taquito/utils@25.1.0':
+  '@taquito/utils@file:vendor/d2915a1b/taquito-utils-25.1.1.tgz':
     dependencies:
-      '@noble/curves': 1.9.7
-      '@noble/hashes': 2.2.0
+      '@noble/curves': 2.4.0
+      '@noble/hashes': 2.4.0
       '@noble/post-quantum': 0.7.1
-      '@taquito/core': 25.1.0
-      '@types/bs58check': 2.1.2
+      '@taquito/core': file:vendor/d2915a1b/taquito-core-25.1.1.tgz
       bignumber.js: 10.0.2
-      blakejs: 1.2.1
-      bs58check: 3.0.1
-      buffer: 6.0.3
-      typedarray-to-buffer: 4.0.0
+      bs58check: 4.0.0
 
   '@testing-library/dom@10.4.2':
     dependencies:
@@ -3227,18 +3118,18 @@ snapshots:
     dependencies:
       '@types/node': 24.19.2
 
-  '@types/bs58check@2.1.2':
-    dependencies:
-      '@types/node': 24.19.2
-
   '@types/chai@5.2.3':
     dependencies:
       '@types/deep-eql': 4.0.2
       assertion-error: 2.0.1
 
-  '@types/chrome@0.1.43':
+  '@types/chrome@0.1.40':
     dependencies:
       '@types/filesystem': 0.0.36
+      '@types/har-format': 1.2.16
+
+  '@types/chrome@0.3.7':
+    dependencies:
       '@types/har-format': 1.2.16
 
   '@types/deep-eql@4.0.2': {}
@@ -3614,8 +3505,6 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  base-x@4.0.1: {}
-
   base-x@5.0.1: {}
 
   base64-js@1.5.1: {}
@@ -3641,18 +3530,9 @@ snapshots:
 
   brorand@1.1.0: {}
 
-  bs58@5.0.0:
-    dependencies:
-      base-x: 4.0.1
-
   bs58@6.0.0:
     dependencies:
       base-x: 5.0.1
-
-  bs58check@3.0.1:
-    dependencies:
-      '@noble/hashes': 1.8.0
-      bs58: 5.0.0
 
   bs58check@4.0.0:
     dependencies:
@@ -3801,8 +3681,6 @@ snapshots:
   fast-json-stable-stringify@2.1.0: {}
 
   fast-redact@3.5.0: {}
-
-  fast-text-encoding@1.0.6: {}
 
   fdir@6.5.0(picomatch@4.0.7):
     optionalDependencies:
@@ -3957,8 +3835,6 @@ snapshots:
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - '@noble/hashes'
-
-  json-stringify-safe@5.0.1: {}
 
   keyvaluestorage-interface@1.0.0: {}
 
@@ -4378,8 +4254,6 @@ snapshots:
   tslib@1.14.1: {}
 
   tslib@2.8.1: {}
-
-  typedarray-to-buffer@4.0.0: {}
 
   typescript@7.0.2:
     optionalDependencies:

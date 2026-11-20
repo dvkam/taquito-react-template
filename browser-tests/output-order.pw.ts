@@ -5,7 +5,7 @@ import type { PoolSnapshot } from '../src/sapling/pool-protocol';
 import type { OrderAction, OrderResponse, OrderVariant } from '../src/sapling/order-protocol';
 import { readOrderTransaction } from '../src/sapling/order-wire';
 
-for (const variant of ['baseline', 'candidate-default', 'candidate-randomized'] as const) {
+for (const variant of ['current-default', 'current-preserve', 'current-randomized'] as const) {
   test(`${variant}: preserves public SDK payment behavior and validates moved outputs with Octez`, async ({
     page,
     request,
@@ -78,19 +78,19 @@ for (const variant of ['baseline', 'candidate-default', 'candidate-randomized'] 
       transfer: ['7000000', '3000000', '0'],
       'change-spend': ['0', '3000000', '7000000'],
       withdraw:
-        variant === 'candidate-default' ? ['7000000', '1000000', '0'] : ['0', '1000000', '7000000'],
+        variant === 'current-preserve' ? ['7000000', '1000000', '0'] : ['0', '1000000', '7000000'],
       'exact-multi': ['2000000', '6000000', '0'],
       multi: ['3000000', '4000000', '1000000'],
     };
     const actions: Exclude<OrderAction, 'observe'>[] =
-      variant === 'candidate-default'
+      variant === 'current-preserve'
         ? ['seed', 'transfer', 'withdraw']
         : ['seed', 'transfer', 'change-spend', 'withdraw', 'exact-multi', 'multi'];
     for (const action of actions) {
       const beforeCount = snapshot.diff.commitments_and_ciphertexts.length;
       let prepared = await act(action, snapshot);
       let attempts = 1;
-      if (variant === 'candidate-randomized' && action === 'transfer') {
+      if (variant === 'current-randomized' && action === 'transfer') {
         // Select a real moved-change case for compatibility, never for the unbiased privacy corpus.
         while (prepared.preview!.notes[0]![0]!.position !== beforeCount && attempts < 32) {
           prepared = await act(action, snapshot);

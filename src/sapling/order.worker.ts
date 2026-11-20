@@ -10,7 +10,7 @@ const scope = self as unknown as {
 async function act(request: OrderRequest): Promise<OrderResponse> {
   const { action, variant, snapshot } = request;
   const sdk =
-    variant === 'baseline'
+    variant === 'current-default'
       ? await import('@sapling-order/baseline')
       : await import('@sapling-order/candidate');
   const mnemonics = [
@@ -24,7 +24,11 @@ async function act(request: OrderRequest): Promise<OrderResponse> {
   const details = {
     contractAddress: snapshot.contractAddress,
     memoSize: 8,
-    ...(variant === 'candidate-randomized' ? { outputOrder: 'randomized' as const } : {}),
+    ...(variant === 'current-randomized'
+      ? { outputOrder: 'randomized' as const }
+      : variant === 'current-preserve'
+        ? { outputOrder: 'preserve' as const }
+        : {}),
   };
   const toolkit = (index: number, state: PoolSnapshot) => {
     const provider = new Proxy(
