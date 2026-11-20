@@ -28,3 +28,5 @@ test-results
 playwright-report
 
 __pycache__/
+
+!docs/evidence/sdk-refresh-2026-11-20/*.log

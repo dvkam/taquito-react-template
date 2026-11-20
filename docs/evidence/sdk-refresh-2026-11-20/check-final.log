@@ -1,0 +1,12 @@
+$ pnpm run verify:sdk && pnpm run lint && pnpm run format:check && pnpm run typecheck
+$ node tools/verify-sdk-vendor.mjs
+Verified 11 coherent Taquito packages at d2915a1bfbf6bf9f2a761ad7c4349f7ea64f9a74.
+$ oxlint --type-aware --deny-warnings
+Found 0 warnings and 0 errors.
+Finished in 1.2s on 56 files with 183 rules using 12 threads.
+$ oxfmt --check
+Checking formatting...
+
+All matched files use the correct format.
+Finished in 301ms on 103 files using 12 threads.
+$ tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.browser-tests.json

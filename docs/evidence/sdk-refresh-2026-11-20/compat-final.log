@@ -1,0 +1,22 @@
+$ vitest run src/App.test.tsx src/Wallet.test.ts src/transfer.test.ts
+
+ RUN  v5.0.5 <playground>
+
+ ✓ src/transfer.test.ts (14 tests) 45ms
+ ✓ src/Wallet.test.ts (12 tests) 556ms
+ ✓ src/App.test.tsx (20 tests) 6524ms
+   ✓ preserves fractional input at the wallet boundary 1023ms
+   ✓ keeps transfer available when the counter cannot load 519ms
+   ✓ blocks transfer and both counter directions while one write is pending 458ms
+   ✓ supports decrement and retains the receipt when a refresh fails 522ms
+   ✓ ignores old transfer success after A to B to A 480ms
+   ✓ ignores old transfer failure after A to B to A 389ms
+   ✓ preserves input on wallet rejection 460ms
+   ✓ submits only once when the form receives two immediate submit events 410ms
+   ✓ ignores a transfer success after unmount 426ms
+   ✓ ignores a transfer failure after unmount 613ms
+
+ Test Files  3 passed (3)
+      Tests  46 passed (46)
+   Start at  13:51:07
+   Duration  9.29s (tests 50%, environment 41%, setup 5%, import 3%, transform 1%)

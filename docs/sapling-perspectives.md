@@ -24,6 +24,6 @@ If Octez applied an operation but a later state refresh fails, retain the displa
 
 ## Relation to issue 3472
 
-This interface uses the ordinary pinned vendor SDK. The proposed randomized output order implementation is a separate Taquito contribution branch and experiment. No upstream PR is open for it. The interface does not silently enable that option or claim its measured improvement for the default builder.
+This interface uses the current pinned SDK. Randomized output ordering shipped in Taquito PR #3499. The ordinary interface keeps the preserved order. The separate experiment explicitly selects randomized mode and measures its position signal; that result does not describe the default builder.
 
 The output-order measurements concern the ability to identify change by position in a specified workload. Compatibility checks concern existing public calls, fixed bytes, and accepted protocol behavior. Keep these evidence groups separate.

@@ -1,48 +1,40 @@
 # Local output-order experiment
 
-The ordinary playground keeps its pinned vendor SDK. The order experiment is an explicit build input and never replaces that dependency. Issue #3472 exists. The SDK contribution and this harness are experimental. Their feature branches can be shared without deploying the lab or opening a PR.
+The ordinary playground and this experiment use the current pinned SDK described in [vendor provenance](../../vendor/README.md). Output ordering shipped in [Taquito PR #3499](https://github.com/ecadlabs/taquito/pull/3499). This harness now compares the same current build with omitted `outputOrder`, explicit `preserve`, and explicit `randomized` modes.
 
-## Current SDK protocol validation
+## Current proof and privacy checks
 
-Use Ubuntu, Node 24, and the coherent installed dependencies in the isolated `/home/david/workspace/taquito-3472` worktree. Refresh main and rebase that worktree first if needed. Commit source changes before recording proof evidence.
+Use Linux x64, Node 24 and the pinned pnpm version. First reconstruct the isolated source cache with the command in the vendor guide, then run:
 
 ```sh
+pnpm install --frozen-lockfile
+pnpm verify:sdk
+pnpm sapling:setup
 python3 experiments/output-order/build-current-sdk.py
-SAPLING_ORDER_CURRENT=1 node experiments/output-order/measure.mjs
-PORT=4189 python3 experiments/output-order/run-current-protocol.py
+node experiments/output-order/measure.mjs
+PORT=4195 python3 experiments/output-order/run-current-protocol.py
 python3 experiments/output-order/verify-current-protocol.py
 ```
 
-Set `SAPLING_ORDER_SDK_ROOT` for a different local SDK worktree. The builder records `origin/main` and the clean contribution HEAD. It archives the unchanged main SDK and builds it with the same installed dependencies as the candidate. Both builds use their standard package build commands.
+The input builder fingerprints the archived SDK source, built artifacts, vendor manifest and separate SDK/app dependency locks. It moves any previous `.cache/output-order-current` directory to a dated `.cache/output-order-history` path before recording a new run. Both browser aliases point to the same pinned SDK. Default versus preserve is a same-version compatibility check, not a claim that every byte matches the old October vendor package.
 
-The runner supplies explicit baseline and candidate ES6 artifact paths to the opt-in Vite aliases. Supplying only one path is an error. It builds into `.cache/output-order-current/browser-dist`, fingerprints the built and served files, runs five real Chromium worker/Octez scenarios, and verifies SDK inputs again. The server and browser tests use `SAPLING_DIST_DIR` to select that isolated build. The ordinary `dist` remains untouched. The final verification checks the experimental served artifact hashes and both dependency locks. It also checks saved mutation rejection snapshots and the recorded test status.
+The 4,096-sample construction corpus per mode and output count uses mocked proof and encryption work. It measures only output position. `privacy/measurement.json` and `positions.json` retain this evidence separately from `privacy/construction-compatibility.json`.
 
-The five cases cover multi-recipient shielding, the unchanged baseline, candidate default mode, and randomized private transfers with actual moved change. Preparation retries select moved outputs only for compatibility coverage. They are not an unbiased privacy sample.
+Real proof checks use the production browser build and pinned Octez 25.3/Tallinn. Five Chromium scenarios exercise omitted/default, preserve and randomized modes. They verify later spending of moved change, exact spends, multiple recipients, Unicode memos and literal withdrawal recipient bytes. Reordered signed outputs and altered recipients must be rejected without changing state. Preparation retries select moved cases for compatibility coverage only; they are excluded from the unbiased privacy corpus.
 
-The fresh construction corpus is in `.cache/output-order-current/privacy`. Its measurement report contains position statistics and input provenance. Controlled construction compatibility checks are saved separately in `construction-compatibility.json`. Proof and encryption work are mocked in this corpus. Real protocol cases use actual proofs.
+The runner keeps its browser output in `.cache/output-order-current/browser-dist` and verifies SDK, served artifact and lock hashes again after execution. Raw evidence is under `test-results/output-order-current`. Keep the manifests, raw JSON, test status and verified summary together.
 
-Protocol evidence is in `.cache/output-order-current` and `test-results/output-order-current`. Keep the raw JSON, build manifest, test log, and verified summary together. This is a local bundled-consumer check, not packed npm consumer qualification or an all-browser SDK matrix.
+## Historical evidence
 
-## Retained privacy experiment
+The October source patch, original vendor tarball and saved reports remain historical inputs. Their percentages and earlier baseline failures are not fresh results. Read the [historical construction report](../../docs/sapling-output-order-experiment.md) and the dated evidence directories. The old `build-sdk.py` prototype is not the acceptance path for this refresh.
 
-The historical construction experiment is pinned to source `8ecb7ad`. Its 4,096-transaction corpus per variant and output count uses mocked proof and encryption work. It measures the change-position signal separately from real protocol validation. Preserve the saved corpus and its manifest. Do not relabel its percentages as fresh measurements.
-
-The older commands remain available to reproduce the historical experiment inputs:
-
-```sh
-pnpm experiment:order:build
-pnpm experiment:order:measure
-PORT=4186 PAGES_BASE_PATH=/proof-lab/ pnpm experiment:order:browser
-```
-
-Those commands use the original archived experiment inputs, not the current contribution build. The original isolated 108-pass/three-failure SDK sweep was later explained and a source-aligned run passed all 111 tests. The current contribution has its own native/type/build evidence. Do not treat those different runs as one result.
-
-## Build the ordinary playground
-
-The current runner keeps the ordinary build separate. Build the normal app with:
+## Ordinary playground compatibility
 
 ```sh
 PAGES_BASE_PATH=/proof-lab/ pnpm build
+pnpm test:compat
+pnpm verify:pool-session
+PORT=4194 PAGES_BASE_PATH=/proof-lab/ pnpm test:browser
 ```
 
-The ordinary app has 98 unit tests after the receipt-preservation regressions. Its wallet and proof worker dependencies stay unchanged. See the task's local #3472 verification report and draft PR description for the current results and remaining limits.
+These checks are separate from output-order privacy measurements. The ordinary app preserves output order. Published fixture keys provide no secrecy, and these checks do not establish public-network or real-wallet validation.

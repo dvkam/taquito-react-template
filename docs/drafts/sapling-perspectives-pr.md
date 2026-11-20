@@ -1,23 +1,22 @@
 # Add a local Sapling proof and private-payment lab
 
-Add a browser-worker lab that creates real Sapling proofs and checks them with pinned Octez 25.3. A stateful local contract enforces deposits and payouts. The payment cycle shields 10 test XTZ, privately transfers 3 to Bob, and lets Bob withdraw 2. Independent reads verify Alice holds 7, Bob holds 1, the contract backs 8, and the public recipient receives 2. Payer fees and storage costs remain separate.
+Add real browser-worker Sapling proofs with independent Octez validation and a funded local contract. Shield 10 test XTZ, privately send 3 to Bob and withdraw 2. Independent reads verify Alice 7, Bob 1, backing 8 and payout 2, with fees separate.
 
-The result starts with Public observer. Its allowlisted report shows chain-visible backing, payout, costs, counts and receipts. Alice and Bob have separate reports with balances and memos decrypted by their viewing keys. Restart clears private reports, and closed workers cannot restore stale results. A final observation failure retains the confirmed public receipt without exposing private diagnostics.
+Public observer, Alice and Bob views explain chain-visible and viewing-key information. Refresh the SDK to one source build at `d2915a1b`, including the merged Sapling fixes and output-order API. Verify the installed bytes across all 11 required Taquito packages.
 
-## Privacy presentation evidence
+## Bug-fix evidence
 
-Projection and UI tests check that private markers do not enter the public report, that only the selected private perspective appears, and that restart removes it. Real browser cases verify the same behavior after Octez applies the payments.
-
-The keys are published disposable fixtures. The selector explains viewing keys; it provides no access control or anonymity. A separate opt-in experiment measures SDK output ordering. The ordinary lab does not enable that proposed policy.
+A new Beacon regression fails before the adapter fix when account network metadata is absent. It passes after the guard and rejects the account before sending.
 
 ## Compatibility evidence
 
-All 98 unit tests pass, including the 45 original wallet/counter checks. Seven existing wallet/counter source and test files match base `44d26ba` byte-for-byte. The branch adds the Sapling vendor package, workers, local contract and dependency entries. The vendor package includes the merged Sapling memo and parameter-body fixes.
+- Fresh fork-master baseline: 45 wallet/counter/transfer tests. Refreshed app: those 45 plus the new regression; 99 unit tests overall.
+- 18 browser checks pass across Chromium, Firefox and WebKit, including real proofs, the funded cycle and atomic rejection controls.
+- Five separate Chromium output-order scenarios: 17 accepted Octez applications and six rejected mutations with unchanged state. Includes independent receiver-packing bytes and later spending of moved change.
+- Ten same-SDK default/preserve byte comparisons pass. The session checker covers 781 histories and detects five faults; cache validation detects five corruptions. Frozen install, types, lint, formatting and build pass.
 
-All 18 browser cases pass across Chromium, Firefox and WebKit. They check real proofs, the funded cycle, invalid deposits, altered proof/recipient data, duplicate spends, unchanged rejected state, perspective selection and narrow/reduced-motion layouts. Four receipt-loss regressions fail before the fix and pass afterward. The session check covers 781 bounded histories and detects five deliberate faults.
+## Privacy evidence
 
-The separate SDK experiment has fresh privacy measurements and 17 accepted Octez applications plus six unchanged-state mutation rejections. Those results are recorded separately from the ordinary lab's evidence.
+A separate mocked corpus uses 4,096 samples per mode and output count. The last-position rule identifies change in 100% of default/preserve samples; randomized order yields 49.17% for two outputs and 32.93% for three, near chance. Selected proof cases are excluded. This measures one position signal, not full anonymity.
 
-Build, lint, formatting and strict type checks pass. The existing large-bundle warning remains. The evidence report includes reproduction commands and limitations.
-
-This is a local Linux x64 proof of concept. Public-network operations and real-wallet approvals are unverified. It does not deploy a service or provide production key custody.
+See [the dated report and raw evidence](https://github.com/dvkam/taquito-react-template/blob/feat/sapling-worker-proof/docs/sdk-refresh-2026-11-20.md). This is a Linux x64 local PoC with published disposable keys. Public-network operations and real-wallet approvals remain unverified. The build retains its large-chunk warning.

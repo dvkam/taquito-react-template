@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-20",
+  "platform": "Ubuntu 24.04 / WSL / Linux x64",
+  "sdkRevision": "d2915a1bfbf6bf9f2a761ad7c4349f7ea64f9a74",
+  "appBeforeRefresh": "7122cea9017fb29d09c7c19c2021861f48762ba4",
+  "forkMasterBaseline": "44d26ba06ab8cab60f974767c5b6894e92dfe530",
+  "bugFix": {
+    "missingNetworkRegressionFailedBeforeGuard": true,
+    "regressionPassesWithGuard": true
+  },
+  "compatibility": {
+    "originalForkMasterWalletTests": 45,
+    "currentWalletTests": 46,
+    "fullUnitTests": 99,
+    "ordinaryBrowsers": [
+      "Chromium",
+      "Firefox",
+      "WebKit"
+    ],
+    "ordinaryBrowserTests": 18,
+    "outputOrderChromiumScenarios": 5,
+    "acceptedProtocolApplications": 17,
+    "rejectedMutationsWithUnchangedState": 6,
+    "byteIdenticalDefaultConstructionCases": 10,
+    "boundedSessionHistories": 781,
+    "detectedSessionFaultVariants": 5,
+    "detectedCacheCorruptions": 5,
+    "installedSdkPackagesVerified": 11,
+    "ordinaryFinalBuildMatchesTestedBuild": true
+  },
+  "privacy": {
+    "samplesPerModePerOutputCount": 4096,
+    "mockedCryptography": true,
+    "classifier": "output count and position only",
+    "separateFromSelectedCompatibilityCases": true
+  },
+  "limits": [
+    "No public-network injection or real-wallet approval",
+    "Published disposable fixture keys",
+    "No full anonymity claim",
+    "Bounded session checks are not a formal proof"
+  ]
+}

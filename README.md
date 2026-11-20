@@ -24,7 +24,7 @@ pnpm build
 pnpm preview
 ```
 
-The build runs type-aware Oxlint, Oxfmt, strict TypeScript checks for the app and tools, Vitest tests, and Vite's production build. GitHub Actions runs the same command on pushes and pull requests. Tests use controlled wallet responses and need no account or private key.
+The build verifies the installed SDK package bytes, then runs type-aware Oxlint, Oxfmt, strict TypeScript checks for the app and tools, Vitest tests, and Vite's production build. GitHub Actions runs the same command on pushes and pull requests. Tests use controlled wallet responses and need no account or private key.
 
 Use `pnpm test`, `pnpm check`, or `pnpm format` for individual tasks. `pnpm-workspace.yaml` enables automatic deduplication. Keep `pnpm-lock.yaml` committed.
 
@@ -75,10 +75,12 @@ See [the local pool guide](docs/sapling-pool.md) for setup and independent accep
 
 ### Output-order privacy experiment
 
-The local [output-order experiment](experiments/output-order/README.md) compares an unchanged SDK with optional pre-signature shuffling. Its position measurements and protocol compatibility checks are separate. The ordinary app retains its original SDK. Read [the results](docs/sapling-output-order-experiment.md) for the measured signal, compatibility evidence and limitations. The SDK proposal is tracked in [Taquito issue #3472](https://github.com/ecadlabs/taquito/issues/3472). No PR has been opened for it.
+The local [output-order experiment](experiments/output-order/README.md) compares omitted, preserve and randomized modes in the same pinned current SDK. Its mocked position measurements and real protocol compatibility checks are separate. Output ordering shipped in [Taquito PR #3499](https://github.com/ecadlabs/taquito/pull/3499). The ordinary app keeps the default preserved order. Read the [current SDK provenance](vendor/README.md) and the [historical results](docs/sapling-output-order-experiment.md) for the scope and limits.
 
 ### Inspect the funded cycle
 
 The local cycle has separate Public observer, Alice, and Bob reports. See [perspective usage](docs/sapling-perspectives.md) and [executed evidence](docs/sapling-perspectives-evidence.md). The selector uses published demo keys and provides no access control.
 
-See the [28 October refresh evidence](docs/evidence/sapling-refresh-2026-10-28/README.md) for current privacy measurements, separate compatibility results, and the [review record](docs/evidence/sapling-refresh-2026-10-28/review.md).
+See the [28 October refresh evidence](docs/evidence/sapling-refresh-2026-10-28/README.md) for historical privacy measurements, separate compatibility results, and the [review record](docs/evidence/sapling-refresh-2026-10-28/review.md).
+
+See [the November SDK refresh](docs/sdk-refresh-2026-11-20.md) for the current source pin and separate proof, privacy and compatibility gates.

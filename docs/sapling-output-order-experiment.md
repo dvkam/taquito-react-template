@@ -1,5 +1,7 @@
 # Output-order privacy experiment
 
+This is the historical October report. For the current pinned SDK and fresh evidence, see [the November refresh](sdk-refresh-2026-11-20.md).
+
 Completed locally on 21 October 2026. No issue, PR, comment or push was created. Source implementation before this report: `724fd4ab93fda3634dc92dbc40f82db363a06d6e`.
 
 ## Measured result

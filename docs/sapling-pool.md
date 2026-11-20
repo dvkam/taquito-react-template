@@ -18,6 +18,6 @@ All pool reads and writes are serialized. Versions reject old application reques
 
 `pnpm verify:pool-session` exhaustively runs 781 histories of up to four actions against the production JavaScript session module. It checks overlapping reads/writes, stale versions, quarantine after uncertain outcomes and version preservation on rejection. Five broken source variants must fail. This is bounded executable checking, not a proof over all executions or a verification of Sapling cryptography or the Michelson contract. No suitable installed source verifier was available. See the project-local verification skill for scope and maintenance.
 
-The minimal result display is not the later public-observer/Alice/Bob interface. See `sapling-privacy.md` for the privacy experiment and limitations.
+The completed result starts in Public observer and offers separate Alice and Bob viewing-key reports. See [perspective usage](sapling-perspectives.md) and [privacy limits](sapling-privacy.md).
 
 The deliberately broken variants expose these sequences: an outstanding submit lets another reader enter; a stale version reaches application; an uncertain outcome allows another application; a rejection moves the version; or a confirmed application loses its receipt when refresh fails. The checker must detect each sequence.

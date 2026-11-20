@@ -14,7 +14,7 @@ pnpm sapling:experiment
 
 Open `http://127.0.0.1:4180`. Choose **Open Sapling lab**, then **Prepare proof**. Preparation downloads the authenticated parameters and runs real cryptography. Choose **Verify with Octez** to perform the separate protocol check. Opening the panel alone does not load the worker, WASM, or proving parameters.
 
-The setup downloads a pinned Octez Linux binary and about 49.2 MiB of parameters into ignored `.cache/sapling`. It checks each SHA-256 digest and creates a local Tallinn mockup. See [verifier provenance](proof-verifier.md) for the exact binary, protocol, paths, and limits. The browser uses [the local pinned Sapling build](../vendor/README.md). Existing wallet packages are aligned to published Taquito 25.1.0.
+The setup downloads a pinned Octez Linux binary and about 49.2 MiB of parameters into ignored `.cache/sapling`. It checks each SHA-256 digest and creates a local Tallinn mockup. See [verifier provenance](proof-verifier.md) for the exact binary, protocol, paths, and limits. The browser uses [the local pinned Sapling build](../vendor/README.md). All required Taquito packages come from one pinned source build. The vendor guide records the source revision, package hashes and dependency-graph checks.
 
 The local server serves the **production build**, parameters, and the verifier endpoint. Ordinary `pnpm dev`, `pnpm preview`, and the public GitHub Pages deployment do not provide the local verifier or parameter endpoints. Do not deploy this experiment server. It binds to loopback, checks request origins for verification, caps request size, and permits one active verifier request.
 
@@ -35,7 +35,7 @@ pnpm exec playwright install chromium firefox webkit
 pnpm test:browser
 ```
 
-`pnpm build` runs strict lint, formatting, type checks, all unit tests, and the production build. `pnpm test:compat` runs the original 45 wallet/counter/transfer tests unchanged, separately from the new tests. Browser tests execute the emitted module worker and real WASM in all three engines, check literal protocol fields, verify the transaction with Octez, and require proof/signature mutations to fail cryptographic verification.
+`pnpm build` runs strict lint, formatting, type checks, all unit tests, and the production build. `pnpm test:compat` retains the 45 original wallet/counter/transfer checks and adds a missing-network account regression for the refreshed Beacon interface. Browser tests execute the emitted module worker and real WASM in all three engines, check literal protocol fields, verify the transaction with Octez, and require proof/signature mutations to fail cryptographic verification.
 
 For a deployment prefix, build and serve with the same value:
 
@@ -46,6 +46,6 @@ PAGES_BASE_PATH=/proof-lab/ pnpm sapling:serve
 
 The public fee-payer wallet and counter examples keep their existing behavior. This lab uses its own local mockup identifiers, not the Shadownet wallet account or counter contract.
 
-## Next application work
+## Verification limits
 
-This proves the browser worker and verifier path for shielding into an empty fixture. It does not establish spend-proof generation, private transfers, unshielding, state synchronization, viewing-key interoperability, reorganization handling, or mobile performance. Those require their own fixtures and protocol checks before the full playground flow is built.
+The proof-only mode checks shielding into an empty fixture. The funded local cycle separately checks spends, private transfers, unshielding and viewing-key reports. Public-network operations, real-wallet approvals, reorganization handling and mobile performance remain unverified.

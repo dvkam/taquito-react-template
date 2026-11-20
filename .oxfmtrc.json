@@ -14,6 +14,7 @@
     "pnpm-lock.yaml",
     "ANALYSIS.md",
     "PRODUCT.md",
-    "oracle/**"
+    "oracle/**",
+    "docs/evidence/sdk-refresh-2026-11-20/**"
   ]
 }

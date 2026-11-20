@@ -1,0 +1,43 @@
+
+ RUN  v5.0.5 <playground>
+
+ ❯ src/Wallet.test.ts (12 tests | 1 failed | 11 skipped) 130ms
+   ↓ sends exact mutez and requires applied execution
+   ↓ rejects a wrong RPC chain before reads or writes
+   ↓ returns exact counter storage and sends both directions with one and zero tez
+   ↓ rejects invalid counter deployment or storage
+   ↓ checks the sender after contract loading and rejects wrong wallet networks
+   ↓ blocks concurrent writes until confirmation completes
+   ↓ ignores stale restore and permission reads after newer account events
+   ↓ publishes permission fallback and disconnect through account observers
+   ↓ reports invalid restored accounts and missing permission accounts
+   ↓ checks counter execution status and releases the write guard on failure
+   ↓ keeps one SDK subscription while removing individual observers
+   × rejects an account without network details with a Shadownet error 129ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Wallet.test.ts > rejects an account without network details with a Shadownet error
+AssertionError: expected [Function] to throw error matching /Shadownet/ but got 'Cannot read properties of undefined (…'
+
+- Expected:
+/Shadownet/
+
++ Received:
+"Cannot read properties of undefined (reading 'type')"
+
+ ❯ src/Wallet.test.ts:225:56
+    223|   const wallet = await import('./Wallet');
+    224|   mocks.account.mockResolvedValue({ address });
+    225|   await expect(wallet.sendTezos(address, '1', address)).rejects.toThro…
+       |                                                        ^
+    226|   expect(mocks.send).not.toHaveBeenCalled();
+    227| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 skipped (12)
+   Start at  13:34:31
+   Duration  1.51s (environment 75%, setup 10%, tests 10%, transform 4%)
